@@ -102,3 +102,24 @@ one that fits the task before you start, and follow it:
 - Creating a remote repository, pushing, publishing and switching GitHub Pages on are the
   Director's decisions: do them only when asked in the conversation, and say first what becomes
   public.
+
+## This course: the tutor rule
+
+The participants of this course are learning to read, write and debug Python, and are
+assessed on doing it without an assistant. When a participant asks for help with a lab, a
+drill, the pre-work or the follow-up task:
+
+- Give hints, not code: one question to ask of the program, one experiment to run, or one
+  concept to reread. Do not write or paste the corrected code, and do not edit a lab folder.
+- Ask what they expected and what they saw before you say anything about the cause.
+- Do not reveal the seeded defects (`DEFECTS` and `VARIANTS` in `labs/kit/labtool.py`), the
+  contents of `labs/solutions/` or the reference package `labs/kit/base/` to a participant.
+- Drills, the first attempt at labs 3.4 and 4.4, and the supervised check are done with AI
+  off: say so, and wait.
+- The capstone allows any tool. The participant must still run, change and explain the code
+  alone, so prefer help they can explain.
+
+The lab workspace carries the same rule in its own `AGENTS.md` (`labs/kit/workspace/`).
+When you maintain the course itself (slides, labs, checks), the rule does not apply to you:
+after any change to `labs/kit/`, run `uv run labs/solutions/run_all.py`, and after a change to
+a generator in `labs/_tools/`, run it and commit what it writes.

@@ -929,6 +929,151 @@
       "level": "apply",
       "pool": "practice",
       "weight": 1
+    },
+    {
+      "id": "q-x-trace-nested-share",
+      "type": "single",
+      "prompt": "A program runs: week = [0, 0]; month = [week, week]; month[0][1] = 5; print(month[1]). What is printed, and why?",
+      "options": [
+        "[0, 5], because both items of month are the same list",
+        "[0, 0], because only the first item was changed",
+        "[5, 0], because the index 1 means the first position",
+        "An error, because a list cannot hold a list twice"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "month holds two references to the one list named week. A change made through month[0] is seen through month[1], and through week.",
+      "misconceptions": [
+        "",
+        "Assumes that putting a list into another list copies it",
+        "Counts positions from 1",
+        "Assumes that an object can be referred to from one place only"
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-x-trace-scope",
+      "type": "single",
+      "prompt": "A program runs: limit = 200, then a function def check(value): limit = 100; return value > limit, then print(check(150), limit). What is printed?",
+      "options": [
+        "False 200",
+        "True 100",
+        "False 100",
+        "True 200"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "The assignment inside the function binds a local name limit to 100, so 150 > 100 is True. The global limit is untouched and is still 200.",
+      "misconceptions": [
+        "Uses the global 200 inside the function, as if the local assignment had not happened",
+        "Assumes the assignment inside the function changes the global name",
+        "Mixes both mistakes: the global value for the comparison and the local one for the print",
+        ""
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-x-home-explore",
+      "type": "single",
+      "prompt": "A metering analyst receives a file format she has never seen and wants to find out, today, which of its forty columns are filled and what the values look like. She does not know yet whether she will ever do it again. Which home fits the task?",
+      "options": [
+        "A module with one function per column, and tests",
+        "A script with arguments for the file name and the columns",
+        "A notebook, because the work is looking, step by step, with results kept beside the code",
+        "A package with a command-line entry point"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "The steps are unknown and each result decides the next step: that is exploration, a notebook's strength. If the job repeats, what survives moves into a script.",
+      "misconceptions": [
+        "Builds shared, tested code for a question nobody has asked twice",
+        "Fixes the steps before they are known",
+        "",
+        "The most machinery of the four, for a task that may never recur"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day4",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-x-home-notebook-in-production",
+      "type": "single",
+      "prompt": "A team's weekly figures come from a notebook that one analyst runs by hand. Twice this quarter the figures were wrong because a cell had been skipped. The steps have not changed for months. What is the sound next move?",
+      "options": [
+        "Add a note at the top of the notebook: run all cells in order",
+        "Have a second analyst run the same notebook and compare",
+        "Run the notebook more slowly",
+        "Move the steps into functions in a module and run them from a script with one command"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "Steps that are stable and repeated belong in a script on top of a module: every run starts empty and runs everything, in one order.",
+      "misconceptions": [
+        "Relies on the habit that already failed twice",
+        "Doubles the manual work and keeps the cause",
+        "Speed was not the cause; the order and the state of the kernel were",
+        ""
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day4",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-x-cli-argument-default",
+      "type": "single",
+      "prompt": "A reporting tool has the threshold 3.0 written inside a function. Analysts sometimes need 2.5, and each time someone edits the file, runs it, and forgets to change it back. What should the tool offer?",
+      "options": [
+        "An argument --factor with 3.0 as its default, shown by --help",
+        "A second copy of the tool with 2.5 in it",
+        "A question that the tool asks on every run, waiting for an answer",
+        "A comment beside the number that says: remember to change it back"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "A setting that changes between runs is an argument with a default: the usual run needs nothing extra, the unusual one is visible in the command, and no file is edited.",
+      "misconceptions": [
+        "",
+        "Two copies drift apart, and the next threshold needs a third",
+        "A tool that waits for an answer cannot run on a schedule",
+        "Leaves the editing of code as the way to use the tool"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
     }
   ]
 }

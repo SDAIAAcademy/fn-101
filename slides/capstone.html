@@ -1,19 +1,47 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">Today is theirs: keep your own talking to the opening and the closing. Confirm the running order and the demo setup (screen sharing, accounts, a recorded backup) first.</aside>
+  <aside class="notes"><p>Today is theirs: keep your own talking to the opening and the closing. Before the room fills: the hidden dataset written with your own seed and kept off any shared drive, the grader tried on one repository, a fresh clone of each submission, and for each participant one requested change and one traceback prepared from their code.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-label="Agenda">
   <div class="kicker">Capstone</div>
-  <h2>How the presentations run</h2>
+  <h2>How the day runs</h2>
   <div class="agenda">
-    <div class="item now"><div><b>Expectations and final prep</b><small>the rubric, a last rehearsal, then the first presentations</small></div></div>
-    <div class="item"><div><b>Presentations</b><small>each one timed, with questions after it</small></div></div>
-    <div class="item"><div><b>Review and closing</b><small>peer feedback, the trainer's review, what next</small></div></div>
+    <div class="item now"><div><b>The supervised check</b><small>one hour, on paper and in a locked editor, no assistant</small></div></div>
+    <div class="item"><div><b>Finishing the tool</b><small>the brief, the public tests, the README; any tool is allowed</small></div></div>
+    <div class="item"><div><b>Walkthroughs</b><small>ten minutes each: run it, change it, read a traceback</small></div></div>
+    <div class="item"><div><b>Review and closing</b><small>what the tools showed, the follow-up task, what comes next</small></div></div>
   </div>
+  <aside class="notes"><p>The supervised check is thirty per cent of the assessment, the repository fifty, the walkthrough twenty. Passing needs seventy per cent overall and sixty on the check. Say the numbers once, here.</p></aside>
+</section>
+
+<section class="slide dark" id="supervised-check" data-label="The check" data-lo="LO1 LO5">
+  <div class="kicker">Supervised check · AI off</div>
+  <h1>Trace, order, debug · 60 minutes</h1>
+  <div class="timer" data-minutes="60"></div>
+  <p class="lead">Ten snippets to trace on paper, one function to put in order, one defect to find with a log. Laptops closed for the first two parts; a locked editor for the third.</p>
+  <aside class="notes"><p>Press T. The items are not in the course repository: they come from the Academy's exam files. The format is the four morning drills and lab 3.4. Eight of ten traces right is the mark for the first course outcome. Collect the papers before anyone opens an assistant.</p></aside>
+</section>
+
+<section class="slide" id="the-brief" data-label="The brief" data-lo="LO3 LO4 LO6">
+  <div class="kicker">The capstone</div>
+  <h2>One command that turns the work-order export into a report Mazen can trust</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li><b>In:</b> 505 work orders (CSV) and the crews (JSON Lines), with planted problems</li>
+      <li><b>Rules:</b> eight reasons to reject a row, applied in a fixed order</li>
+      <li><b>Out:</b> a report for a person, a summary for a program, a rejection log</li>
+      <li><b>Always:</b> accepted plus rejected equals the rows; two runs, the same bytes; nothing from the notes in any output</li>
+    </ul>
+    <pre class="code" data-file="terminal"><code class="language-bash">python -m workorders report \
+  --orders data/work_orders.csv \
+  --crews data/crews.jsonl \
+  --as-of 2026-10-31 --out out</code></pre>
+  </div>
+  <aside class="notes"><p>The brief is labs/capstone/README.md and was handed out at the end of Day 4. Every part of it was practised: the rules are Day 1 and Day 3, the aggregation Day 2, the command line and the same-bytes property Day 4. Any assistant is allowed for the building.</p></aside>
 </section>
 
 <section class="slide" id="rubric" data-label="The rubric">
-  <div class="kicker">How presentations are scored</div>
+  <div class="kicker">How the repository is scored</div>
   <h2>The rubric</h2>
   <div class="bars">
     <div class="row"><span>Correctness on hidden tests</span><div class="bar c-teal" style="--w:100%"></div><span class="val">30%</span></div>
@@ -22,77 +50,81 @@
     <div class="row"><span>Reproducibility</span><div class="bar c-purple" style="--w:50%"></div><span class="val">15%</span></div>
     <div class="row"><span>README</span><div class="bar c-amber" style="--w:50%"></div><span class="val">15%</span></div>
   </div>
-  <div class="callout tip mt"><b>Show results from at least two measured runs.</b> A claim without a number is a plan, not a result.</div>
-  <aside class="notes">Walk through each criterion with one example of what full marks look like.</aside>
+  <div class="callout tip mt"><b>The hidden tests run your command on files you have not seen.</b> Other rows, the same rules. The public sample shows their shape.</div>
+  <aside class="notes"><p>Full marks, one example each. Hidden tests: every count of the summary right on the assessor's file. Validation: one reason per bad row, specific exceptions, exit code 2 for a missing file. Structure: loading, rules and reporting in separate modules, a clean strict type check. Reproducibility: a fresh clone, one command, the same bytes twice. README: the command, the report, and what the tool does not check.</p></aside>
 </section>
 
 <section class="slide" id="format" data-label="Format">
-  <div class="kicker">Format</div>
-  <h2>10 minutes for each presentation</h2>
+  <div class="kicker">The walkthrough · no assistant</div>
+  <h2>10 minutes each, questions included</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>1 · The problem</h4><p class="small mb0">Who, what, why now. One slide.</p></div>
-    <div class="card c-cyan"><h4>2 · What you built</h4><p class="small mb0">Design, decisions, trade-offs. Then the live demo.</p></div>
-    <div class="card c-coral"><h4>3 · What you measured</h4><p class="small mb0">Baseline, improvement, failures found, what comes next.</p></div>
+    <div class="card c-teal"><h4>1 · Run it</h4><p class="small mb0">From a fresh clone: the one command, then the report. About three minutes.</p></div>
+    <div class="card c-cyan"><h4>2 · Change it</h4><p class="small mb0">The assessor asks for one small change. You make it live, with a test. About four minutes.</p></div>
+    <div class="card c-coral"><h4>3 · Read a traceback</h4><p class="small mb0">Produced from your code, chosen by the assessor. From the last line up: what, where, what you would check first.</p></div>
   </div>
-  <div class="callout note mt"><b>Peer feedback.</b> After each talk, everyone writes one strength, one question and one suggestion.</div>
+  <div class="callout note mt"><b>While you wait.</b> Read a neighbour's README and run their command. Write one thing that is clear and one question.</div>
+  <aside class="notes"><p>The walkthrough is twenty per cent of the assessment and shows whose understanding the repository is. Requested changes that fit four minutes: a ninth reason, another overdue threshold, a column in the report. For the traceback, run their tool on a file with a broken header or a crews file with a missing key and keep the output.</p></aside>
 </section>
 
 <section class="slide order" id="running-order" data-label="Running order">
   <div class="kicker">Running order</div>
   <h2>Who presents when</h2>
   <table class="t small">
-    <tr><th>#</th><th>Presenter</th><th>Project</th></tr>
-    <tr><td>1</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>2</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>3</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>4</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>5</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>6</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>7</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
-    <tr><td>8</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
+    <tr><th>#</th><th>Participant</th><th>Repository</th></tr>
+    <tr><td>1</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>2</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>3</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>4</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>5</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>6</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>7</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>8</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
   </table>
-  <aside class="notes">Type the names in at the start; the fields can be edited live and are not saved, so keep the list in your notes too.</aside>
+  <aside class="notes"><p>Type the names in at the start; the fields can be edited live and are not saved, so keep the list in your notes too. With more than eight participants and one assessor, run the walkthroughs in two rooms, or begin them while others are still finishing.</p></aside>
 </section>
 
-<section class="slide dark" id="final-prep" data-label="Before the first presentation">
-  <div class="kicker">Before the first presentation</div>
+<section class="slide dark" id="final-prep" data-label="Before the first walkthrough">
+  <div class="kicker">Before the first walkthrough</div>
   <h1>Final prep · 20 minutes</h1>
   <div class="timer" data-minutes="20"></div>
-  <p class="lead">Rehearse once, record a backup, try the demo on this screen.</p>
-  <aside class="notes">Press T to start the timer. Breaks are not slides: press B when the room needs one.</aside>
+  <p class="lead">Clone your own repository into a new folder and run the command there. Run the public tests. Read your README as a stranger would.</p>
+  <aside class="notes"><p>Press T to start the timer. The fresh clone is the point: it has only what was committed. Breaks are not slides: press B when the room needs one.</p></aside>
 </section>
 
 <section class="slide dark presenting" id="now-presenting" data-label="Now presenting">
   <div class="kicker center">Now presenting</div>
-  <div class="center"><input placeholder="Presenter · project"></div>
+  <div class="center"><input placeholder="Participant · repository"></div>
   <div class="timers mt">
-    <div><h3>Talk and demo</h3><div class="timer" data-minutes="10"></div></div>
+    <div><h3>Run, change, traceback</h3><div class="timer" data-minutes="10"></div></div>
   </div>
-  <aside class="notes">Type the presenter's name and press T to start the timer. Reuse this slide for every presenter.</aside>
+  <aside class="notes"><p>Type the participant's name and press T to start the timer. Reuse this slide for every participant. No assistant on the screen during the ten minutes.</p></aside>
 </section>
 
 <section class="slide" id="review" data-label="Trainer review">
   <div class="kicker">Trainer review</div>
-  <h2>What the presentations showed</h2>
+  <h2>What the tools showed</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Strongest patterns</h4><p class="small mb0">What several projects got right.</p></div>
-    <div class="card c-coral"><h4>Common gaps</h4><p class="small mb0">What most projects would fix next.</p></div>
+    <div class="card c-teal"><h4>Strongest patterns</h4><p class="small mb0">What several repositories got right.</p></div>
+    <div class="card c-coral"><h4>Common gaps</h4><p class="small mb0">What most tools would fix next.</p></div>
     <div class="card c-purple"><h4>One surprise</h4><p class="small mb0">Something nobody expected.</p></div>
   </div>
-  <aside class="notes">Fill these in from your scoring notes during the last break. Name projects for strengths; keep gaps anonymous.</aside>
+  <aside class="notes"><p>Fill these in from your scoring notes during the last break. Name repositories for strengths; keep gaps anonymous. Likely gaps: the order of the rules, a duplicate counted against a rejected first row, a note quoted in a rejection detail.</p></aside>
 </section>
 
 <section class="slide" id="what-next" data-label="After the course">
   <div class="kicker">After the course</div>
   <h2>Keep going</h2>
   <ul class="bullets">
-    <li><b>Your project stays yours:</b> keep it reproducible and add the next improvement you named today</li>
-    <li><b>Next Academy course:</b> REPLACE: the course that follows this one</li>
+    <li><b>The follow-up task:</b> one new validation rule for Miqyas, with tests, reviewed by a peer. It is tracked: <code>labs/followup/</code></li>
+    <li><b>Your tool stays yours:</b> keep it reproducible, and add the next rule you named in "what the tool does not check"</li>
+    <li><b>Next Academy courses:</b> FN-102 for version control, FN-104 for SQL and Arabic text normalisation, then the AI Engineering or the Data Science track</li>
   </ul>
+  <aside class="notes"><p>Agree the pairs for the peer review of the follow-up task before people leave, and the date by which it is handed in.</p></aside>
 </section>
 
 <section class="slide dark" id="thanks" data-label="Thank you">
   <div class="kicker">SDAIA Academy</div>
   <h1>Thank you</h1>
   <p class="lead">Python for Data and AI Work</p>
+  <aside class="notes"><p>Close with the one habit each person named at the end of Day 4.</p></aside>
 </section>
