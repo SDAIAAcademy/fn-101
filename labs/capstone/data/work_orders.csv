@@ -1,0 +1,506 @@
+order_id,meter_id,crew_id,opened,closed,kind,hours,note
+WO-10001,M-0423,C-06,2026-09-10,2026-09-15,leak,3.75,"customer not at home, came back next day"
+WO-10002,M-0273,C-05,2026-09-12,,replace_meter,,"valve stiff, replaced"
+WO-10003,M-0323,C-01,2026-09-17,2026-09-25,inspection,6,"no access to the meter box, gate locked"
+WO-10004,M-0509,C-05,2026-09-25,2026-09-29,inspection,7,"seal broken, reported to the supervisor"
+WO-10005,M-0493,C-08,2026-09-12,2026-09-18,replace_meter,6.75,"no access to the meter box, gate locked"
+WO-10006,M-0165,C-04,2026-09-29,2026-10-01,replace_meter,7.75,"no access to the meter box, gate locked"
+WO-10007,M-0045,C-03,2026-09-11,2026-09-20,replace_meter,1.75,"no access to the meter box, gate locked"
+WO-10008,M-0157,C-09,2026-09-11,2026-09-22,replace_meter,4.5,العميل طلب الاتصال قبل الزيارة
+WO-10009,M-0003,C-07,2026-10-24,2026-10-29,leak,4.25,
+WO-10010,M-0417,C-06,2026-09-15,2026-09-23,replace_meter,3.25,
+WO-10011,M-0059,C-07,2026-10-16,2026-10-18,inspection,3.5,
+WO-20039,M-0038,C-02,2026-10-04,2026-10-08,Leak,7.25,تسرب عند الوصلة، تم الإصلاح
+WO-10012,M-0198,C-07,2026-09-14,2026-09-15,inspection,0.5,تم استبدال العداد
+WO-20040,M-0186,C-09,2026-09-26,2026-09-27,Leak,2.25,"customer not at home, came back next day call 0555058568"
+WO-10013,M-0437,C-09,2026-10-11,,inspection,,"no access to the meter box, gate locked"
+WO-10014,M-0136,C-02,2026-09-19,2026-09-24,inspection,7.25,"valve stiff, replaced"
+WO-10015,M-0076,C-04,2026-10-17,2026-10-27,inspection,5.5,العميل طلب الاتصال قبل الزيارة
+WO-10016,M-0406,C-04,2026-10-02,2026-10-12,leak,4.5,"seal broken, reported to the supervisor"
+WO-10017,M-0335,C-09,2026-10-04,2026-10-12,inspection,5.75,العميل طلب الاتصال قبل الزيارة
+WO-10018,M-0273,C-02,2026-09-17,2026-09-19,replace_meter,0.5,
+WO-10019,M-0014,C-03,2026-09-03,2026-09-03,leak,7.25,"no access to the meter box, gate locked"
+WO-10020,M-0520,C-02,2026-09-24,,inspection,,
+WO-10021,M-0205,C-01,2026-09-03,2026-09-13,reconnect,3.25,"customer not at home, came back next day"
+WO-10022,M-0234,C-05,2026-09-10,,reconnect,,"valve stiff, replaced"
+WO-10023,M-0040,C-09,2026-09-04,2026-09-09,inspection,3.75,"seal broken, reported to the supervisor"
+WO-10024,M-0553,C-05,2026-09-12,,replace_meter,,"no access to the meter box, gate locked"
+WO-10025,M-0448,C-09,2026-10-04,2026-10-15,replace_meter,7.75,"valve stiff, replaced"
+WO-10026,M-0107,C-04,2026-09-20,,inspection,,تم استبدال العداد
+WO-10027,M-0539,C-07,2026-09-24,2026-09-25,leak,6.75,العميل طلب الاتصال قبل الزيارة
+WO-10028,M-0290,C-09,2026-09-16,,reconnect,,تم استبدال العداد
+WO-10029,M-0074,C-01,2026-09-23,2026-09-23,reconnect,4.75,"no access to the meter box, gate locked"
+WO-10030,M-0220,C-06,2026-10-16,,replace_meter,,تم استبدال العداد
+WO-10031,M-0158,C-03,2026-10-17,2026-10-27,inspection,2.75,
+WO-10032,M-0178,C-01,2026-10-03,2026-10-04,inspection,3.75,العميل طلب الاتصال قبل الزيارة
+WO-10033,M-0301,C-03,2026-10-21,,replace_meter,,تم استبدال العداد
+WO-10034,M-0403,C-08,2026-10-06,2026-10-08,leak,5.5,"no access to the meter box, gate locked"
+WO-10035,M-0303,C-05,2026-09-01,2026-09-09,leak,5.25,"no access to the meter box, gate locked"
+WO-10036,M-0349,C-03,2026-09-18,2026-09-29,replace_meter,0.5,"no access to the meter box, gate locked"
+WO-10037,M-0435,C-02,2026-09-11,2026-09-14,replace_meter,2.75,"customer not at home, came back next day call 0555083486"
+WO-10038,M-0352,C-08,2026-09-28,,reconnect,,
+WO-10039,M-0328,C-08,2026-09-10,,inspection,,العميل طلب الاتصال قبل الزيارة
+WO-10040,M-0595,C-03,2026-09-08,2026-09-15,replace_meter,7.75,
+WO-10041,M-0002,C-01,2026-10-21,,inspection,,تم استبدال العداد
+WO-10042,M-0289,C-03,2026-09-04,2026-09-04,reconnect,4.5,"seal broken, reported to the supervisor"
+WO-10043,M-0091,C-03,2026-09-28,2026-10-06,leak,7,"customer not at home, came back next day"
+WO-10044,M-0027,C-09,2026-09-10,2026-09-15,inspection,2.25,تسرب عند الوصلة، تم الإصلاح
+WO-10045,M-0307,C-07,2026-10-20,,replace_meter,,
+WO-10046,M-0133,C-07,2026-10-09,2026-10-16,reconnect,7,العميل طلب الاتصال قبل الزيارة
+WO-10047,M-0568,C-08,2026-09-18,2026-09-20,leak,6.75,تسرب عند الوصلة، تم الإصلاح
+WO-10048,M-0087,C-05,2026-09-02,2026-09-05,inspection,0.5,تم استبدال العداد
+WO-10049,M-0562,C-04,2026-10-16,,inspection,,"customer not at home, came back next day"
+WO-10050,M-0099,C-03,2026-09-30,2026-10-09,replace_meter,3,
+WO-10051,M-0249,C-04,2026-10-17,,reconnect,,
+WO-20013,M-0239,C-02,yesterday,,reconnect,,call 0555055708
+WO-10052,M-0330,C-07,2026-09-28,2026-10-09,leak,4.5,"valve stiff, replaced"
+WO-10053,M-0578,C-02,2026-09-02,2026-09-08,inspection,1,"customer not at home, came back next day"
+WO-10054,M-0417,C-08,2026-09-29,2026-10-07,leak,4.25,تسرب عند الوصلة، تم الإصلاح
+WO-10055,M-0453,C-06,2026-09-13,2026-09-22,leak,4.5,
+WO-10056,M-0582,C-04,2026-09-25,2026-09-25,inspection,5,
+WO-10057,M-0033,C-07,2026-10-19,2026-10-26,replace_meter,2.5,
+WO-10058,M-0030,C-09,2026-10-10,,inspection,,"customer not at home, came back next day"
+WO-10059,M-0519,C-08,2026-10-18,2026-10-18,leak,5,"no access to the meter box, gate locked"
+WO-10060,M-0020,C-02,2026-09-27,2026-10-01,leak,6,"no access to the meter box, gate locked"
+WO-10061,M-0596,C-04,2026-09-24,2026-09-27,inspection,2.25,تسرب عند الوصلة، تم الإصلاح
+WO-10062,M-0176,C-03,2026-09-18,2026-09-24,inspection,5,تسرب عند الوصلة، تم الإصلاح
+WO-10063,M-0493,C-07,2026-09-06,,replace_meter,,
+WO-10064,M-0130,C-05,2026-09-05,,inspection,,تسرب عند الوصلة، تم الإصلاح
+WO-20021,M-0003,C-05,2026-10-14,2026-10-11,reconnect,2,
+WO-10065,M-0009,C-05,2026-09-03,2026-09-09,leak,6.5,تسرب عند الوصلة، تم الإصلاح
+WO-10066,M-0342,C-05,2026-09-05,2026-09-07,leak,5.75,"no access to the meter box, gate locked"
+WO-10067,M-0401,C-07,2026-10-07,2026-10-13,reconnect,2.75,تم استبدال العداد
+WO-10068,M-0582,C-06,2026-09-26,2026-10-02,replace_meter,5.75,"no access to the meter box, gate locked"
+WO-10069,M-0344,C-07,2026-09-24,,leak,,"customer not at home, came back next day call 0555024795"
+WO-10070,M-0344,C-06,2026-09-05,2026-09-14,inspection,0.5,call 0555048505
+WO-10071,M-0395,C-06,2026-10-22,,reconnect,,
+WO-10072,M-0565,C-02,2026-09-22,,leak,,"seal broken, reported to the supervisor"
+WO-10073,M-0406,C-09,2026-10-19,,reconnect,,"valve stiff, replaced"
+WO-10074,M-0271,C-03,2026-10-15,2026-10-24,leak,5,"no access to the meter box, gate locked"
+WO-10075,M-0378,C-06,2026-09-28,2026-10-09,leak,2.75,"no access to the meter box, gate locked"
+WO-10076,M-0526,C-07,2026-09-02,2026-09-10,leak,7.5,"customer not at home, came back next day"
+WO-10077,M-0496,C-09,2026-09-27,2026-10-01,inspection,6.5,"valve stiff, replaced"
+WO-10078,M-0097,C-07,2026-09-03,2026-09-09,leak,4.25,
+WO-10079,M-0411,C-03,2026-09-16,2026-09-16,reconnect,6.5,"valve stiff, replaced"
+WO-10080,M-0192,C-05,2026-10-18,2026-10-24,inspection,4.75,تم استبدال العداد
+WO-10081,M-0450,C-05,2026-09-16,2026-09-23,replace_meter,1,"seal broken, reported to the supervisor"
+WO-10082,M-0159,C-01,2026-10-09,2026-10-15,reconnect,5.75,
+WO-20010,M-0366,C-09,2026-10-22,2026-10-26,,6.75,
+WO-10083,M-0230,C-03,2026-09-24,2026-09-27,reconnect,0.75,
+WO-10084,M-0558,C-08,2026-10-09,2026-10-10,reconnect,2,
+WO-10085,M-0144,C-01,2026-09-29,2026-10-10,reconnect,2.25,
+WO-10086,M-0523,C-05,2026-10-16,2026-10-25,leak,2.5,
+WO-10087,M-0592,C-04,2026-10-07,2026-10-16,leak,4.25,تم استبدال العداد
+WO-10088,M-0294,C-04,2026-09-07,2026-09-13,replace_meter,2.25,تم استبدال العداد
+WO-10089,M-0334,C-08,2026-10-19,2026-10-26,replace_meter,2.75,"customer not at home, came back next day"
+WO-10090,M-0595,C-06,2026-09-01,2026-09-09,leak,6.75,
+WO-10091,M-0492,C-07,2026-09-19,2026-09-23,reconnect,7.25,
+WO-10092,M-0397,C-01,2026-09-23,,reconnect,,
+WO-10093,M-0406,C-07,2026-10-06,2026-10-15,reconnect,3.5,
+WO-10094,M-0459,C-05,2026-10-07,,reconnect,,"seal broken, reported to the supervisor"
+WO-10095,M-0339,C-08,2026-10-23,2026-10-24,reconnect,2.75,
+WO-10096,M-0239,C-02,2026-09-22,,reconnect,,call 0555055708
+WO-10097,M-0333,C-03,2026-10-23,,leak,,"valve stiff, replaced"
+WO-10098,M-0243,C-03,2026-09-15,2026-09-15,replace_meter,0.5,تسرب عند الوصلة، تم الإصلاح
+WO-10099,M-0345,C-06,2026-09-04,2026-09-12,leak,7,
+WO-10100,M-0504,C-08,2026-10-25,2026-10-31,inspection,2.25,تسرب عند الوصلة، تم الإصلاح
+WO-10101,M-0154,C-06,2026-10-14,2026-10-22,replace_meter,5.75,العميل طلب الاتصال قبل الزيارة
+WO-10102,M-0405,C-08,2026-10-25,2026-10-30,reconnect,2,
+WO-10103,M-0423,C-02,2026-10-06,,reconnect,,"seal broken, reported to the supervisor"
+WO-10104,M-0581,C-08,2026-10-03,2026-10-12,inspection,6,"seal broken, reported to the supervisor"
+WO-10105,M-0544,C-02,2026-09-08,,inspection,,تم استبدال العداد
+WO-10106,M-0090,C-06,2026-09-07,,inspection,,
+WO-10107,M-0586,C-03,2026-09-27,2026-09-30,inspection,5.5,"no access to the meter box, gate locked call 0555056483"
+WO-10108,M-0337,C-06,2026-09-29,2026-09-30,leak,2.5,تم استبدال العداد
+WO-10109,M-0486,C-04,2026-09-11,2026-09-11,leak,5.5,"valve stiff, replaced"
+WO-10110,M-0312,C-08,2026-09-16,2026-09-24,reconnect,2.5,
+WO-10111,M-0323,C-04,2026-09-22,,inspection,,العميل طلب الاتصال قبل الزيارة
+WO-10112,M-0372,C-05,2026-09-23,2026-09-30,leak,7,
+WO-10113,M-0247,C-08,2026-10-13,2026-10-13,leak,4,"valve stiff, replaced"
+WO-10114,M-0555,C-08,2026-10-09,2026-10-19,leak,5.25,
+WO-10115,M-0569,C-05,2026-09-06,2026-09-14,leak,3.5,تسرب عند الوصلة، تم الإصلاح
+WO-10116,M-0584,C-06,2026-10-05,2026-10-11,replace_meter,4.75,"valve stiff, replaced"
+WO-10117,M-0561,C-04,2026-09-08,2026-09-14,replace_meter,2.5,"customer not at home, came back next day"
+WO-10118,M-0141,C-04,2026-09-18,,leak,,"valve stiff, replaced"
+WO-10119,M-0306,C-03,2026-09-12,2026-09-13,leak,6.25,العميل طلب الاتصال قبل الزيارة
+WO-10120,M-0373,C-05,2026-10-10,2026-10-13,reconnect,0.5,تم استبدال العداد
+WO-10121,M-0438,C-02,2026-10-09,,leak,,
+WO-10122,M-0146,C-05,2026-10-02,2026-10-10,leak,4,العميل طلب الاتصال قبل الزيارة
+WO-10123,M-0049,C-03,2026-10-19,2026-10-19,inspection,3,
+WO-20031,M-0565,C-02,2026-09-22,2026-09-22,leak,0,"seal broken, reported to the supervisor"
+WO-10124,M-0520,C-04,2026-10-16,2026-10-19,leak,3.5,تسرب عند الوصلة، تم الإصلاح
+WO-10125,M-0556,C-05,2026-10-07,2026-10-13,leak,1.5,"seal broken, reported to the supervisor"
+WO-10126,M-0385,C-07,2026-10-23,2026-10-26,leak,7.5,
+WO-10127,M-0102,C-08,2026-09-27,2026-10-03,leak,5.75,
+WO-10128,M-0351,C-07,2026-10-17,,inspection,,
+WO-10129,M-0258,C-04,2026-10-02,2026-10-11,replace_meter,3.75,
+WO-10130,M-0338,C-07,2026-09-24,,leak,,العميل طلب الاتصال قبل الزيارة
+WO-10131,M-0426,C-04,2026-10-23,2026-10-23,inspection,0.75,
+WO-10132,M-0464,C-07,2026-09-13,,inspection,,العميل طلب الاتصال قبل الزيارة
+WO-10133,M-0322,C-06,2026-09-18,,inspection,,
+WO-20026,M-0375,C-01,2026-09-26,2026-09-28,leak,N/A,"valve stiff, replaced"
+WO-10134,M-0081,C-03,2026-09-21,2026-09-30,replace_meter,7.25,العميل طلب الاتصال قبل الزيارة call 0555060593
+WO-10135,M-0215,C-05,2026-09-18,,replace_meter,,"customer not at home, came back next day"
+WO-10136,M-0411,C-06,2026-09-20,2026-09-24,reconnect,3.5,"valve stiff, replaced"
+WO-10137,M-0489,C-01,2026-10-03,2026-10-07,inspection,2.75,"customer not at home, came back next day"
+WO-10138,M-0259,C-07,2026-09-23,2026-10-02,replace_meter,7.5,"no access to the meter box, gate locked"
+WO-10139,M-0550,C-02,2026-09-10,2026-09-20,inspection,3.75,"valve stiff, replaced"
+WO-10140,M-0357,C-09,2026-09-20,2026-10-01,leak,5.75,
+WO-20015,M-0033,C-01,yesterday,2026-10-25,replace_meter,6,
+WO-10141,M-0136,C-05,2026-09-27,2026-10-07,leak,4.25,"customer not at home, came back next day"
+WO-10142,M-0466,C-05,2026-09-30,2026-10-03,reconnect,6,"valve stiff, replaced"
+WO-10143,M-0586,C-05,2026-09-11,2026-09-22,reconnect,3,"no access to the meter box, gate locked"
+WO-10144,M-0464,C-06,2026-09-04,,reconnect,,
+WO-10145,M-0400,C-01,2026-09-27,,reconnect,,
+WO-10146,M-0145,C-04,2026-10-15,2026-10-20,leak,5.25,
+WO-10147,M-0266,C-07,2026-09-25,2026-10-01,reconnect,1,"valve stiff, replaced"
+WO-10148,M-0038,C-02,2026-10-04,2026-10-08,replace_meter,7.25,تسرب عند الوصلة، تم الإصلاح
+WO-10149,M-0408,C-05,2026-10-14,2026-10-17,inspection,3,"customer not at home, came back next day"
+WO-10150,M-0174,C-05,2026-10-19,,inspection,,"valve stiff, replaced"
+WO-10151,M-0299,C-04,2026-09-03,2026-09-03,inspection,1,العميل طلب الاتصال قبل الزيارة
+WO-10152,M-0151,C-08,2026-09-18,2026-09-27,replace_meter,6.25,call 0555014238
+WO-10153,M-0226,C-02,2026-10-16,2026-10-25,reconnect,6.25,"no access to the meter box, gate locked"
+WO-10154,M-0037,C-02,2026-09-24,2026-10-02,replace_meter,6.25,
+WO-10155,M-0485,C-01,2026-09-11,2026-09-22,replace_meter,1.25,
+WO-10156,M-0262,C-09,2026-09-27,2026-10-01,replace_meter,7.25,تسرب عند الوصلة، تم الإصلاح
+WO-10157,M-0015,C-05,2026-10-24,2026-10-27,replace_meter,1.5,تسرب عند الوصلة، تم الإصلاح
+WO-10158,M-0518,C-01,2026-10-11,2026-10-15,replace_meter,7.5,
+WO-10159,M-0017,C-06,2026-09-09,2026-09-20,reconnect,7.5,العميل طلب الاتصال قبل الزيارة
+WO-10160,M-0230,C-03,2026-09-27,2026-10-07,replace_meter,3.75,العميل طلب الاتصال قبل الزيارة
+WO-10161,M-0411,C-01,2026-09-01,2026-09-07,reconnect,2.25,"seal broken, reported to the supervisor"
+WO-10162,M-0586,C-02,2026-10-20,,leak,,تم استبدال العداد
+WO-10163,M-0057,C-09,2026-09-13,2026-09-15,replace_meter,5,"valve stiff, replaced"
+WO-10164,M-0550,C-06,2026-10-24,2026-10-26,leak,0.5,تسرب عند الوصلة، تم الإصلاح
+WO-10165,M-0259,C-02,2026-09-28,2026-10-06,leak,5.75,"no access to the meter box, gate locked"
+WO-20035,M-0277,C-09,2026-09-27,2026-10-08,reconnect,24.5,تم استبدال العداد
+WO-20036,M-0127,C-04,2026-10-24,2026-10-24,reconnect,-1.5,تم استبدال العداد
+WO-10166,M-0182,C-06,2026-09-22,,inspection,,"valve stiff, replaced"
+WO-10167,M-0315,C-07,2026-09-29,2026-10-10,reconnect,2.5,تسرب عند الوصلة، تم الإصلاح
+WO-10168,M-0280,C-04,2026-09-20,2026-09-26,inspection,3,"valve stiff, replaced"
+WO-10169,M-0419,C-05,2026-10-11,2026-10-18,leak,0.5,"seal broken, reported to the supervisor call 0555090292"
+WO-10170,M-0069,C-04,2026-10-17,2026-10-26,reconnect,3.5,العميل طلب الاتصال قبل الزيارة
+WO-10171,M-0278,C-08,2026-10-13,2026-10-16,leak,2,"valve stiff, replaced"
+WO-10172,M-0414,C-08,2026-09-18,2026-09-20,inspection,5.5,
+WO-10173,M-0013,C-02,2026-10-01,2026-10-09,leak,4.75,تسرب عند الوصلة، تم الإصلاح
+WO-10174,M-0545,C-03,2026-10-03,2026-10-12,leak,1.5,العميل طلب الاتصال قبل الزيارة
+WO-10175,M-0194,C-03,2026-10-01,2026-10-05,inspection,2.5,العميل طلب الاتصال قبل الزيارة
+WO-10176,M-0037,C-01,2026-09-23,2026-09-30,replace_meter,6.5,العميل طلب الاتصال قبل الزيارة
+WO-10177,M-0055,C-09,2026-09-07,2026-09-11,inspection,6.25,"no access to the meter box, gate locked"
+WO-20020,M-0189,C-01,2026-09-09,2026-09-07,inspection,4.5,تم استبدال العداد
+WO-10178,M-0284,C-05,2026-09-02,2026-09-05,inspection,0.75,
+WO-20047,M-0323,C-00,2026-10-02,2026-10-13,inspection,0.5,"no access to the meter box, gate locked"
+WO-20043,M-0253,c-01,2026-09-08,2026-09-17,leak,1.5,
+WO-10179,M-0047,C-07,2026-10-13,2026-10-22,replace_meter,1,"valve stiff, replaced"
+WO-20027,M-0256,C-01,2026-10-09,2026-10-09,reconnect,"2,5",
+WO-10180,M-0540,C-04,2026-09-01,2026-09-05,leak,4.25,"valve stiff, replaced"
+WO-10181,M-0516,C-06,2026-10-25,2026-10-25,inspection,6.25,"valve stiff, replaced"
+WO-10182,M-0571,C-09,2026-10-13,,leak,,
+WO-10183,M-0282,C-08,2026-09-01,2026-09-02,inspection,2.5,
+WO-10184,M-0478,C-06,2026-10-24,2026-10-28,inspection,3.5,تم استبدال العداد
+WO-10185,M-0035,C-06,2026-09-28,2026-10-07,inspection,4,تم استبدال العداد
+WO-10186,M-0264,C-06,2026-10-22,2026-10-26,inspection,6.25,"seal broken, reported to the supervisor"
+WO-10187,M-0571,C-02,2026-09-12,2026-09-17,inspection,7.75,
+WO-10188,M-0562,C-02,2026-10-16,2026-10-20,leak,5.75,"no access to the meter box, gate locked"
+WO-10189,M-0147,C-07,2026-10-10,2026-10-17,inspection,2.5,تم استبدال العداد
+WO-10190,M-0572,C-03,2026-09-10,2026-09-17,leak,5,
+WO-10191,M-0335,C-03,2026-09-10,,replace_meter,,
+WO-10192,M-0306,C-03,2026-09-30,2026-10-07,inspection,2.75,
+WO-10193,M-0299,C-04,2026-09-29,2026-10-02,replace_meter,2.25,"valve stiff, replaced"
+WO-10194,M-0060,C-07,2026-10-10,2026-10-11,replace_meter,3,العميل طلب الاتصال قبل الزيارة
+WO-10195,M-0497,C-04,2026-09-24,2026-09-28,reconnect,2,تسرب عند الوصلة، تم الإصلاح
+WO-10196,M-0524,C-04,2026-09-29,,leak,,"seal broken, reported to the supervisor"
+WO-10197,M-0317,C-01,2026-09-06,2026-09-13,reconnect,1.25,تسرب عند الوصلة، تم الإصلاح
+WO-10198,M-0366,C-09,2026-10-22,2026-10-26,reconnect,6.75,
+WO-10199,M-0449,C-01,2026-09-26,2026-10-06,replace_meter,7,"no access to the meter box, gate locked"
+WO-10200,M-0034,C-09,2026-09-29,2026-10-01,inspection,2.5,تم استبدال العداد
+WO-10201,M-0598,C-06,2026-09-06,2026-09-11,inspection,5.25,تم استبدال العداد
+WO-10202,M-0186,C-09,2026-09-26,2026-09-27,replace_meter,2.25,"customer not at home, came back next day call 0555058568"
+WO-10203,M-0194,C-01,2026-10-10,2026-10-12,replace_meter,7.25,"seal broken, reported to the supervisor"
+WO-10204,M-0415,C-03,2026-10-08,2026-10-09,reconnect,4.75,"valve stiff, replaced"
+WO-10205,M-0382,C-02,2026-10-19,2026-10-27,inspection,6.75,تم استبدال العداد
+WO-10206,M-0292,C-06,2026-09-01,2026-09-10,reconnect,4,العميل طلب الاتصال قبل الزيارة
+WO-10207,M-0109,C-09,2026-10-01,2026-10-09,reconnect,4.5,تم استبدال العداد
+WO-10208,M-0420,C-04,2026-10-04,2026-10-10,inspection,4.25,
+WO-10209,M-0209,C-08,2026-10-19,,reconnect,,"seal broken, reported to the supervisor"
+WO-10210,M-0521,C-05,2026-10-11,2026-10-14,reconnect,3.75,تم استبدال العداد
+WO-10211,M-0244,C-04,2026-10-13,2026-10-24,replace_meter,1.25,
+WO-10212,M-0111,C-01,2026-10-07,2026-10-13,reconnect,1.25,
+WO-10213,M-0351,C-03,2026-09-18,2026-09-19,reconnect,1.75,
+WO-10214,M-0400,C-08,2026-09-21,2026-10-01,reconnect,5.25,
+WO-10215,M-0025,C-07,2026-10-23,2026-10-31,reconnect,4.5,"customer not at home, came back next day"
+WO-10216,M-0510,C-01,2026-09-20,,replace_meter,,
+WO-10217,M-0013,C-05,2026-10-11,2026-10-15,leak,5,
+WO-10218,M-0471,C-06,2026-10-23,2026-10-30,reconnect,2,
+WO-10219,M-0101,C-06,2026-10-03,,replace_meter,,
+WO-10220,M-0274,C-04,2026-10-22,2026-10-23,leak,5.25,"customer not at home, came back next day"
+WO-10221,M-0411,C-01,2026-10-13,,reconnect,,"customer not at home, came back next day call 0555024640"
+WO-20004,M-0464,C-07,,,inspection,,العميل طلب الاتصال قبل الزيارة
+WO-10222,M-0361,C-07,2026-09-11,2026-09-12,inspection,6,"valve stiff, replaced"
+WO-10223,M-0310,C-03,2026-09-11,2026-09-12,reconnect,7,"valve stiff, replaced"
+WO-10224,M-0454,C-09,2026-09-12,,replace_meter,,
+WO-10225,M-0427,C-04,2026-10-25,2026-10-26,leak,2.5,تم استبدال العداد
+WO-10226,M-0421,C-07,2026-09-23,2026-09-23,reconnect,5.75,
+WO-10227,M-0541,C-07,2026-09-02,2026-09-10,reconnect,5.25,
+WO-20033,M-0262,C-09,2026-09-27,2026-10-01,replace_meter,0,تسرب عند الوصلة، تم الإصلاح
+WO-10228,M-0340,C-02,2026-09-13,2026-09-23,inspection,4,"seal broken, reported to the supervisor"
+WO-10229,M-0127,C-04,2026-10-24,,reconnect,,تم استبدال العداد
+WO-10230,M-0287,C-03,2026-09-04,,reconnect,,
+WO-10231,M-0341,C-07,2026-10-25,2026-10-31,inspection,7,
+WO-10232,M-0323,C-09,2026-10-02,2026-10-13,inspection,0.5,"no access to the meter box, gate locked"
+WO-10233,M-0207,C-09,2026-10-13,,inspection,,"customer not at home, came back next day"
+WO-10234,M-0508,C-04,2026-10-14,2026-10-14,reconnect,2.5,
+WO-10235,M-0065,C-07,2026-10-08,2026-10-09,inspection,6.75,
+WO-10236,M-0034,C-06,2026-10-11,,reconnect,,
+WO-10237,M-0572,C-09,2026-09-23,2026-09-25,leak,0.5,"customer not at home, came back next day"
+WO-10238,M-0033,C-01,2026-10-15,2026-10-25,replace_meter,6,
+WO-20008,,C-07,2026-09-26,2026-09-30,reconnect,7.5,
+WO-10239,M-0570,C-07,2026-10-05,2026-10-08,replace_meter,5.75,"valve stiff, replaced"
+WO-10240,M-0442,C-02,2026-09-26,2026-09-26,replace_meter,2,
+WO-10241,M-0448,C-09,2026-09-18,2026-09-21,leak,1,"customer not at home, came back next day"
+WO-20044,M-0194,c-01,2026-10-01,2026-10-05,inspection,2.5,العميل طلب الاتصال قبل الزيارة
+WO-10242,M-0586,C-03,2026-10-10,2026-10-19,reconnect,6.75,العميل طلب الاتصال قبل الزيارة
+WO-10243,M-0003,C-05,2026-10-14,,reconnect,,
+WO-10244,M-0135,C-05,2026-10-20,2026-10-25,replace_meter,2.75,
+WO-10245,M-0102,C-01,2026-09-06,2026-09-11,replace_meter,0.75,العميل طلب الاتصال قبل الزيارة
+WO-10246,M-0320,C-04,2026-09-29,2026-10-04,inspection,7.75,"seal broken, reported to the supervisor"
+WO-10247,M-0362,C-03,2026-09-21,2026-09-26,replace_meter,7.75,تم استبدال العداد
+WO-10248,M-0336,C-04,2026-10-06,,replace_meter,,"customer not at home, came back next day"
+WO-10249,M-0050,C-04,2026-10-25,,leak,,
+WO-10250,M-0555,C-05,2026-09-11,2026-09-17,reconnect,4.25,تم استبدال العداد
+WO-10251,M-0079,C-05,2026-09-13,2026-09-17,replace_meter,1.25,
+WO-10252,M-0139,C-07,2026-10-24,,replace_meter,,"no access to the meter box, gate locked"
+WO-10253,M-0411,C-08,2026-09-23,2026-10-04,replace_meter,2.25,
+WO-10254,M-0479,C-08,2026-09-09,2026-09-09,reconnect,7.5,"no access to the meter box, gate locked"
+WO-10255,M-0011,C-07,2026-10-22,,replace_meter,,
+WO-20034,M-0357,C-09,2026-09-20,2026-10-01,leak,24.5,
+WO-10256,M-0094,C-06,2026-09-08,,inspection,,
+WO-10257,M-0511,C-01,2026-09-13,2026-09-22,replace_meter,0.75,
+WO-10258,M-0440,C-01,2026-10-04,2026-10-14,replace_meter,7.75,
+WO-10259,M-0376,C-01,2026-10-16,,replace_meter,,تسرب عند الوصلة، تم الإصلاح
+WO-10260,M-0302,C-03,2026-10-18,2026-10-25,leak,4.75,
+WO-10261,M-0428,C-05,2026-09-06,,replace_meter,,
+WO-20025,M-0320,C-04,2026-09-29,2026-10-04,inspection,N/A,"seal broken, reported to the supervisor"
+WO-10262,M-0208,C-03,2026-10-07,2026-10-07,reconnect,0.75,"seal broken, reported to the supervisor"
+WO-10263,M-0177,C-07,2026-10-05,2026-10-16,leak,3.25,
+WO-10264,M-0394,C-08,2026-09-06,2026-09-09,reconnect,2.25,تم استبدال العداد
+WO-10265,M-0223,C-03,2026-10-22,2026-10-22,inspection,7.25,العميل طلب الاتصال قبل الزيارة
+WO-10266,M-0445,C-02,2026-09-08,2026-09-15,reconnect,4.5,"seal broken, reported to the supervisor"
+WO-10267,M-0492,C-01,2026-10-14,,reconnect,,"seal broken, reported to the supervisor"
+WO-10268,M-0071,C-03,2026-09-01,,replace_meter,,"no access to the meter box, gate locked"
+WO-10269,M-0174,C-07,2026-09-12,2026-09-16,leak,6.25,
+WO-10270,M-0127,C-08,2026-10-03,2026-10-10,reconnect,1.5,
+WO-10271,M-0395,C-01,2026-09-08,2026-09-15,replace_meter,3,العميل طلب الاتصال قبل الزيارة
+WO-20014,M-0096,C-05,2026-02-30,2026-09-17,inspection,4.5,"valve stiff, replaced"
+WO-10272,M-0500,C-06,2026-09-18,2026-09-21,replace_meter,0.5,تم استبدال العداد
+WO-10273,M-0456,C-09,2026-09-01,2026-09-12,reconnect,4,العميل طلب الاتصال قبل الزيارة
+WO-10274,M-0459,C-05,2026-10-03,2026-10-03,leak,4,"customer not at home, came back next day"
+WO-10275,M-0375,C-01,2026-09-26,2026-09-28,leak,3.5,"valve stiff, replaced"
+WO-10276,M-0135,C-03,2026-09-10,2026-09-20,inspection,0.5,
+WO-10277,M-0083,C-03,2026-09-14,2026-09-25,inspection,2.25,"valve stiff, replaced"
+WO-20045,M-0156,c-01,2026-09-24,2026-09-26,leak,6,تسرب عند الوصلة، تم الإصلاح
+WO-10278,M-0166,C-06,2026-09-29,2026-10-09,replace_meter,3,
+WO-10279,M-0258,C-01,2026-09-22,,replace_meter,,"customer not at home, came back next day"
+WO-10280,M-0399,C-05,2026-10-18,2026-10-24,reconnect,7.25,
+WO-10281,M-0310,C-07,2026-10-06,,leak,,تم استبدال العداد
+WO-20019,M-0055,C-04,2026-10-12,2026-10-09,inspection,3,"no access to the meter box, gate locked"
+WO-10282,M-0149,C-04,2026-09-08,2026-09-14,replace_meter,0.5,
+WO-10283,M-0282,C-08,2026-10-01,2026-10-03,leak,5,العميل طلب الاتصال قبل الزيارة
+WO-10284,M-0311,C-03,2026-10-14,2026-10-14,leak,7.75,"no access to the meter box, gate locked"
+WO-10285,M-0232,C-03,2026-09-03,2026-09-14,inspection,1.75,"valve stiff, replaced"
+WO-10286,M-0231,C-01,2026-09-13,2026-09-19,reconnect,1.25,
+WO-20009,M-0192,C-05,2026-10-18,2026-10-24,,4.75,تم استبدال العداد
+WO-10287,M-0283,C-06,2026-10-22,2026-10-23,replace_meter,0.75,
+WO-10288,M-0205,C-03,2026-09-14,2026-09-15,inspection,2.25,تسرب عند الوصلة، تم الإصلاح
+WO-10289,M-0364,C-05,2026-10-13,2026-10-17,leak,3,"no access to the meter box, gate locked"
+WO-10290,M-0393,C-08,2026-09-21,2026-09-27,replace_meter,3.25,
+WO-20016,M-0055,C-04,2026-13-01,2026-10-19,inspection,3,"no access to the meter box, gate locked"
+WO-10291,M-0415,C-05,2026-09-04,2026-09-12,leak,2,تسرب عند الوصلة، تم الإصلاح
+WO-10292,M-0540,C-02,2026-10-13,,leak,,"no access to the meter box, gate locked"
+WO-10293,M-0401,C-08,2026-09-14,2026-09-23,leak,1.75,
+WO-20017,M-0059,C-07,2026-02-30,2026-10-18,inspection,3.5,
+WO-10294,M-0054,C-03,2026-10-14,2026-10-20,replace_meter,5,
+WO-10295,M-0307,C-07,2026-09-06,2026-09-17,leak,4.25,
+WO-10296,M-0179,C-01,2026-09-25,2026-09-26,inspection,6.5,تم استبدال العداد
+WO-10297,M-0497,C-06,2026-09-11,2026-09-11,reconnect,6.75,تم استبدال العداد
+WO-10298,M-0573,C-02,2026-10-07,2026-10-11,inspection,2.75,
+WO-10299,M-0260,C-06,2026-09-13,,reconnect,,"valve stiff, replaced"
+WO-10300,M-0471,C-01,2026-09-18,,leak,,"customer not at home, came back next day"
+WO-10301,M-0507,C-08,2026-10-10,2026-10-21,leak,4,"seal broken, reported to the supervisor"
+WO-10302,M-0215,C-04,2026-09-23,2026-10-01,leak,7.5,
+WO-10303,M-0454,C-03,2026-10-16,,leak,,"customer not at home, came back next day"
+WO-10143,M-0582,C-04,2026-09-25,2026-09-25,inspection,5,
+WO-10304,M-0197,C-03,2026-10-10,2026-10-19,replace_meter,1,
+WO-10305,M-0109,C-06,2026-10-06,2026-10-08,leak,3,تم استبدال العداد
+WO-10306,M-0346,C-01,2026-10-07,2026-10-10,replace_meter,7.5,تم استبدال العداد
+WO-10307,M-0272,C-03,2026-09-08,2026-09-18,leak,1,"seal broken, reported to the supervisor"
+WO-10308,M-0322,C-04,2026-09-27,2026-09-28,reconnect,7,تسرب عند الوصلة، تم الإصلاح
+WO-10309,M-0392,C-09,2026-10-20,2026-10-26,reconnect,3,"valve stiff, replaced"
+WO-10310,M-0417,C-01,2026-10-04,2026-10-11,leak,0.5,
+WO-10311,M-0490,C-08,2026-10-04,2026-10-15,inspection,4.75,العميل طلب الاتصال قبل الزيارة
+WO-20012,M-0382,C-02,31/09/2026,2026-10-27,inspection,6.75,تم استبدال العداد
+WO-10312,M-0076,C-03,2026-09-28,2026-10-02,replace_meter,7.75,"customer not at home, came back next day"
+WO-10313,M-0165,C-06,2026-10-21,2026-10-21,inspection,5.25,
+WO-10314,M-0145,C-09,2026-10-05,2026-10-05,inspection,2.25,
+WO-10315,M-0383,C-08,2026-09-29,2026-10-01,reconnect,5,
+WO-10316,M-0409,C-07,2026-09-15,2026-09-19,leak,3.75,
+WO-20029,M-0281,C-09,2026-09-07,2026-09-11,inspection,"2,5",
+WO-10317,M-0375,C-01,2026-09-14,2026-09-17,replace_meter,2,"seal broken, reported to the supervisor"
+WO-10318,M-0156,C-05,2026-09-24,2026-09-26,leak,6,تسرب عند الوصلة، تم الإصلاح
+WO-10319,M-0406,C-08,2026-10-09,2026-10-14,inspection,6.5,تسرب عند الوصلة، تم الإصلاح call 0555027426
+WO-20046,M-0283,c-01,2026-10-22,2026-10-23,replace_meter,0.75,
+WO-10126,M-0047,C-07,2026-10-13,2026-10-22,replace_meter,1,"valve stiff, replaced"
+WO-10320,M-0410,C-05,2026-09-01,2026-09-10,inspection,2.75,
+WO-10280,M-0224,C-09,2026-10-21,2026-10-27,leak,1,
+WO-10321,M-0107,C-01,2026-09-26,,replace_meter,,"no access to the meter box, gate locked"
+WO-10322,M-0528,C-05,2026-10-18,2026-10-19,reconnect,1.75,تسرب عند الوصلة، تم الإصلاح
+WO-20028,M-0399,C-05,2026-10-18,2026-10-24,reconnect,3h,
+WO-10323,M-0116,C-07,2026-09-19,2026-09-30,replace_meter,7.25,"no access to the meter box, gate locked"
+WO-10324,M-0217,C-04,2026-09-24,,leak,,
+WO-10325,M-0320,C-03,2026-10-18,,leak,,"valve stiff, replaced"
+WO-10326,M-0184,C-06,2026-10-16,,reconnect,,تسرب عند الوصلة، تم الإصلاح
+WO-10327,M-0048,C-04,2026-09-30,,replace_meter,,"customer not at home, came back next day"
+WO-20022,M-0247,C-08,2026-10-13,2026-10-09,leak,4,"valve stiff, replaced"
+WO-20007,,C-08,2026-09-18,2026-09-27,replace_meter,6.25,call 0555014238
+WO-10328,M-0137,C-08,2026-10-17,2026-10-22,replace_meter,5.75,
+WO-10329,M-0245,C-05,2026-09-23,2026-09-27,reconnect,7.5,"no access to the meter box, gate locked"
+WO-10330,M-0109,C-04,2026-09-22,2026-09-25,reconnect,6.75,"valve stiff, replaced"
+WO-10331,M-0272,C-01,2026-10-22,2026-10-31,replace_meter,0.75,"seal broken, reported to the supervisor"
+WO-10332,M-0422,C-01,2026-09-12,,leak,,العميل طلب الاتصال قبل الزيارة
+WO-10333,M-0411,C-04,2026-10-15,2026-10-20,leak,5.5,"no access to the meter box, gate locked"
+WO-10334,M-0493,C-03,2026-10-05,2026-10-07,inspection,1.75,العميل طلب الاتصال قبل الزيارة
+WO-10335,M-0453,C-07,2026-10-06,2026-10-16,leak,1.25,
+WO-10336,M-0067,C-09,2026-10-16,,inspection,,
+WO-10337,M-0202,C-08,2026-09-29,2026-10-02,leak,3.5,
+WO-10338,M-0389,C-09,2026-09-17,2026-09-18,reconnect,6.25,"valve stiff, replaced"
+WO-10339,M-0025,C-09,2026-09-12,2026-09-15,replace_meter,7.5,"seal broken, reported to the supervisor"
+WO-20001,M-0384,,2026-10-14,,inspection,,تم استبدال العداد
+WO-10340,M-0470,C-07,2026-09-16,2026-09-17,leak,7.25,العميل طلب الاتصال قبل الزيارة
+WO-10341,M-0112,C-05,2026-10-19,2026-10-27,leak,5.75,تسرب عند الوصلة، تم الإصلاح
+WO-10342,M-0087,C-01,2026-10-09,2026-10-17,inspection,2.25,
+WO-10343,M-0136,C-06,2026-10-16,2026-10-16,replace_meter,7.75,"customer not at home, came back next day"
+WO-20003,M-0307,,2026-10-20,,replace_meter,,
+WO-10251,M-0307,C-02,2026-10-02,2026-10-09,inspection,5,تم استبدال العداد
+WO-10344,M-0532,C-02,2026-09-16,2026-09-18,leak,6.75,"seal broken, reported to the supervisor"
+WO-10345,M-0497,C-09,2026-09-16,2026-09-25,replace_meter,4.5,"customer not at home, came back next day"
+WO-10346,M-0422,C-04,2026-09-13,2026-09-21,leak,7,"no access to the meter box, gate locked"
+WO-10347,M-0428,C-04,2026-10-19,,reconnect,,
+WO-10348,M-0256,C-01,2026-10-09,,reconnect,,
+WO-10349,M-0540,C-09,2026-09-19,2026-09-25,replace_meter,7.75,"customer not at home, came back next day"
+WO-10350,M-0443,C-07,2026-09-26,2026-10-03,leak,4,
+WO-10351,M-0287,C-08,2026-09-15,,leak,,"seal broken, reported to the supervisor"
+WO-10352,M-0131,C-08,2026-10-24,2026-10-31,leak,3.75,
+WO-10353,M-0183,C-05,2026-09-03,,inspection,,"customer not at home, came back next day"
+WO-10354,M-0224,C-09,2026-10-21,2026-10-27,leak,1,
+WO-10355,M-0075,C-09,2026-10-25,2026-10-31,reconnect,3,تسرب عند الوصلة، تم الإصلاح
+WO-10356,M-0261,C-04,2026-09-06,2026-09-08,leak,2.75,تم استبدال العداد
+WO-10357,M-0458,C-06,2026-10-11,2026-10-16,leak,5.75,
+WO-20024,M-0278,C-08,2026-10-13,2026-10-16,leak,3h,"valve stiff, replaced"
+WO-10358,M-0277,C-09,2026-09-27,2026-10-08,reconnect,5.5,تم استبدال العداد
+WO-20041,M-0091,C-03,2026-09-28,2026-10-06,repair,7,"customer not at home, came back next day"
+WO-10359,M-0366,C-09,2026-09-18,,leak,,
+WO-10360,M-0235,C-09,2026-09-09,,replace_meter,,العميل طلب الاتصال قبل الزيارة
+WO-10361,M-0455,C-02,2026-09-20,2026-09-28,reconnect,7.25,
+WO-10362,M-0187,C-06,2026-10-20,2026-10-20,replace_meter,5.75,
+WO-10363,M-0228,C-05,2026-09-03,2026-09-13,replace_meter,5.25,تسرب عند الوصلة، تم الإصلاح
+WO-10364,M-0384,C-07,2026-10-14,,inspection,,تم استبدال العداد
+WO-10365,M-0459,C-07,2026-09-06,2026-09-14,replace_meter,5.25,"seal broken, reported to the supervisor"
+WO-10366,M-0170,C-03,2026-09-27,,reconnect,,
+WO-10367,M-0358,C-09,2026-09-10,2026-09-16,replace_meter,2.5,تسرب عند الوصلة، تم الإصلاح
+WO-10368,M-0209,C-02,2026-10-04,2026-10-13,reconnect,2.25,
+WO-10369,M-0229,C-04,2026-09-11,2026-09-15,replace_meter,5,"customer not at home, came back next day"
+WO-10370,M-0104,C-07,2026-09-04,2026-09-07,inspection,6.75,
+WO-10371,M-0002,C-04,2026-09-29,,inspection,,"valve stiff, replaced"
+WO-20023,M-0184,C-06,2026-10-16,2026-10-16,reconnect,"2,5",تسرب عند الوصلة، تم الإصلاح
+WO-20037,M-0581,C-08,2026-10-03,2026-10-12,inspection,80,"seal broken, reported to the supervisor"
+WO-10372,M-0577,C-01,2026-09-01,,inspection,,تم استبدال العداد
+WO-10373,M-0356,C-04,2026-09-27,2026-10-02,inspection,1.25,"valve stiff, replaced"
+WO-10374,M-0064,C-05,2026-09-05,2026-09-07,inspection,3.5,تسرب عند الوصلة، تم الإصلاح
+WO-10375,M-0362,C-02,2026-10-13,2026-10-15,leak,0.5,"seal broken, reported to the supervisor"
+WO-10376,M-0315,C-01,2026-09-07,2026-09-11,inspection,0.75,تسرب عند الوصلة، تم الإصلاح
+WO-10377,M-0578,C-09,2026-10-25,,replace_meter,,
+WO-10378,M-0065,C-05,2026-10-13,,reconnect,,"seal broken, reported to the supervisor"
+WO-10379,M-0230,C-04,2026-10-19,2026-10-19,inspection,3.5,"customer not at home, came back next day"
+WO-10380,M-0248,C-08,2026-10-08,2026-10-15,leak,5,call 0555094172
+WO-10381,M-0196,C-05,2026-09-28,2026-10-05,leak,6.25,"no access to the meter box, gate locked"
+WO-10382,M-0063,C-03,2026-10-08,2026-10-19,reconnect,7.25,العميل طلب الاتصال قبل الزيارة
+WO-20042,M-0220,C-06,2026-10-16,,inspect,,تم استبدال العداد
+WO-10383,M-0082,C-09,2026-09-14,,replace_meter,,
+WO-10384,M-0318,C-08,2026-10-15,2026-10-24,reconnect,7.75,
+WO-10385,M-0414,C-07,2026-09-26,2026-09-30,reconnect,7.5,
+WO-10386,M-0127,C-05,2026-09-01,2026-09-10,leak,4.5,
+WO-20038,M-0171,C-07,2026-09-07,,Leak,,"no access to the meter box, gate locked"
+WO-10387,M-0101,C-04,2026-09-28,2026-10-05,replace_meter,3.75,تم استبدال العداد
+WO-10388,M-0536,C-06,2026-09-23,,leak,,"seal broken, reported to the supervisor"
+WO-10389,M-0019,C-02,2026-09-16,2026-09-21,reconnect,3,تسرب عند الوصلة، تم الإصلاح
+WO-10390,M-0238,C-03,2026-10-06,,replace_meter,,تسرب عند الوصلة، تم الإصلاح
+WO-10391,M-0215,C-05,2026-09-11,,replace_meter,,تسرب عند الوصلة، تم الإصلاح
+WO-10392,M-0448,C-02,2026-09-20,2026-10-01,replace_meter,7.5,"no access to the meter box, gate locked"
+WO-10393,M-0596,C-01,2026-10-24,2026-10-27,reconnect,4.5,العميل طلب الاتصال قبل الزيارة
+WO-20002,M-0596,C-01,2026-10-24,2026-10-27,,4.5,العميل طلب الاتصال قبل الزيارة
+WO-10394,M-0455,C-07,2026-09-09,2026-09-17,leak,4.5,تسرب عند الوصلة، تم الإصلاح
+WO-10395,M-0486,C-08,2026-09-08,,replace_meter,,
+WO-10396,M-0083,C-04,2026-09-03,,inspection,,تم استبدال العداد call 0555088638
+WO-10397,M-0196,C-08,2026-09-17,2026-09-21,replace_meter,1.5,
+WO-10398,M-0043,C-07,2026-10-15,2026-10-21,leak,1.75,
+WO-20030,M-0136,C-06,2026-10-16,2026-10-16,replace_meter,two,"customer not at home, came back next day"
+WO-10399,M-0010,C-06,2026-09-25,2026-09-29,replace_meter,5.5,تم استبدال العداد
+WO-10400,M-0027,C-05,2026-09-18,2026-09-24,reconnect,5.5,"valve stiff, replaced call 0555073444"
+WO-10401,M-0307,C-02,2026-10-02,2026-10-09,inspection,5,تم استبدال العداد
+WO-10402,M-0336,C-04,2026-10-15,2026-10-24,inspection,0.5,
+WO-20005,,C-05,2026-10-19,,inspection,,"valve stiff, replaced"
+WO-10403,M-0180,C-05,2026-09-04,2026-09-04,inspection,0.5,
+WO-10404,M-0171,C-07,2026-09-07,,leak,,"no access to the meter box, gate locked"
+WO-10405,M-0180,C-01,2026-09-06,2026-09-09,inspection,5.25,تم استبدال العداد
+WO-10406,M-0227,C-04,2026-09-07,,reconnect,,
+WO-10407,M-0400,C-07,2026-09-16,2026-09-26,inspection,4.5,"no access to the meter box, gate locked"
+WO-10408,M-0189,C-01,2026-09-09,2026-09-20,inspection,4.5,تم استبدال العداد
+WO-10409,M-0009,C-05,2026-09-28,,inspection,,
+WO-10410,M-0251,C-03,2026-10-11,2026-10-19,replace_meter,2.5,
+WO-10411,M-0173,C-07,2026-10-08,2026-10-13,inspection,4,"customer not at home, came back next day"
+WO-10412,M-0477,C-05,2026-09-25,,leak,,تسرب عند الوصلة، تم الإصلاح
+WO-10413,M-0058,C-03,2026-10-03,2026-10-11,replace_meter,3.5,تسرب عند الوصلة، تم الإصلاح
+WO-10414,M-0007,C-08,2026-09-22,2026-09-22,leak,1.5,العميل طلب الاتصال قبل الزيارة
+WO-10415,M-0088,C-03,2026-09-10,2026-09-19,reconnect,6,"no access to the meter box, gate locked"
+WO-10416,M-0507,C-02,2026-09-16,,reconnect,,
+WO-10417,M-0253,C-09,2026-09-08,2026-09-17,leak,1.5,
+WO-10418,M-0545,C-02,2026-09-17,2026-09-19,leak,1,تم استبدال العداد
+WO-10419,M-0202,C-07,2026-09-06,2026-09-09,reconnect,2,"customer not at home, came back next day"
+WO-20011,M-0384,C-07,31/09/2026,,inspection,,تم استبدال العداد
+WO-10178,M-0156,C-05,2026-09-24,2026-09-26,leak,6,تسرب عند الوصلة، تم الإصلاح
+WO-10317,M-0442,C-02,2026-09-26,2026-09-26,replace_meter,2,
+WO-20048,M-0139,C-17,2026-10-12,2026-10-22,reconnect,7.5,"no access to the meter box, gate locked"
+WO-10420,M-0055,C-04,2026-10-12,2026-10-19,inspection,3,"no access to the meter box, gate locked"
+WO-10421,M-0483,C-01,2026-09-19,2026-09-30,inspection,4,"seal broken, reported to the supervisor call 0555052145"
+WO-10422,M-0062,C-08,2026-09-18,2026-09-26,inspection,3,
+WO-20018,M-0109,C-04,2026-09-22,2026-09-19,reconnect,6.75,"valve stiff, replaced"
+WO-10423,M-0277,C-06,2026-09-10,2026-09-16,leak,5,
+WO-10424,M-0413,C-05,2026-10-11,2026-10-13,reconnect,7.75,تم استبدال العداد call 0555021049
+WO-10015,M-0171,C-07,2026-09-07,,leak,,"no access to the meter box, gate locked"
+WO-10425,M-0108,C-05,2026-09-04,2026-09-15,reconnect,2.25,
+WO-10426,M-0070,C-09,2026-09-14,2026-09-25,leak,3.25,"valve stiff, replaced"
+WO-10427,M-0360,C-07,2026-09-16,2026-09-23,reconnect,3.25,"valve stiff, replaced"
+WO-10428,M-0222,C-03,2026-09-06,,reconnect,,
+WO-10429,M-0204,C-05,2026-09-14,2026-09-20,reconnect,4,"seal broken, reported to the supervisor"
+WO-10430,M-0341,C-06,2026-10-24,2026-10-31,leak,6,العميل طلب الاتصال قبل الزيارة
+WO-10431,M-0374,C-05,2026-10-25,2026-10-31,inspection,3.25,
+WO-10432,M-0216,C-04,2026-09-26,2026-09-26,replace_meter,1.75,"customer not at home, came back next day"
+WO-20032,M-0361,C-07,2026-09-11,2026-09-12,inspection,0,"valve stiff, replaced"
+WO-20006,M-0227,,2026-09-07,,reconnect,,
+WO-10433,M-0281,C-09,2026-09-07,2026-09-11,inspection,5.25,
+WO-10232,M-0493,C-03,2026-10-05,2026-10-07,inspection,1.75,العميل طلب الاتصال قبل الزيارة
+WO-10271,M-0259,C-02,2026-09-28,2026-10-06,leak,5.75,"no access to the meter box, gate locked"
+WO-10434,M-0261,C-02,2026-09-12,2026-09-16,inspection,7.25,
+WO-10435,M-0139,C-06,2026-10-12,2026-10-22,reconnect,7.5,"no access to the meter box, gate locked"
+WO-10436,M-0004,C-01,2026-10-01,,inspection,,
+WO-10437,M-0096,C-05,2026-09-06,2026-09-17,inspection,4.5,"valve stiff, replaced"
+WO-10438,M-0067,C-07,2026-09-14,2026-09-23,replace_meter,2.75,
+WO-10439,M-0509,C-05,2026-10-12,2026-10-20,reconnect,5.75,
+WO-10289,M-0572,C-03,2026-09-10,2026-09-17,leak,5,
+WO-10440,M-0292,C-01,2026-09-14,,replace_meter,,"no access to the meter box, gate locked"
+WO-10441,M-0406,C-02,2026-09-22,2026-10-01,replace_meter,3,call 0555006947
+WO-10442,M-0130,C-07,2026-10-01,,reconnect,,"seal broken, reported to the supervisor"
+WO-10443,M-0228,C-09,2026-10-21,2026-10-24,reconnect,3.75,"no access to the meter box, gate locked"
+WO-10444,M-0391,C-02,2026-09-28,2026-09-29,leak,5,
+WO-10445,M-0142,C-02,2026-10-05,,inspection,,"no access to the meter box, gate locked"
+WO-10446,M-0028,C-08,2026-09-02,2026-09-07,reconnect,1,"customer not at home, came back next day"
+WO-10447,M-0189,C-05,2026-09-07,2026-09-11,reconnect,0.5,

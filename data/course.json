@@ -1,0 +1,1051 @@
+{
+  "v": 1,
+  "engine": "1.0.0",
+  "build": {
+    "at": "2026-11-15T04:58:14Z",
+    "version": "2027.1.0",
+    "commit": "4b268e2"
+  },
+  "lang": "en",
+  "dir": "ltr",
+  "langs": [
+    "en"
+  ],
+  "alt": {},
+  "course": {
+    "id": "fn-101",
+    "code": "FN-101",
+    "version": "2027.1.0",
+    "title": "Python for Data and AI Work",
+    "tagline": "Read, trace and debug Python by hand, then write small typed functions that grow into a command-line tool that reruns",
+    "description": "Participants write Python the way data and AI work needs it: small typed functions over collections and files, errors that fail loudly, and code moved out of notebooks into scripts that rerun. The case is a fictional regional water utility with synthetic meter readings in comma-separated values (CSV) files and bilingual service tickets in JavaScript Object Notation (JSON) Lines. Each day opens with an AI-off drill in reading, tracing or debugging code by hand, and the labs grow into a command-line tool that validates readings, flags anomalies and writes a summary report. Arabic text normalisation and SQL are left to FN-104, version control to FN-102.",
+    "track": "foundations",
+    "track_name": "Data & AI Foundations Track",
+    "level": 100,
+    "badge": {
+      "name": "Foundations",
+      "level": ""
+    },
+    "audience": "Beginners. Graduates and career changers entering the AI Engineering or Data Science track; computing and data graduates who pass the placement test skip the courses it covers.",
+    "prerequisites": [
+      "Has written and run a short program in any language, or completed the guided pre-work on values, conditions and loops"
+    ],
+    "url": "https://sdaiaacademy.github.io/fn-101/",
+    "repo": "SDAIAAcademy/fn-101",
+    "home": "../index.html",
+    "format": "intensive",
+    "format_note": "Intensive: 4 teaching days of four sessions and a capstone day, with guided pre-work and a tracked follow-up task",
+    "shape": "4 teaching days + capstone day",
+    "hours": {
+      "instruction": 6,
+      "lab": 7,
+      "guided_self_study": 6,
+      "assessment": 1,
+      "capstone": 6,
+      "total": 26
+    },
+    "unit": "day",
+    "outcomes": [
+      {
+        "id": "LO1",
+        "text": "Explain what a short program prints, step by step, including name binding, shared mutable lists and dictionaries, and scope, given ten unseen snippets on paper, without a computer or assistant",
+        "level": "Awareness",
+        "evidence": "a trace sheet with at least eight of ten outputs correct"
+      },
+      {
+        "id": "LO2",
+        "text": "Distinguish when a notebook, a script or an importable module is the right home for a piece of code, given four tasks described by the utility's analysts",
+        "level": "Awareness",
+        "evidence": "a choice and a one-line reason per task, matching the reference on three of four"
+      },
+      {
+        "id": "LO3",
+        "text": "Implement typed functions that load, validate and aggregate records with lists, dictionaries, sets and comprehensions, given a month of meter readings with missing, duplicated and out-of-range values",
+        "level": "Applied",
+        "evidence": "a module that passes the provided tests and a type checker with no errors"
+      },
+      {
+        "id": "LO4",
+        "text": "Apply exception handling and input validation so that each bad record is reported with a reason instead of crashing or passing silently, given a ticket file with malformed lines, mixed Arabic and English text and a wrong encoding",
+        "level": "Applied",
+        "evidence": "a rejection log that accounts for every input line"
+      },
+      {
+        "id": "LO5",
+        "text": "Use a repeatable debugging method: reproduce, shrink the input, form a hypothesis, test it, fix, and add a regression check, given three seeded defects in the course codebase, with AI assistance off",
+        "level": "Applied",
+        "evidence": "a debugging log per defect and a passing regression test for each"
+      },
+      {
+        "id": "LO6",
+        "text": "Prepare a command-line tool from an exploratory notebook, with an entry point, arguments and a written report, given the utility's analysis notebook and raw files",
+        "level": "Applied",
+        "evidence": "a script that rebuilds the same report from raw files with one command on two runs"
+      }
+    ],
+    "case_study": {
+      "name": "Manahil Water Services",
+      "summary": "Manahil Water Services is a fictional regional water utility with 600 meters in six districts. Its metering team checks a month of daily readings (a CSV file with missing, repeated, out-of-range and unknown-meter rows) and its customer care team works a queue of service tickets in Arabic and English (JSON Lines). Every lab works on these files and the labs grow into Miqyas, a command-line tool that validates the readings, flags anomalies and writes a report; all data is synthetic and the same on every machine."
+    },
+    "days": [
+      {
+        "id": "day1",
+        "kind": "day",
+        "n": 1,
+        "number": 1,
+        "label": "Day 1",
+        "title": "Read before you write",
+        "subtitle": "Tracing code by hand, functions with contracts, type hints, and rebuilding code from its lines",
+        "shape": "4 sessions · 4 labs",
+        "deck": "../slides/day1.html",
+        "md": "../slides/day1.md",
+        "url": "https://sdaiaacademy.github.io/fn-101/slides/day1.html",
+        "sessions": [
+          {
+            "n": 1,
+            "label": "Session 1",
+            "title": "Values, names and references",
+            "summary": "Names bind to objects, assignment never copies, and a shared list changes for every name that holds it",
+            "outcomes": [
+              "Trace a short program line by line with a table of names and objects",
+              "Predict when two names share one mutable object and when they do not",
+              "Distinguish rebinding a name from mutating an object"
+            ],
+            "lo": [
+              "LO1"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "1.1",
+              "title": "Trace eight snippets",
+              "summary": "Trace eight snippets on paper, then check each answer in a step visualiser.",
+              "minutes": 25,
+              "href": "../labs/D1_1_trace_eight_snippets.html",
+              "steps": [
+                {
+                  "text": "Build the workspace and open the lab folder",
+                  "minutes": 4
+                },
+                {
+                  "text": "Predict the output of all eight on paper",
+                  "minutes": 10
+                },
+                {
+                  "text": "Step through each wrong one in a visualiser",
+                  "minutes": 7
+                },
+                {
+                  "text": "Note what you misread; run the check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Change one line of snippet 7 so that both grids print the same, and predict before you run"
+            }
+          },
+          {
+            "n": 2,
+            "label": "Session 2",
+            "title": "Functions with clear contracts",
+            "summary": "One job per function, inputs and outputs stated, effects kept at the edge, and scope explained by the call stack",
+            "outcomes": [
+              "Split a script into functions that each do one job",
+              "State a function's inputs and output in its signature and docstring",
+              "Explain what a function can see and change, using scope and the call stack"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "1.2",
+              "title": "Split a script into four functions",
+              "summary": "Split a 40-line script into four functions with stated inputs and outputs.",
+              "minutes": 25,
+              "href": "../labs/D1_2_split_40_line.html",
+              "steps": [
+                {
+                  "text": "Run the script and mark its four jobs",
+                  "minutes": 5
+                },
+                {
+                  "text": "Move each job into a function with a docstring",
+                  "minutes": 12
+                },
+                {
+                  "text": "Put the script part under a main guard",
+                  "minutes": 4
+                },
+                {
+                  "text": "Run the tests and the check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Add a doctest to bill for a month of exactly 15 cubic metres and run it"
+            }
+          },
+          {
+            "n": 3,
+            "label": "Session 3",
+            "title": "Type hints and a checker",
+            "summary": "Type hints as promises a checker verifies: built-in generics, None as a value that must be handled, and reading the checker's report",
+            "outcomes": [
+              "Annotate parameters and return values with built-in types",
+              "Read a type checker's report and find the line it points at",
+              "Handle a value that may be None before using it"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "1.3",
+              "title": "Annotate the reading parser",
+              "summary": "Annotate the supplied reading parser and fix every error the type checker reports.",
+              "minutes": 25,
+              "href": "../labs/D1_3_annotate_supplied_reading.html",
+              "steps": [
+                {
+                  "text": "Run the tests and the checker on the supplied parser",
+                  "minutes": 4
+                },
+                {
+                  "text": "Annotate every function",
+                  "minutes": 7
+                },
+                {
+                  "text": "Fix each error the checker reports",
+                  "minutes": 10
+                },
+                {
+                  "text": "Run the tests, the strict check and the lab check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Replace the tuple with a NamedTuple so that reading[2] becomes reading.m3"
+            }
+          },
+          {
+            "n": 4,
+            "label": "Session 4",
+            "title": "Parsons problems",
+            "summary": "Rebuilding a function from its scrambled lines: order, indentation, and the lines that do not belong",
+            "outcomes": [
+              "Order the lines of a function so that each name is bound before it is used",
+              "Use indentation to say which lines belong to a branch, a loop or a try",
+              "Reject a distractor by saying what it would do"
+            ],
+            "lo": [
+              "LO1"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "1.4",
+              "title": "Rebuild a validation function",
+              "summary": "Reorder scrambled lines, with distractors, into a working validation function.",
+              "minutes": 25,
+              "href": "../labs/D1_4_reorder_scrambled_lines.html",
+              "steps": [
+                {
+                  "text": "Order the warm-up on paper, then in the editor",
+                  "minutes": 6
+                },
+                {
+                  "text": "Order and indent the validation function",
+                  "minutes": 11
+                },
+                {
+                  "text": "Run the tests; fix order or indentation",
+                  "minutes": 4
+                },
+                {
+                  "text": "Say why each distractor is wrong; check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Write one more distractor for a neighbour and say which test catches it"
+            }
+          }
+        ]
+      },
+      {
+        "id": "day2",
+        "kind": "day",
+        "n": 2,
+        "number": 2,
+        "label": "Day 2",
+        "title": "Collections for data work",
+        "subtitle": "Dictionaries, sets, comprehensions, generators and data classes on a month of readings and a ticket queue",
+        "shape": "4 sessions · 4 labs",
+        "deck": "../slides/day2.html",
+        "md": "../slides/day2.md",
+        "url": "https://sdaiaacademy.github.io/fn-101/slides/day2.html",
+        "sessions": [
+          {
+            "n": 1,
+            "label": "Session 1",
+            "title": "Dictionaries for counting and grouping",
+            "summary": "A dictionary as an index: counting, grouping, and why one lookup replaces a loop",
+            "outcomes": [
+              "Count and group records with a dictionary in one pass",
+              "Build an index from a key to a record and use it in place of a search",
+              "Explain why a loop inside a loop is slow on 100,000 rows, and measure it"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "2.1",
+              "title": "Count readings per meter and district",
+              "summary": "Count readings per meter and district, then time a nested-loop version on 100,000 rows.",
+              "minutes": 25,
+              "href": "../labs/D2_1_count_readings_per.html",
+              "steps": [
+                {
+                  "text": "Count the readings of each meter in one pass",
+                  "minutes": 7
+                },
+                {
+                  "text": "Build an index of meters; count per district",
+                  "minutes": 8
+                },
+                {
+                  "text": "Time both versions on 100,000 rows",
+                  "minutes": 6
+                },
+                {
+                  "text": "Run the type checker and the lab check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Group the readings by district into lists of values and print each district's highest reading"
+            }
+          },
+          {
+            "n": 2,
+            "label": "Session 2",
+            "title": "Sets and membership",
+            "summary": "Sets answer membership and difference questions directly: what is missing, what is unknown, what repeats",
+            "outcomes": [
+              "Answer a membership question with a set in place of a search through a list",
+              "Compare two collections with difference and intersection",
+              "Use a tuple as a key to find repeated records"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "2.2",
+              "title": "Find silent meters and unknown ids",
+              "summary": "Find meters with no reading and readings with no known meter.",
+              "minutes": 25,
+              "href": "../labs/D2_2_find_meters_no.html",
+              "steps": [
+                {
+                  "text": "Build the two sets of meter ids",
+                  "minutes": 5
+                },
+                {
+                  "text": "Find the meters with no reading",
+                  "minutes": 5
+                },
+                {
+                  "text": "Find the readings with no known meter",
+                  "minutes": 5
+                },
+                {
+                  "text": "Find the repeated meter and date pairs",
+                  "minutes": 6
+                },
+                {
+                  "text": "Run the type checker and the lab check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "List the meters that have fewer than 30 different dates, with the number of dates each has"
+            }
+          },
+          {
+            "n": 3,
+            "label": "Session 3",
+            "title": "Comprehensions and generators",
+            "summary": "Comprehensions build a collection in one expression; generators hand over one item at a time and keep memory flat",
+            "outcomes": [
+              "Write list, dictionary and set comprehensions with a filter",
+              "Write a generator function that yields records while a file is read",
+              "Compare the peak memory of a list and of a stream, and say when each fits"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "2.3",
+              "title": "Stream a large readings file",
+              "summary": "Stream a large readings file with a generator and compare peak memory with a list.",
+              "minutes": 25,
+              "href": "../labs/D2_3_stream_large_readings.html",
+              "steps": [
+                {
+                  "text": "Run the list version and read how it works",
+                  "minutes": 4
+                },
+                {
+                  "text": "Write the generator that yields one value per row",
+                  "minutes": 8
+                },
+                {
+                  "text": "Add up the stream; compare the two totals",
+                  "minutes": 4
+                },
+                {
+                  "text": "Measure both peaks of memory",
+                  "minutes": 5
+                },
+                {
+                  "text": "Run the type checker and the lab check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Use the generator twice in a row and explain what the second pass returns"
+            }
+          },
+          {
+            "n": 4,
+            "label": "Session 4",
+            "title": "Records as data classes",
+            "summary": "A data class gives a record named, typed fields; sorting with a key puts a queue in working order",
+            "outcomes": [
+              "Model a record as a frozen data class with typed fields and a method",
+              "Sort records by several fields with a key function that returns a tuple",
+              "Leave out of a record the personal data the task does not need"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "2.4",
+              "title": "Model and sort the ticket queue",
+              "summary": "Model a ticket as a data class and sort tickets by priority and age.",
+              "minutes": 25,
+              "href": "../labs/D2_4_model_ticket_as.html",
+              "steps": [
+                {
+                  "text": "Define the frozen data class and its age method",
+                  "minutes": 8
+                },
+                {
+                  "text": "Build tickets from the lines of the file",
+                  "minutes": 6
+                },
+                {
+                  "text": "Sort the open tickets by priority, then age",
+                  "minutes": 7
+                },
+                {
+                  "text": "Run the type checker and the lab check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Count the open tickets per district and priority with a dictionary whose keys are tuples"
+            }
+          }
+        ]
+      },
+      {
+        "id": "day3",
+        "kind": "day",
+        "n": 3,
+        "number": 3,
+        "label": "Day 3",
+        "title": "Files, text and failure",
+        "subtitle": "Reading and writing CSV and JSON Lines, bytes and encodings, exceptions that give a reason, and a method for debugging",
+        "shape": "4 sessions · 4 labs",
+        "deck": "../slides/day3.html",
+        "md": "../slides/day3.md",
+        "url": "https://sdaiaacademy.github.io/fn-101/slides/day3.html",
+        "sessions": [
+          {
+            "n": 1,
+            "label": "Session 1",
+            "title": "CSV and JSON Lines",
+            "summary": "Reading CSV and JSON Lines with the standard library, writing JSON that reruns the same, and keeping personal data out of every output",
+            "outcomes": [
+              "Read a CSV file and a JSON Lines file with the encoding and newline handling named",
+              "Write JSON output that is the same on every run and keeps Arabic readable",
+              "Mask personal data before anything is written, printed or logged"
+            ],
+            "lo": [
+              "LO3"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "3.1",
+              "title": "Write a district summary with phones masked",
+              "summary": "Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written.",
+              "minutes": 25,
+              "href": "../labs/D3_1_load_readings_tickets.html",
+              "steps": [
+                {
+                  "text": "Load the two CSV files and the JSON Lines file",
+                  "minutes": 7
+                },
+                {
+                  "text": "Mask the phone field and the phone numbers in text",
+                  "minutes": 8
+                },
+                {
+                  "text": "Write the summary as JSON; read it as a reviewer",
+                  "minutes": 6
+                },
+                {
+                  "text": "Run the type checker and the lab check",
+                  "minutes": 4
+                }
+              ],
+              "stretch": "Change the pattern to [0-9] and count the phone numbers that now slip through; say why"
+            }
+          },
+          {
+            "n": 2,
+            "label": "Session 2",
+            "title": "Text, bytes and encodings",
+            "summary": "Text is bytes plus an encoding: UTF-8, the default that open uses, decoding errors, and why ignoring them is not a repair",
+            "outcomes": [
+              "Explain the difference between bytes and text, and what an encoding does",
+              "Read a UnicodeDecodeError: the codec, the byte and the position",
+              "Decode a file line by line and report the lines that fail instead of ignoring them"
+            ],
+            "lo": [
+              "LO4"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "3.2",
+              "title": "Decode a ticket file that fails",
+              "summary": "Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail.",
+              "minutes": 25,
+              "href": "../labs/D3_2_open_ticket_file.html",
+              "steps": [
+                {
+                  "text": "Run the loader and read the error it raises",
+                  "minutes": 5
+                },
+                {
+                  "text": "Open the file with its declared encoding",
+                  "minutes": 5
+                },
+                {
+                  "text": "Decode line by line and collect each failure",
+                  "minutes": 9
+                },
+                {
+                  "text": "Write the report; run the lab check",
+                  "minutes": 6
+                }
+              ],
+              "stretch": "Decode the failing lines as Windows-1256 and print the tickets they hold"
+            }
+          },
+          {
+            "n": 3,
+            "label": "Session 3",
+            "title": "Exceptions that explain",
+            "summary": "Raising early with a specific exception, an exception of your own that carries a reason code, and a loop that accounts for every line",
+            "outcomes": [
+              "Raise and catch specific exceptions, around the one call that can fail",
+              "Define an exception that carries a reason code and a detail",
+              "Write a loader in which accepted plus rejected equals the lines of the input"
+            ],
+            "lo": [
+              "LO4"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "3.3",
+              "title": "Reject malformed lines with a reason",
+              "summary": "Reject malformed lines with a reason code so every input line is accounted for.",
+              "minutes": 25,
+              "href": "../labs/D3_3_reject_malformed_lines.html",
+              "steps": [
+                {
+                  "text": "Run the intake and read the first crash",
+                  "minutes": 4
+                },
+                {
+                  "text": "Add the six checks, each raising a reason",
+                  "minutes": 10
+                },
+                {
+                  "text": "Catch the rejection around one call per line",
+                  "minutes": 4
+                },
+                {
+                  "text": "Write the rejection log; run the lab check",
+                  "minutes": 7
+                }
+              ],
+              "stretch": "Add a ninth reason, DUPLICATE_ID, for a ticket id that an earlier line already used"
+            }
+          },
+          {
+            "n": 4,
+            "label": "Session 4",
+            "title": "A debugging method",
+            "summary": "Six steps that turn a symptom into a fix that stays fixed: reproduce, shrink, hypothesis, test, fix, regression",
+            "outcomes": [
+              "Read a traceback from its last line upward",
+              "Shrink a failing input to the smallest one that still fails",
+              "Write a regression test that fails on the defect and passes on the fix"
+            ],
+            "lo": [
+              "LO5"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "3.4",
+              "title": "Find and fix two seeded defects",
+              "summary": "With AI off, find and fix two seeded defects and write a regression test for each.",
+              "minutes": 25,
+              "href": "../labs/D3_4_ai_off_find.html",
+              "steps": [
+                {
+                  "text": "Reproduce both reports and write what you see",
+                  "minutes": 5
+                },
+                {
+                  "text": "Defect A: shrink, hypothesis, test, fix",
+                  "minutes": 8
+                },
+                {
+                  "text": "Defect B: shrink, hypothesis, test, fix",
+                  "minutes": 7
+                },
+                {
+                  "text": "Write a regression test for each; run the check",
+                  "minutes": 5
+                }
+              ],
+              "stretch": "Step through defect A with the debugger: stop on the first line of the function in each call and print what it starts with"
+            }
+          }
+        ]
+      },
+      {
+        "id": "day4",
+        "kind": "day",
+        "n": 4,
+        "number": 4,
+        "label": "Day 4",
+        "title": "From notebook to tool",
+        "subtitle": "What a notebook hides, a module with a command line, tests that pin a rule down, and an assistant that gives hints instead of answers",
+        "shape": "4 sessions · 4 labs",
+        "deck": "../slides/day4.html",
+        "md": "../slides/day4.md",
+        "url": "https://sdaiaacademy.github.io/fn-101/slides/day4.html",
+        "sessions": [
+          {
+            "n": 1,
+            "label": "Session 1",
+            "title": "What notebooks hide",
+            "summary": "What the kernel remembers and the page does not show; restart and run all",
+            "outcomes": [
+              "Read the execution counts of a saved notebook and say in which order it was run",
+              "Find a name that only the kernel remembers and an output that the code on screen does not produce",
+              "Choose a notebook, a script or a module for a task, with a one-line reason"
+            ],
+            "lo": [
+              "LO2"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "4.1",
+              "title": "Find the notebook's hidden state",
+              "summary": "Run a notebook out of order, find the hidden-state bug, then restart and run all; then choose a home for four tasks.",
+              "minutes": 25,
+              "href": "../labs/D4_1_run_notebook_out.html",
+              "steps": [
+                {
+                  "text": "Read the saved notebook and its execution counts",
+                  "minutes": 4
+                },
+                {
+                  "text": "Restart and run all; find the missing name",
+                  "minutes": 7
+                },
+                {
+                  "text": "Find the stale number and give factor one home",
+                  "minutes": 7
+                },
+                {
+                  "text": "Choose a home for four tasks; run the check",
+                  "minutes": 7
+                }
+              ],
+              "stretch": "Run the notebook from the terminal with one command and compare the count with the saved one"
+            }
+          },
+          {
+            "n": 2,
+            "label": "Session 2",
+            "title": "Scripts, modules and an entry point",
+            "summary": "From cells to a tool: an entry point, arguments, exit codes, logging, the same report on every run",
+            "outcomes": [
+              "Explain what runs when a file is imported and when it is run, and what an entry point is for",
+              "Write a command line with required arguments, a default and a useful exit code",
+              "Produce a report that is byte for byte the same on two runs over the same files"
+            ],
+            "lo": [
+              "LO6"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "4.2",
+              "title": "Give the notebook a command line",
+              "summary": "Move the supplied notebook logic into a module with a command-line entry point.",
+              "minutes": 25,
+              "href": "../labs/D4_2_move_supplied_notebook.html",
+              "steps": [
+                {
+                  "text": "Match the notebook's cells to the package's functions",
+                  "minutes": 4
+                },
+                {
+                  "text": "Add the three arguments and the entry point",
+                  "minutes": 6
+                },
+                {
+                  "text": "Write main: the cells' order as calls, with logging",
+                  "minutes": 9
+                },
+                {
+                  "text": "Run twice, compare the bytes, run the check",
+                  "minutes": 6
+                }
+              ],
+              "stretch": "Add an argument that also writes every rejected row, with its reason, to a CSV file"
+            }
+          },
+          {
+            "n": 3,
+            "label": "Session 3",
+            "title": "Tests as a safety net",
+            "summary": "A test is an example with a verdict: boundaries, empty input, and what passing proves",
+            "outcomes": [
+              "Write a test as an arranged input, one call and an asserted result",
+              "Choose examples at the boundary, for empty input and for each argument of a rule",
+              "Judge a set of tests by the wrong versions of the code it would catch"
+            ],
+            "lo": [
+              "LO5"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "4.3",
+              "title": "Pin the anomaly rule down with tests",
+              "summary": "Write five tests for the anomaly rule, including empty and boundary inputs.",
+              "minutes": 25,
+              "href": "../labs/D4_3_write_five_tests.html",
+              "steps": [
+                {
+                  "text": "Read the rule's docstring and the one supplied test",
+                  "minutes": 3
+                },
+                {
+                  "text": "Write a test for the boundary and one for no history",
+                  "minutes": 8
+                },
+                {
+                  "text": "Write three more: the median and the factor",
+                  "minutes": 8
+                },
+                {
+                  "text": "Run the check against four wrong versions",
+                  "minutes": 6
+                }
+              ],
+              "stretch": "Rewrite your examples as one table with pytest's parametrize, one row per case"
+            }
+          },
+          {
+            "n": 4,
+            "label": "Session 4",
+            "title": "Learning with an assistant without losing the skill",
+            "summary": "What a controlled study found about learning with an assistant, and a way of working that keeps the skill",
+            "outcomes": [
+              "State what the evidence shows about delegating to an assistant while learning",
+              "Ask an assistant for a hint that leaves the reasoning with you",
+              "Explain a fix in your own words, without the code and without the assistant"
+            ],
+            "lo": [
+              "LO5"
+            ],
+            "minutes": 50,
+            "lab": {
+              "id": "4.4",
+              "title": "Debug a third defect with the tutor",
+              "summary": "Get hints from the course tutor on a new defect, then explain the fix in your own words.",
+              "minutes": 25,
+              "href": "../labs/D4_4_get_hints_from.html",
+              "steps": [
+                {
+                  "text": "Reproduce and shrink on your own, in the log",
+                  "minutes": 6
+                },
+                {
+                  "text": "Ask the tutor for one hint at a time",
+                  "minutes": 6
+                },
+                {
+                  "text": "Fix the line and write the regression test",
+                  "minutes": 6
+                },
+                {
+                  "text": "Close the tutor; explain the fix in words",
+                  "minutes": 7
+                }
+              ],
+              "stretch": "Ask the hosted tutor for the corrected code outright and note in the log what it does"
+            }
+          }
+        ]
+      },
+      {
+        "id": "capstone",
+        "kind": "capstone",
+        "n": 5,
+        "number": null,
+        "label": "Capstone",
+        "title": "Capstone project presentations",
+        "subtitle": "",
+        "shape": "",
+        "deck": "../slides/capstone.html",
+        "md": "../slides/capstone.md",
+        "url": "https://sdaiaacademy.github.io/fn-101/slides/capstone.html",
+        "sessions": []
+      }
+    ],
+    "capstone": {
+      "summary": "A command-line tool that loads, validates and reports on a new synthetic dataset, the utility's maintenance work orders, submitted as a public repository whose README shows the command and its report, then a ten-minute walkthrough with a change the assessor requests",
+      "submission": "A link to a public repository that holds the tool, its tests and a README that shows the one command and the report it writes on the supplied work-order files, and that states what the tool does not check. The commit history is part of the evidence. Then a ten-minute live walkthrough: the participant runs the tool, makes a change the assessor requests and explains a traceback the assessor chooses; the questions are inside the ten minutes.",
+      "talk_minutes": 10,
+      "qa_minutes": null,
+      "rubric": [
+        {
+          "criterion": "Correctness on hidden tests",
+          "weight": 30
+        },
+        {
+          "criterion": "Validation and errors",
+          "weight": 20
+        },
+        {
+          "criterion": "Structure and types",
+          "weight": 20
+        },
+        {
+          "criterion": "Reproducibility",
+          "weight": 15
+        },
+        {
+          "criterion": "README",
+          "weight": 15
+        }
+      ]
+    },
+    "labs": {
+      "kind": "pages",
+      "base": "labs/"
+    },
+    "tools": [
+      {
+        "slot": "Python runtime and project manager",
+        "examples": [
+          "CPython with uv",
+          "CPython with pip and venv"
+        ]
+      },
+      {
+        "slot": "Editor and notebook",
+        "examples": [
+          "VSCodium or VS Code",
+          "JupyterLab",
+          "marimo"
+        ]
+      },
+      {
+        "slot": "Type checking and linting",
+        "examples": [
+          "mypy",
+          "Pyright",
+          "Ruff"
+        ]
+      },
+      {
+        "slot": "Test runner",
+        "examples": [
+          "pytest",
+          "unittest"
+        ]
+      },
+      {
+        "slot": "Tracing and step debugging",
+        "examples": [
+          "Python Tutor",
+          "pdb or the editor's debugger"
+        ]
+      },
+      {
+        "slot": "Hint-only tutor",
+        "examples": [
+          "an open-weight model behind a tutor instruction",
+          "an approved assistant with a tutor instruction"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "group": "National references",
+        "items": [
+          {
+            "title": "Personal Data Protection Law",
+            "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf"
+          },
+          {
+            "title": "Implementing Regulation of the Personal Data Protection Law",
+            "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulationPersonalDataProtectionLaw.pdf"
+          },
+          {
+            "title": "Generative AI Guideline for Government (SDAIA)",
+            "url": "https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf"
+          },
+          {
+            "title": "Generative AI Guideline for Public (SDAIA)",
+            "url": "https://sdaia.gov.sa/en/SDAIA/about/Files/GenerativeAIPublicEN.pdf"
+          },
+          {
+            "title": "Academic Programs Standards Framework (SDAIA)",
+            "url": "https://sdaia.gov.sa/en/MediaCenter/KnowledgeCenter/ResearchLibrary/Academic-Programs-Standards-Framework-Q3.pdf"
+          }
+        ]
+      },
+      {
+        "group": "Python: the language and its standard library",
+        "items": [
+          {
+            "title": "The Python Tutorial",
+            "url": "https://docs.python.org/3/tutorial/index.html"
+          },
+          {
+            "title": "Programming FAQ (names, objects, default values)",
+            "url": "https://docs.python.org/3/faq/programming.html"
+          },
+          {
+            "title": "Errors and Exceptions (the Python Tutorial)",
+            "url": "https://docs.python.org/3/tutorial/errors.html"
+          },
+          {
+            "title": "typing: support for type hints",
+            "url": "https://docs.python.org/3/library/typing.html"
+          },
+          {
+            "title": "dataclasses: data classes",
+            "url": "https://docs.python.org/3/library/dataclasses.html"
+          },
+          {
+            "title": "csv: CSV file reading and writing",
+            "url": "https://docs.python.org/3/library/csv.html"
+          },
+          {
+            "title": "JSON Lines",
+            "url": "https://jsonlines.org/"
+          },
+          {
+            "title": "Unicode HOWTO",
+            "url": "https://docs.python.org/3/howto/unicode.html"
+          },
+          {
+            "title": "PEP 686: Make UTF-8 mode default",
+            "url": "https://peps.python.org/pep-0686/"
+          },
+          {
+            "title": "argparse: parser for command-line options",
+            "url": "https://docs.python.org/3/library/argparse.html"
+          },
+          {
+            "title": "Logging HOWTO",
+            "url": "https://docs.python.org/3/howto/logging.html"
+          },
+          {
+            "title": "pdb: the Python debugger",
+            "url": "https://docs.python.org/3/library/pdb.html"
+          },
+          {
+            "title": "PEP 8: Style Guide for Python Code",
+            "url": "https://peps.python.org/pep-0008/"
+          }
+        ]
+      },
+      {
+        "group": "Tools (examples of each capability)",
+        "items": [
+          {
+            "title": "uv, a Python package and project manager",
+            "url": "https://docs.astral.sh/uv/"
+          },
+          {
+            "title": "mypy, a static type checker",
+            "url": "https://mypy.readthedocs.io/en/stable/"
+          },
+          {
+            "title": "Pyright, a static type checker",
+            "url": "https://microsoft.github.io/pyright/"
+          },
+          {
+            "title": "Ruff, a linter and formatter",
+            "url": "https://docs.astral.sh/ruff/"
+          },
+          {
+            "title": "pytest, a test runner",
+            "url": "https://docs.pytest.org/en/stable/"
+          },
+          {
+            "title": "Python Tutor, a step visualiser",
+            "url": "https://pythontutor.com/"
+          },
+          {
+            "title": "JupyterLab",
+            "url": "https://jupyterlab.readthedocs.io/en/stable/"
+          },
+          {
+            "title": "marimo, a reactive notebook",
+            "url": "https://marimo.io/"
+          },
+          {
+            "title": "VSCodium, an editor",
+            "url": "https://vscodium.com/"
+          },
+          {
+            "title": "OpenRouter quickstart (one way to reach a free hosted model)",
+            "url": "https://openrouter.ai/docs/quickstart"
+          }
+        ]
+      },
+      {
+        "group": "Evidence on learning to program with AI assistance",
+        "items": [
+          {
+            "title": "How AI assistance impacts the formation of coding skills (Anthropic, 2026)",
+            "url": "https://www.anthropic.com/research/AI-assistance-coding-skills"
+          },
+          {
+            "title": "Shen and Tamkin, How AI Impacts Skill Formation (arXiv 2601.20245)",
+            "url": "https://arxiv.org/abs/2601.20245"
+          }
+        ]
+      }
+    ]
+  }
+}

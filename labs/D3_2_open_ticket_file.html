@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 3.2 · Decode a ticket file that fails · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D3_2_open_ticket_file.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day3.html#lab-3-2">Back to the slides</a></nav></div>
+<span class="tag">Lab 3.2</span>
+<h1>Decode a ticket file that fails</h1>
+<p>Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail.</p>
+<div class="meta"><span>25 minutes</span><span>Day 3</span><span>Session 2: Text, bytes and encodings</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="3.2">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>A ticket file refuses to open. Read the error, open the file with the encoding its export declares, and then list exactly which lines still fail and at which byte, without ignoring or replacing anything.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>3.2</code> of the workspace: <code>decode.py</code>, <code>data/tickets_branch.jsonl</code> (120 lines) and <code>data/tickets_branch.meta.json</code>, the note the export wrote about itself</li>
+    <li>AI policy: tutor. An assistant may explain an error message; you write the loop</li>
+  </ul>
+
+  <div class="step">
+    <h3>Run the loader and read the error it raises <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../3.2
+uv run python decode.py</code></pre>
+    <p>The run ends in a <code>UnicodeDecodeError</code>. Read its last line and write down three things: which codec was decoding, which byte it could not decode, and at which position. Now look at <code>load</code> in <code>decode.py</code>: where did that codec come from?</p>
+  </div>
+
+  <div class="step">
+    <h3>Open the file with its declared encoding <span class="min">5 min</span></h3>
+    <p>Open <code>data/tickets_branch.meta.json</code>: the export says which encoding it wrote. At a prompt, read the whole file with that encoding.</p>
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> text = open("data/tickets_branch.jsonl", encoding="utf-8").read()</code></pre>
+    <p>A new error, with another codec, another byte and a position far into the file. Most of the file is what it claims to be; something in it is not. A position in the whole file does not tell you which line: the next step does.</p>
+  </div>
+
+  <div class="step">
+    <h3>Decode line by line and collect each failure <span class="min">9 min</span></h3>
+    <p>Write <code>decode_lines</code>. Read the file as bytes, split it into lines, and decode each line by itself inside a <code>try</code>. A line that decodes joins the first list. For a line that does not, the exception tells you where: <code>problem.start</code> is the position of the offending byte within the line.</p>
+    <pre class="code" data-file="decode.py"><code class="language-python">data = Path(path).read_bytes()
+for line_no, raw in enumerate(data.splitlines(), start=1):
+    try:
+        ...
+    except UnicodeDecodeError as problem:
+        failed.append(Failure(line_no, problem.start, hex(raw[problem.start])))</code></pre>
+    <p>Do not reach for <code>errors="ignore"</code> or <code>errors="replace"</code>: both make the error go away by damaging the text of a customer's ticket without telling anyone.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write the report; run the lab check <span class="min">6 min</span></h3>
+    <p>Finish <code>main</code> as its comment says: read the encoding from the meta file, call <code>decode_lines</code>, print the failures, and write <code>out/decode_report.json</code>. <code>dataclasses.asdict</code> turns a <code>Failure</code> into a dictionary. The function <code>load</code> and <code>LAPTOP_DEFAULT</code> can go.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python decode.py
+uv run mypy --strict decode.py
+uv run ../lab.py check 3.2</code></pre>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>The failing lines came from an old branch terminal that writes Windows-1256 (<code>cp1256</code>). Decode those lines with that encoding and print the tickets they hold. Then decode a good line with <code>cp1256</code> and look at what you get: no error, and no ticket either.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>The first error named a codec that appears nowhere in the export's note. Where did it come from?</li>
+    <li>Why does decoding line by line find seven failures, when reading the whole file reports one?</li>
+    <li>A good line decoded as <code>cp1256</code> raises no error. Is it decoded correctly?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Reference run: the supplied loader stops with "'charmap' codec can't decode byte 0x81 in position 131: character maps to &lt;undefined&gt;" (the laptop default, cp1252, has no character for that byte, which is half of an Arabic letter in UTF-8). Reading the whole file as UTF-8 stops with "'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte". Line by line: 113 lines decode, 7 fail: lines 12, 22, 37, 55, 82, 84 and 94, each at a byte between positions 103 and 106 of its line (0xc7, 0xca, 0xd6 or 0xd8: Arabic letters in Windows-1256).</p>
+    <p>The check calls <code>decode_lines</code> itself, compares the line numbers, positions and bytes, reads the report and refuses <code>errors="ignore"</code> and <code>"replace"</code>. Common errors: opening in text mode and looping over the file, which stops at the first bad line; counting lines from 0; reporting the position in the file rather than in the line; decoding with cp1256 from the start, which raises nothing and turns the 113 good lines into mojibake. Answers: from the laptop, because <code>open</code> without an encoding uses the platform's default; one bad line ends the whole read, so the others are never reached; no, the bytes were UTF-8, and the text is wrong without any error. Reference: <code>labs/solutions/3.2/decode.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D3_1_load_readings_tickets.html" rel="prev">← Previous lab</a><a href="D3_3_reject_malformed_lines.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"3.2","title":"Decode a ticket file that fails","summary":"Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail.","minutes":25,"day":3,"unit":"Day 3","session":2,"deck":"../slides/day3.html#lab-3-2","prev":"D3_1_load_readings_tickets.html","next":"D3_3_reject_malformed_lines.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

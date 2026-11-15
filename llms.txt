@@ -1,0 +1,47 @@
+# Python for Data and AI Work
+
+> Read, trace and debug Python by hand, then write small typed functions that grow into a command-line tool that reruns. SDAIA Academy course FN-101, version 2027.1.0, in English.
+
+Each slide is a heading such as "#### [day1#slide-id] Title": cite slides by that id, and each citation is a link (slides/day1.html#slide-id). These files are what a trainee sees: no speaker notes and no answer keys.
+
+## Course
+
+- [Course page](https://sdaiaacademy.github.io/fn-101/index.md): overview, outcomes, schedule and labs; the page itself is https://sdaiaacademy.github.io/fn-101/index.html
+- [The whole course](https://sdaiaacademy.github.io/fn-101/llms-full.txt): every unit, session and slide in one file, about 26,935 tokens
+- [Practice questions](https://sdaiaacademy.github.io/fn-101/practice.html): questions to check yourself, with feedback after each answer
+
+## Slides
+
+- [Day 1: Read before you write](https://sdaiaacademy.github.io/fn-101/slides/day1.md): Tracing code by hand, functions with contracts, type hints, and rebuilding code from its lines; sessions: Values, names and references, Functions with clear contracts, Type hints and a checker, Parsons problems; page: https://sdaiaacademy.github.io/fn-101/slides/day1.html; about 6,670 tokens
+- [Day 2: Collections for data work](https://sdaiaacademy.github.io/fn-101/slides/day2.md): Dictionaries, sets, comprehensions, generators and data classes on a month of readings and a ticket queue; sessions: Dictionaries for counting and grouping, Sets and membership, Comprehensions and generators, Records as data classes; page: https://sdaiaacademy.github.io/fn-101/slides/day2.html; about 6,007 tokens
+- [Day 3: Files, text and failure](https://sdaiaacademy.github.io/fn-101/slides/day3.md): Reading and writing CSV and JSON Lines, bytes and encodings, exceptions that give a reason, and a method for debugging; sessions: CSV and JSON Lines, Text, bytes and encodings, Exceptions that explain, A debugging method; page: https://sdaiaacademy.github.io/fn-101/slides/day3.html; about 6,341 tokens
+- [Day 4: From notebook to tool](https://sdaiaacademy.github.io/fn-101/slides/day4.md): What a notebook hides, a module with a command line, tests that pin a rule down, and an assistant that gives hints instead of answers; sessions: What notebooks hide, Scripts, modules and an entry point, Tests as a safety net, Learning with an assistant without losing the skill; page: https://sdaiaacademy.github.io/fn-101/slides/day4.html; about 6,433 tokens
+- [Capstone: Capstone project presentations](https://sdaiaacademy.github.io/fn-101/slides/capstone.md): page: https://sdaiaacademy.github.io/fn-101/slides/capstone.html; about 988 tokens
+
+## Labs
+
+- [Lab 1.1: Trace eight snippets](https://sdaiaacademy.github.io/fn-101/labs/D1_1_trace_eight_snippets.md): Day 1, Session 1, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D1_1_trace_eight_snippets.html
+- [Lab 1.2: Split a script into four functions](https://sdaiaacademy.github.io/fn-101/labs/D1_2_split_40_line.md): Day 1, Session 2, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D1_2_split_40_line.html
+- [Lab 1.3: Annotate the reading parser](https://sdaiaacademy.github.io/fn-101/labs/D1_3_annotate_supplied_reading.md): Day 1, Session 3, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D1_3_annotate_supplied_reading.html
+- [Lab 1.4: Rebuild a validation function](https://sdaiaacademy.github.io/fn-101/labs/D1_4_reorder_scrambled_lines.md): Day 1, Session 4, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D1_4_reorder_scrambled_lines.html
+- [Lab 2.1: Count readings per meter and district](https://sdaiaacademy.github.io/fn-101/labs/D2_1_count_readings_per.md): Day 2, Session 1, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D2_1_count_readings_per.html
+- [Lab 2.2: Find silent meters and unknown ids](https://sdaiaacademy.github.io/fn-101/labs/D2_2_find_meters_no.md): Day 2, Session 2, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D2_2_find_meters_no.html
+- [Lab 2.3: Stream a large readings file](https://sdaiaacademy.github.io/fn-101/labs/D2_3_stream_large_readings.md): Day 2, Session 3, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D2_3_stream_large_readings.html
+- [Lab 2.4: Model and sort the ticket queue](https://sdaiaacademy.github.io/fn-101/labs/D2_4_model_ticket_as.md): Day 2, Session 4, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D2_4_model_ticket_as.html
+- [Lab 3.1: Write a district summary with phones masked](https://sdaiaacademy.github.io/fn-101/labs/D3_1_load_readings_tickets.md): Day 3, Session 1, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D3_1_load_readings_tickets.html
+- [Lab 3.2: Decode a ticket file that fails](https://sdaiaacademy.github.io/fn-101/labs/D3_2_open_ticket_file.md): Day 3, Session 2, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D3_2_open_ticket_file.html
+- [Lab 3.3: Reject malformed lines with a reason](https://sdaiaacademy.github.io/fn-101/labs/D3_3_reject_malformed_lines.md): Day 3, Session 3, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D3_3_reject_malformed_lines.html
+- [Lab 3.4: Find and fix two seeded defects](https://sdaiaacademy.github.io/fn-101/labs/D3_4_ai_off_find.md): Day 3, Session 4, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D3_4_ai_off_find.html
+- [Lab 4.1: Find the notebook's hidden state](https://sdaiaacademy.github.io/fn-101/labs/D4_1_run_notebook_out.md): Day 4, Session 1, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D4_1_run_notebook_out.html
+- [Lab 4.2: Give the notebook a command line](https://sdaiaacademy.github.io/fn-101/labs/D4_2_move_supplied_notebook.md): Day 4, Session 2, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D4_2_move_supplied_notebook.html
+- [Lab 4.3: Pin the anomaly rule down with tests](https://sdaiaacademy.github.io/fn-101/labs/D4_3_write_five_tests.md): Day 4, Session 3, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D4_3_write_five_tests.html
+- [Lab 4.4: Debug a third defect with the tutor](https://sdaiaacademy.github.io/fn-101/labs/D4_4_get_hints_from.md): Day 4, Session 4, 25 min; page: https://sdaiaacademy.github.io/fn-101/labs/D4_4_get_hints_from.html
+
+## Context files
+
+- [context/course.md](https://sdaiaacademy.github.io/fn-101/context/course.md): the whole course, for an assistant that takes a file, about 26,935 tokens
+- [context/day1.md](https://sdaiaacademy.github.io/fn-101/context/day1.md): Day 1, about 6,670 tokens
+- [context/day2.md](https://sdaiaacademy.github.io/fn-101/context/day2.md): Day 2, about 6,007 tokens
+- [context/day3.md](https://sdaiaacademy.github.io/fn-101/context/day3.md): Day 3, about 6,341 tokens
+- [context/day4.md](https://sdaiaacademy.github.io/fn-101/context/day4.md): Day 4, about 6,433 tokens
+- [context/capstone.md](https://sdaiaacademy.github.io/fn-101/context/capstone.md): Capstone, about 988 tokens

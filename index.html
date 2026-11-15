@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="page" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python for Data and AI Work · SDAIA Academy</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<meta name="description" content="Read, trace and debug Python by hand, then write small typed functions that grow into a command-line tool that reruns">
+<link rel="icon" href="_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="index.md">
+<link rel="describedby" href="llms.txt">
+<link rel="stylesheet" href="_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo" id="logo"></div><nav><a href="slides/day1.html">Slides</a><a href="practice.html">Practice</a><a href="index.md" type="text/markdown">Markdown</a></nav></div>
+<div class="kicker">Data &amp; AI Foundations Track · SDAIA Academy · FN-101</div>
+<h1>Python for Data and AI Work<span class="sub ar" lang="ar" dir="rtl">بايثون لأعمال البيانات والذكاء الاصطناعي</span></h1>
+<p>Read, trace and debug Python by hand, then write small typed functions that grow into a command-line tool that reruns</p>
+<div class="meta"><span class="track">Data &amp; AI Foundations Track</span><span>4 teaching days + capstone day</span><span>26 hours</span><span>Level 100</span><span>Foundations badge</span></div>
+</div>
+</header>
+<main class="wrap">
+<h2>About the course</h2>
+<p>Participants write Python the way data and AI work needs it: small typed functions over collections and files, errors that fail loudly, and code moved out of notebooks into scripts that rerun. The case is a fictional regional water utility with synthetic meter readings in comma-separated values (CSV) files and bilingual service tickets in JavaScript Object Notation (JSON) Lines. Each day opens with an AI-off drill in reading, tracing or debugging code by hand, and the labs grow into a command-line tool that validates readings, flags anomalies and writes a summary report. Arabic text normalisation and SQL are left to FN-104, version control to FN-102.</p>
+<p><b>Who it is for:</b> Beginners. Graduates and career changers entering the AI Engineering or Data Science track; computing and data graduates who pass the placement test skip the courses it covers.</p>
+<p><b>Format:</b> Intensive: 4 teaching days of four sessions and a capstone day, with guided pre-work and a tracked follow-up task</p>
+<h2>The case study</h2>
+<div class="note info"><b>Manahil Water Services.</b> Manahil Water Services is a fictional regional water utility with 600 meters in six districts. Its metering team checks a month of daily readings (a CSV file with missing, repeated, out-of-range and unknown-meter rows) and its customer care team works a queue of service tickets in Arabic and English (JSON Lines). Every lab works on these files and the labs grow into Miqyas, a command-line tool that validates the readings, flags anomalies and writes a report; all data is synthetic and the same on every machine.</div>
+<h2>The course</h2>
+<div class="day">
+<div class="day-head c-teal"><div><div class="t">Day 1 · 4 sessions · 4 labs</div><h3>Read before you write</h3></div><a class="btn" href="slides/day1.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>Values, names and references</b><br>Names bind to objects, assignment never copies, and a shared list changes for every name that holds it<ul><li>Trace a short program line by line with a table of names and objects</li><li>Predict when two names share one mutable object and when they do not</li><li>Distinguish rebinding a name from mutating an object</li></ul></td><td><a href="labs/D1_1_trace_eight_snippets.html">Lab 1.1 · Trace eight snippets</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>2</td><td><b>Functions with clear contracts</b><br>One job per function, inputs and outputs stated, effects kept at the edge, and scope explained by the call stack<ul><li>Split a script into functions that each do one job</li><li>State a function's inputs and output in its signature and docstring</li><li>Explain what a function can see and change, using scope and the call stack</li></ul></td><td><a href="labs/D1_2_split_40_line.html">Lab 1.2 · Split a script into four functions</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>3</td><td><b>Type hints and a checker</b><br>Type hints as promises a checker verifies: built-in generics, None as a value that must be handled, and reading the checker's report<ul><li>Annotate parameters and return values with built-in types</li><li>Read a type checker's report and find the line it points at</li><li>Handle a value that may be None before using it</li></ul></td><td><a href="labs/D1_3_annotate_supplied_reading.html">Lab 1.3 · Annotate the reading parser</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>4</td><td><b>Parsons problems</b><br>Rebuilding a function from its scrambled lines: order, indentation, and the lines that do not belong<ul><li>Order the lines of a function so that each name is bound before it is used</li><li>Use indentation to say which lines belong to a branch, a loop or a try</li><li>Reject a distractor by saying what it would do</li></ul></td><td><a href="labs/D1_4_reorder_scrambled_lines.html">Lab 1.4 · Rebuild a validation function</a> <span class="muted">(25 min)</span></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-cyan"><div><div class="t">Day 2 · 4 sessions · 4 labs</div><h3>Collections for data work</h3></div><a class="btn" href="slides/day2.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>Dictionaries for counting and grouping</b><br>A dictionary as an index: counting, grouping, and why one lookup replaces a loop<ul><li>Count and group records with a dictionary in one pass</li><li>Build an index from a key to a record and use it in place of a search</li><li>Explain why a loop inside a loop is slow on 100,000 rows, and measure it</li></ul></td><td><a href="labs/D2_1_count_readings_per.html">Lab 2.1 · Count readings per meter and district</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>2</td><td><b>Sets and membership</b><br>Sets answer membership and difference questions directly: what is missing, what is unknown, what repeats<ul><li>Answer a membership question with a set in place of a search through a list</li><li>Compare two collections with difference and intersection</li><li>Use a tuple as a key to find repeated records</li></ul></td><td><a href="labs/D2_2_find_meters_no.html">Lab 2.2 · Find silent meters and unknown ids</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>3</td><td><b>Comprehensions and generators</b><br>Comprehensions build a collection in one expression; generators hand over one item at a time and keep memory flat<ul><li>Write list, dictionary and set comprehensions with a filter</li><li>Write a generator function that yields records while a file is read</li><li>Compare the peak memory of a list and of a stream, and say when each fits</li></ul></td><td><a href="labs/D2_3_stream_large_readings.html">Lab 2.3 · Stream a large readings file</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>4</td><td><b>Records as data classes</b><br>A data class gives a record named, typed fields; sorting with a key puts a queue in working order<ul><li>Model a record as a frozen data class with typed fields and a method</li><li>Sort records by several fields with a key function that returns a tuple</li><li>Leave out of a record the personal data the task does not need</li></ul></td><td><a href="labs/D2_4_model_ticket_as.html">Lab 2.4 · Model and sort the ticket queue</a> <span class="muted">(25 min)</span></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-coral"><div><div class="t">Day 3 · 4 sessions · 4 labs</div><h3>Files, text and failure</h3></div><a class="btn" href="slides/day3.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>CSV and JSON Lines</b><br>Reading CSV and JSON Lines with the standard library, writing JSON that reruns the same, and keeping personal data out of every output<ul><li>Read a CSV file and a JSON Lines file with the encoding and newline handling named</li><li>Write JSON output that is the same on every run and keeps Arabic readable</li><li>Mask personal data before anything is written, printed or logged</li></ul></td><td><a href="labs/D3_1_load_readings_tickets.html">Lab 3.1 · Write a district summary with phones masked</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>2</td><td><b>Text, bytes and encodings</b><br>Text is bytes plus an encoding: UTF-8, the default that open uses, decoding errors, and why ignoring them is not a repair<ul><li>Explain the difference between bytes and text, and what an encoding does</li><li>Read a UnicodeDecodeError: the codec, the byte and the position</li><li>Decode a file line by line and report the lines that fail instead of ignoring them</li></ul></td><td><a href="labs/D3_2_open_ticket_file.html">Lab 3.2 · Decode a ticket file that fails</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>3</td><td><b>Exceptions that explain</b><br>Raising early with a specific exception, an exception of your own that carries a reason code, and a loop that accounts for every line<ul><li>Raise and catch specific exceptions, around the one call that can fail</li><li>Define an exception that carries a reason code and a detail</li><li>Write a loader in which accepted plus rejected equals the lines of the input</li></ul></td><td><a href="labs/D3_3_reject_malformed_lines.html">Lab 3.3 · Reject malformed lines with a reason</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>4</td><td><b>A debugging method</b><br>Six steps that turn a symptom into a fix that stays fixed: reproduce, shrink, hypothesis, test, fix, regression<ul><li>Read a traceback from its last line upward</li><li>Shrink a failing input to the smallest one that still fails</li><li>Write a regression test that fails on the defect and passes on the fix</li></ul></td><td><a href="labs/D3_4_ai_off_find.html">Lab 3.4 · Find and fix two seeded defects</a> <span class="muted">(25 min)</span></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-purple"><div><div class="t">Day 4 · 4 sessions · 4 labs</div><h3>From notebook to tool</h3></div><a class="btn" href="slides/day4.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>What notebooks hide</b><br>What the kernel remembers and the page does not show; restart and run all<ul><li>Read the execution counts of a saved notebook and say in which order it was run</li><li>Find a name that only the kernel remembers and an output that the code on screen does not produce</li><li>Choose a notebook, a script or a module for a task, with a one-line reason</li></ul></td><td><a href="labs/D4_1_run_notebook_out.html">Lab 4.1 · Find the notebook's hidden state</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>2</td><td><b>Scripts, modules and an entry point</b><br>From cells to a tool: an entry point, arguments, exit codes, logging, the same report on every run<ul><li>Explain what runs when a file is imported and when it is run, and what an entry point is for</li><li>Write a command line with required arguments, a default and a useful exit code</li><li>Produce a report that is byte for byte the same on two runs over the same files</li></ul></td><td><a href="labs/D4_2_move_supplied_notebook.html">Lab 4.2 · Give the notebook a command line</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>3</td><td><b>Tests as a safety net</b><br>A test is an example with a verdict: boundaries, empty input, and what passing proves<ul><li>Write a test as an arranged input, one call and an asserted result</li><li>Choose examples at the boundary, for empty input and for each argument of a rule</li><li>Judge a set of tests by the wrong versions of the code it would catch</li></ul></td><td><a href="labs/D4_3_write_five_tests.html">Lab 4.3 · Pin the anomaly rule down with tests</a> <span class="muted">(25 min)</span></td></tr>
+<tr><td>4</td><td><b>Learning with an assistant without losing the skill</b><br>What a controlled study found about learning with an assistant, and a way of working that keeps the skill<ul><li>State what the evidence shows about delegating to an assistant while learning</li><li>Ask an assistant for a hint that leaves the reasoning with you</li><li>Explain a fix in your own words, without the code and without the assistant</li></ul></td><td><a href="labs/D4_4_get_hints_from.html">Lab 4.4 · Debug a third defect with the tutor</a> <span class="muted">(25 min)</span></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-amber"><div><div class="t">Capstone</div><h3>Capstone project presentations</h3></div><a class="btn" href="slides/capstone.html">Open the slides</a></div>
+<div class="scroll"><table><tr><td>A command-line tool that loads, validates and reports on a new synthetic dataset, the utility's maintenance work orders, submitted as a public repository whose README shows the command and its report, then a ten-minute walkthrough with a change the assessor requests</td></tr></table></div>
+</div>
+<h2>Capstone</h2>
+<div class="two">
+<div><p>A command-line tool that loads, validates and reports on a new synthetic dataset, the utility's maintenance work orders, submitted as a public repository whose README shows the command and its report, then a ten-minute walkthrough with a change the assessor requests</p><p><b>What you submit:</b> A link to a public repository that holds the tool, its tests and a README that shows the one command and the report it writes on the supplied work-order files, and that states what the tool does not check. The commit history is part of the evidence. Then a ten-minute live walkthrough: the participant runs the tool, makes a change the assessor requests and explains a traceback the assessor chooses; the questions are inside the ten minutes.</p><p><b>Format:</b> 10 min talk and demo</p></div>
+<div><h3>Rubric</h3><div class="bar c-teal"><span>Correctness on hidden tests<i style="--w:100%"></i></span><b>30%</b></div><div class="bar c-cyan"><span>Validation and errors<i style="--w:67%"></i></span><b>20%</b></div><div class="bar c-coral"><span>Structure and types<i style="--w:67%"></i></span><b>20%</b></div><div class="bar c-purple"><span>Reproducibility<i style="--w:50%"></i></span><b>15%</b></div><div class="bar c-amber"><span>README<i style="--w:50%"></i></span><b>15%</b></div></div>
+</div>
+<h2>Outcomes</h2>
+<p>By the end of the course, participants can:</p>
+<div class="day"><div class="scroll"><table>
+<tr><th></th><th>Outcomes</th><th>Level</th><th>Evidence</th></tr>
+<tr><td><b>LO1</b></td><td>Explain what a short program prints, step by step, including name binding, shared mutable lists and dictionaries, and scope, given ten unseen snippets on paper, without a computer or assistant</td><td>Awareness</td><td>a trace sheet with at least eight of ten outputs correct</td></tr>
+<tr><td><b>LO2</b></td><td>Distinguish when a notebook, a script or an importable module is the right home for a piece of code, given four tasks described by the utility's analysts</td><td>Awareness</td><td>a choice and a one-line reason per task, matching the reference on three of four</td></tr>
+<tr><td><b>LO3</b></td><td>Implement typed functions that load, validate and aggregate records with lists, dictionaries, sets and comprehensions, given a month of meter readings with missing, duplicated and out-of-range values</td><td>Applied</td><td>a module that passes the provided tests and a type checker with no errors</td></tr>
+<tr><td><b>LO4</b></td><td>Apply exception handling and input validation so that each bad record is reported with a reason instead of crashing or passing silently, given a ticket file with malformed lines, mixed Arabic and English text and a wrong encoding</td><td>Applied</td><td>a rejection log that accounts for every input line</td></tr>
+<tr><td><b>LO5</b></td><td>Use a repeatable debugging method: reproduce, shrink the input, form a hypothesis, test it, fix, and add a regression check, given three seeded defects in the course codebase, with AI assistance off</td><td>Applied</td><td>a debugging log per defect and a passing regression test for each</td></tr>
+<tr><td><b>LO6</b></td><td>Prepare a command-line tool from an exploratory notebook, with an entry point, arguments and a written report, given the utility's analysis notebook and raw files</td><td>Applied</td><td>a script that rebuilds the same report from raw files with one command on two runs</td></tr>
+</table></div></div>
+<h2>Tools</h2>
+<div class="grid">
+<div class="card c-teal"><h3>Python runtime and project manager</h3><p>CPython with uv · CPython with pip and venv</p></div>
+<div class="card c-cyan"><h3>Editor and notebook</h3><p>VSCodium or VS Code · JupyterLab · marimo</p></div>
+<div class="card c-coral"><h3>Type checking and linting</h3><p>mypy · Pyright · Ruff</p></div>
+<div class="card c-purple"><h3>Test runner</h3><p>pytest · unittest</p></div>
+<div class="card c-green"><h3>Tracing and step debugging</h3><p>Python Tutor · pdb or the editor's debugger</p></div>
+<div class="card c-teal"><h3>Hint-only tutor</h3><p>an open-weight model behind a tutor instruction · an approved assistant with a tutor instruction</p></div>
+</div>
+<h2>Before you start</h2>
+<h3>Prerequisites</h3>
+<ul><li>Has written and run a short program in any language, or completed the guided pre-work on values, conditions and loops</li></ul>
+<div class="note tip">The labs are pages in your browser, linked from the table above and from the slides.</div>
+<h2>Sources</h2>
+<h3>National references</h3>
+<ul><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf">Personal Data Protection Law</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulationPersonalDataProtectionLaw.pdf">Implementing Regulation of the Personal Data Protection Law</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf">Generative AI Guideline for Government (SDAIA)</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Files/GenerativeAIPublicEN.pdf">Generative AI Guideline for Public (SDAIA)</a></li><li><a href="https://sdaia.gov.sa/en/MediaCenter/KnowledgeCenter/ResearchLibrary/Academic-Programs-Standards-Framework-Q3.pdf">Academic Programs Standards Framework (SDAIA)</a></li></ul>
+<h3>Python: the language and its standard library</h3>
+<ul><li><a href="https://docs.python.org/3/tutorial/index.html">The Python Tutorial</a></li><li><a href="https://docs.python.org/3/faq/programming.html">Programming FAQ (names, objects, default values)</a></li><li><a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions (the Python Tutorial)</a></li><li><a href="https://docs.python.org/3/library/typing.html">typing: support for type hints</a></li><li><a href="https://docs.python.org/3/library/dataclasses.html">dataclasses: data classes</a></li><li><a href="https://docs.python.org/3/library/csv.html">csv: CSV file reading and writing</a></li><li><a href="https://jsonlines.org/">JSON Lines</a></li><li><a href="https://docs.python.org/3/howto/unicode.html">Unicode HOWTO</a></li><li><a href="https://peps.python.org/pep-0686/">PEP 686: Make UTF-8 mode default</a></li><li><a href="https://docs.python.org/3/library/argparse.html">argparse: parser for command-line options</a></li><li><a href="https://docs.python.org/3/howto/logging.html">Logging HOWTO</a></li><li><a href="https://docs.python.org/3/library/pdb.html">pdb: the Python debugger</a></li><li><a href="https://peps.python.org/pep-0008/">PEP 8: Style Guide for Python Code</a></li></ul>
+<h3>Tools (examples of each capability)</h3>
+<ul><li><a href="https://docs.astral.sh/uv/">uv, a Python package and project manager</a></li><li><a href="https://mypy.readthedocs.io/en/stable/">mypy, a static type checker</a></li><li><a href="https://microsoft.github.io/pyright/">Pyright, a static type checker</a></li><li><a href="https://docs.astral.sh/ruff/">Ruff, a linter and formatter</a></li><li><a href="https://docs.pytest.org/en/stable/">pytest, a test runner</a></li><li><a href="https://pythontutor.com/">Python Tutor, a step visualiser</a></li><li><a href="https://jupyterlab.readthedocs.io/en/stable/">JupyterLab</a></li><li><a href="https://marimo.io/">marimo, a reactive notebook</a></li><li><a href="https://vscodium.com/">VSCodium, an editor</a></li><li><a href="https://openrouter.ai/docs/quickstart">OpenRouter quickstart (one way to reach a free hosted model)</a></li></ul>
+<h3>Evidence on learning to program with AI assistance</h3>
+<ul><li><a href="https://www.anthropic.com/research/AI-assistance-coding-skills">How AI assistance impacts the formation of coding skills (Anthropic, 2026)</a></li><li><a href="https://arxiv.org/abs/2601.20245">Shen and Tamkin, How AI Impacts Skill Formation (arXiv 2601.20245)</a></li></ul>
+<h2>Files and links</h2>
+<div class="files">
+<a href="practice.html"><b>practice.html</b><span>Practice questions with feedback</span></a>
+<a href="index.md"><b>index.md</b><span>This page as Markdown, for an AI assistant</span></a>
+<a href="llms.txt"><b>llms.txt</b><span>The course for AI assistants (llms.txt)</span></a>
+<a href="https://github.com/SDAIAAcademy/fn-101"><b>SDAIAAcademy/fn-101</b><span>The course repository</span></a>
+</div>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"index.html"},"ai":{"context":{"course":"context/course.md","courseJs":"context/course.js","day":null,"llms":"llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="_engine/academy.js"></script>
+</body>
+</html>

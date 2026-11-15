@@ -1,0 +1,6 @@
+[
+  "Start from the symptom and not from the code. Six districts show the same number, and that number is the total. When things that should be separate show the same content, what does that remind you of from Day 1? Before you open any file: which function hands the report its anomalies per district?",
+  "Shrink it. Build two meters in two districts and one anomaly by hand, call that function, and print the result. Then ask Python one question about the two lists that came back: are they equal, or are they the same object? There is an operator for the second question.",
+  "You now know there is one list where there should be several. A list is created where the square brackets run. In the function, count how many times the empty brackets run, compared with the number of districts. Read the documentation of the method that builds the dictionary: what does it say about the value it is given?",
+  "The dictionary is built from the keys and one value, and that one value is handed to every key. You need a construction that makes a new empty list for each key. You met one on Day 2: the comprehension. Write the regression test before you change the line, and watch it fail first."
+]

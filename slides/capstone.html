@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="deck" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capstone · Capstone project presentations · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="capstone.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<div class="deck" data-course="Python for Data and AI Work" data-track="foundations" data-day="Capstone">
+<section class="slide title" id="title" data-auto="title" data-label="Welcome" data-n="1">
+  <div class="kicker">SDAIA Academy · Python for Data and AI Work</div>
+  <h1>Capstone project presentations</h1>
+  <p class="lead mt">Capstone</p>
+  <div class="meta"><span class="track">Data &amp; AI Foundations Track</span><span>4 teaching days + capstone day</span><span>10 min talk and demo</span><span>FN-101</span></div>
+  <aside class="notes"><p>Today is theirs: keep your own talking to the opening and the closing. Before the room fills: the hidden dataset written with your own seed and kept off any shared drive, the grader tried on one repository, a fresh clone of each submission, and for each participant one requested change and one traceback prepared from their code.</p></aside>
+</section>
+
+<section class="slide" id="agenda" data-label="Agenda" data-n="2">
+  <div class="kicker">Capstone</div>
+  <h2>How the day runs</h2>
+  <div class="agenda">
+    <div class="item now"><div><b>The supervised check</b><small>one hour, on paper and in a locked editor, no assistant</small></div></div>
+    <div class="item"><div><b>Finishing the tool</b><small>the brief, the public tests, the README; any tool is allowed</small></div></div>
+    <div class="item"><div><b>Walkthroughs</b><small>ten minutes each: run it, change it, read a traceback</small></div></div>
+    <div class="item"><div><b>Review and closing</b><small>what the tools showed, the follow-up task, what comes next</small></div></div>
+  </div>
+  <aside class="notes"><p>The supervised check is thirty per cent of the assessment, the repository fifty, the walkthrough twenty. Passing needs seventy per cent overall and sixty on the check. Say the numbers once, here.</p></aside>
+</section>
+
+<section class="slide dark" id="supervised-check" data-label="The check" data-lo="LO1 LO5" data-n="3">
+  <div class="kicker">Supervised check · AI off</div>
+  <h1>Trace, order, debug · 60 minutes</h1>
+  <div class="timer" data-minutes="60"></div>
+  <p class="lead">Ten snippets to trace on paper, one function to put in order, one defect to find with a log. Laptops closed for the first two parts; a locked editor for the third.</p>
+  <aside class="notes"><p>Press T. The items are not in the course repository: they come from the Academy's exam files. The format is the four morning drills and lab 3.4. Eight of ten traces right is the mark for the first course outcome. Collect the papers before anyone opens an assistant.</p></aside>
+</section>
+
+<section class="slide" id="the-brief" data-label="The brief" data-lo="LO3 LO4 LO6" data-n="4">
+  <div class="kicker">The capstone</div>
+  <h2>One command that turns the work-order export into a report Mazen can trust</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li><b>In:</b> 505 work orders (CSV) and the crews (JSON Lines), with planted problems</li>
+      <li><b>Rules:</b> eight reasons to reject a row, applied in a fixed order</li>
+      <li><b>Out:</b> a report for a person, a summary for a program, a rejection log</li>
+      <li><b>Always:</b> accepted plus rejected equals the rows; two runs, the same bytes; nothing from the notes in any output</li>
+    </ul>
+    <pre class="code" data-file="terminal"><code class="language-bash">python -m workorders report \
+  --orders data/work_orders.csv \
+  --crews data/crews.jsonl \
+  --as-of 2026-10-31 --out out</code></pre>
+  </div>
+  <aside class="notes"><p>The brief is labs/capstone/README.md and was handed out at the end of Day 4. Every part of it was practised: the rules are Day 1 and Day 3, the aggregation Day 2, the command line and the same-bytes property Day 4. Any assistant is allowed for the building.</p></aside>
+</section>
+
+<section class="slide" id="rubric" data-label="The rubric" data-n="5">
+  <div class="kicker">How the repository is scored</div>
+  <h2>The rubric</h2>
+  <div class="bars">
+    <div class="row"><span>Correctness on hidden tests</span><div class="bar c-teal" style="--w:100%"></div><span class="val">30%</span></div>
+    <div class="row"><span>Validation and errors</span><div class="bar c-cyan" style="--w:67%"></div><span class="val">20%</span></div>
+    <div class="row"><span>Structure and types</span><div class="bar c-coral" style="--w:67%"></div><span class="val">20%</span></div>
+    <div class="row"><span>Reproducibility</span><div class="bar c-purple" style="--w:50%"></div><span class="val">15%</span></div>
+    <div class="row"><span>README</span><div class="bar c-amber" style="--w:50%"></div><span class="val">15%</span></div>
+  </div>
+  <div class="callout tip mt"><b>The hidden tests run your command on files you have not seen.</b> Other rows, the same rules. The public sample shows their shape.</div>
+  <aside class="notes"><p>Full marks, one example each. Hidden tests: every count of the summary right on the assessor's file. Validation: one reason per bad row, specific exceptions, exit code 2 for a missing file. Structure: loading, rules and reporting in separate modules, a clean strict type check. Reproducibility: a fresh clone, one command, the same bytes twice. README: the command, the report, and what the tool does not check.</p></aside>
+</section>
+
+<section class="slide" id="format" data-label="Format" data-n="6">
+  <div class="kicker">The walkthrough · no assistant</div>
+  <h2>10 minutes each, questions included</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>1 · Run it</h4><p class="small mb0">From a fresh clone: the one command, then the report. About three minutes.</p></div>
+    <div class="card c-cyan"><h4>2 · Change it</h4><p class="small mb0">The assessor asks for one small change. You make it live, with a test. About four minutes.</p></div>
+    <div class="card c-coral"><h4>3 · Read a traceback</h4><p class="small mb0">Produced from your code, chosen by the assessor. From the last line up: what, where, what you would check first.</p></div>
+  </div>
+  <div class="callout note mt"><b>While you wait.</b> Read a neighbour's README and run their command. Write one thing that is clear and one question.</div>
+  <aside class="notes"><p>The walkthrough is twenty per cent of the assessment and shows whose understanding the repository is. Requested changes that fit four minutes: a ninth reason, another overdue threshold, a column in the report. For the traceback, run their tool on a file with a broken header or a crews file with a missing key and keep the output.</p></aside>
+</section>
+
+<section class="slide order" id="running-order" data-label="Running order" data-n="7">
+  <div class="kicker">Running order</div>
+  <h2>Who presents when</h2>
+  <table class="t small">
+    <tr><th>#</th><th>Participant</th><th>Repository</th></tr>
+    <tr><td>1</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>2</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>3</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>4</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>5</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>6</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>7</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+    <tr><td>8</td><td><input placeholder="name"></td><td><input placeholder="repository"></td></tr>
+  </table>
+  <aside class="notes"><p>Type the names in at the start; the fields can be edited live and are not saved, so keep the list in your notes too. With more than eight participants and one assessor, run the walkthroughs in two rooms, or begin them while others are still finishing.</p></aside>
+</section>
+
+<section class="slide dark" id="final-prep" data-label="Before the first walkthrough" data-n="8">
+  <div class="kicker">Before the first walkthrough</div>
+  <h1>Final prep · 20 minutes</h1>
+  <div class="timer" data-minutes="20"></div>
+  <p class="lead">Clone your own repository into a new folder and run the command there. Run the public tests. Read your README as a stranger would.</p>
+  <aside class="notes"><p>Press T to start the timer. The fresh clone is the point: it has only what was committed. Breaks are not slides: press B when the room needs one.</p></aside>
+</section>
+
+<section class="slide dark presenting" id="now-presenting" data-label="Now presenting" data-n="9">
+  <div class="kicker center">Now presenting</div>
+  <div class="center"><input placeholder="Participant · repository"></div>
+  <div class="timers mt">
+    <div><h3>Run, change, traceback</h3><div class="timer" data-minutes="10"></div></div>
+  </div>
+  <aside class="notes"><p>Type the participant's name and press T to start the timer. Reuse this slide for every participant. No assistant on the screen during the ten minutes.</p></aside>
+</section>
+
+<section class="slide" id="review" data-label="Trainer review" data-n="10">
+  <div class="kicker">Trainer review</div>
+  <h2>What the tools showed</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>Strongest patterns</h4><p class="small mb0">What several repositories got right.</p></div>
+    <div class="card c-coral"><h4>Common gaps</h4><p class="small mb0">What most tools would fix next.</p></div>
+    <div class="card c-purple"><h4>One surprise</h4><p class="small mb0">Something nobody expected.</p></div>
+  </div>
+  <aside class="notes"><p>Fill these in from your scoring notes during the last break. Name repositories for strengths; keep gaps anonymous. Likely gaps: the order of the rules, a duplicate counted against a rejected first row, a note quoted in a rejection detail.</p></aside>
+</section>
+
+<section class="slide" id="what-next" data-label="After the course" data-n="11">
+  <div class="kicker">After the course</div>
+  <h2>Keep going</h2>
+  <ul class="bullets">
+    <li><b>The follow-up task:</b> one new validation rule for Miqyas, with tests, reviewed by a peer. It is tracked: <code>labs/followup/</code></li>
+    <li><b>Your tool stays yours:</b> keep it reproducible, and add the next rule you named in "what the tool does not check"</li>
+    <li><b>Next Academy courses:</b> FN-102 for version control, FN-104 for SQL and Arabic text normalisation, then the AI Engineering or the Data Science track</li>
+  </ul>
+  <aside class="notes"><p>Agree the pairs for the peer review of the follow-up task before people leave, and the date by which it is handed in.</p></aside>
+</section>
+
+<section class="slide dark" id="thanks" data-label="Thank you" data-n="12">
+  <div class="kicker">SDAIA Academy</div>
+  <h1>Thank you</h1>
+  <p class="lead">Python for Data and AI Work</p>
+  <aside class="notes"><p>Close with the one habit each person named at the end of Day 4.</p></aside>
+</section>
+</div>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"deck":{"id":"capstone","kind":"capstone","day":5,"label":"Capstone","title":"Capstone project presentations","prev":"day4.html","next":null,"md":"capstone.md","alt":{}},"sessions":[],"slides":[{"id":"title","n":1,"title":"Capstone project presentations","kind":"title","session":0,"hash":"91b3bc4e","md":"#### [capstone#title] Capstone project presentations\n\n*SDAIA Academy · Python for Data and AI Work*\n\nCapstone\n\nData & AI Foundations Track · 4 teaching days + capstone day · 10 min talk and demo · FN-101","notes":"Today is theirs: keep your own talking to the opening and the closing. Before the room fills: the hidden dataset written with your own seed and kept off any shared drive, the grader tried on one repository, a fresh clone of each submission, and for each participant one requested change and one traceback prepared from their code.","minutes":null,"lo":[]},{"id":"agenda","n":2,"title":"How the day runs","kind":"content","session":0,"hash":"bbb3458f","md":"#### [capstone#agenda] How the day runs\n\n*Capstone*\n\n- **The supervised check**: one hour, on paper and in a locked editor, no assistant\n- **Finishing the tool**: the brief, the public tests, the README; any tool is allowed\n- **Walkthroughs**: ten minutes each: run it, change it, read a traceback\n- **Review and closing**: what the tools showed, the follow-up task, what comes next","notes":"The supervised check is thirty per cent of the assessment, the repository fifty, the walkthrough twenty. Passing needs seventy per cent overall and sixty on the check. Say the numbers once, here.","minutes":null,"lo":[]},{"id":"supervised-check","n":3,"title":"Trace, order, debug · 60 minutes","kind":"content","session":0,"hash":"ebf508b3","md":"#### [capstone#supervised-check] Trace, order, debug · 60 minutes\n\n*Supervised check · AI off*\n\nTen snippets to trace on paper, one function to put in order, one defect to find with a log. Laptops closed for the first two parts; a locked editor for the third.","notes":"Press T. The items are not in the course repository: they come from the Academy's exam files. The format is the four morning drills and lab 3.4. Eight of ten traces right is the mark for the first course outcome. Collect the papers before anyone opens an assistant.","minutes":null,"lo":["LO1","LO5"]},{"id":"the-brief","n":4,"title":"One command that turns the work-order export into a report Mazen can trust","kind":"content","session":0,"hash":"2a8fc06f","md":"#### [capstone#the-brief] One command that turns the work-order export into a report Mazen can trust\n\n*The capstone*\n\n- **In:** 505 work orders (CSV) and the crews (JSON Lines), with planted problems\n- **Rules:** eight reasons to reject a row, applied in a fixed order\n- **Out:** a report for a person, a summary for a program, a rejection log\n- **Always:** accepted plus rejected equals the rows; two runs, the same bytes; nothing from the notes in any output\n\n```bash\n# file: terminal\npython -m workorders report \\\n  --orders data/work_orders.csv \\\n  --crews data/crews.jsonl \\\n  --as-of 2026-10-31 --out out\n```","notes":"The brief is labs/capstone/README.md and was handed out at the end of Day 4. Every part of it was practised: the rules are Day 1 and Day 3, the aggregation Day 2, the command line and the same-bytes property Day 4. Any assistant is allowed for the building.","minutes":null,"lo":["LO3","LO4","LO6"]},{"id":"rubric","n":5,"title":"The rubric","kind":"content","session":0,"hash":"04983d01","md":"#### [capstone#rubric] The rubric\n\n*How the repository is scored*\n\n| Item | Value |\n| --- | --- |\n| Correctness on hidden tests | 30% |\n| Validation and errors | 20% |\n| Structure and types | 20% |\n| Reproducibility | 15% |\n| README | 15% |\n\n> **The hidden tests run your command on files you have not seen.** Other rows, the same rules. The public sample shows their shape.","notes":"Full marks, one example each. Hidden tests: every count of the summary right on the assessor's file. Validation: one reason per bad row, specific exceptions, exit code 2 for a missing file. Structure: loading, rules and reporting in separate modules, a clean strict type check. Reproducibility: a fresh clone, one command, the same bytes twice. README: the command, the report, and what the tool does not check.","minutes":null,"lo":[]},{"id":"format","n":6,"title":"10 minutes each, questions included","kind":"content","session":0,"hash":"796998e2","md":"#### [capstone#format] 10 minutes each, questions included\n\n*The walkthrough · no assistant*\n\n- **1 · Run it.** From a fresh clone: the one command, then the report. About three minutes.\n- **2 · Change it.** The assessor asks for one small change. You make it live, with a test. About four minutes.\n- **3 · Read a traceback.** Produced from your code, chosen by the assessor. From the last line up: what, where, what you would check first.\n\n> **While you wait.** Read a neighbour's README and run their command. Write one thing that is clear and one question.","notes":"The walkthrough is twenty per cent of the assessment and shows whose understanding the repository is. Requested changes that fit four minutes: a ninth reason, another overdue threshold, a column in the report. For the traceback, run their tool on a file with a broken header or a crews file with a missing key and keep the output.","minutes":null,"lo":[]},{"id":"running-order","n":7,"title":"Who presents when","kind":"order","session":0,"hash":"f5a325dc","md":"#### [capstone#running-order] Who presents when\n\n*Running order*\n\n| # | Participant | Repository |\n| --- | --- | --- |\n| 1 |  |  |\n| 2 |  |  |\n| 3 |  |  |\n| 4 |  |  |\n| 5 |  |  |\n| 6 |  |  |\n| 7 |  |  |\n| 8 |  |  |","notes":"Type the names in at the start; the fields can be edited live and are not saved, so keep the list in your notes too. With more than eight participants and one assessor, run the walkthroughs in two rooms, or begin them while others are still finishing.","minutes":null,"lo":[]},{"id":"final-prep","n":8,"title":"Final prep · 20 minutes","kind":"content","session":0,"hash":"9e3d6ffc","md":"#### [capstone#final-prep] Final prep · 20 minutes\n\n*Before the first walkthrough*\n\nClone your own repository into a new folder and run the command there. Run the public tests. Read your README as a stranger would.","notes":"Press T to start the timer. The fresh clone is the point: it has only what was committed. Breaks are not slides: press B when the room needs one.","minutes":null,"lo":[]},{"id":"now-presenting","n":9,"title":"Run, change, traceback","kind":"presenting","session":0,"hash":"cac67129","md":"#### [capstone#now-presenting] Run, change, traceback\n\n*Now presenting*","notes":"Type the participant's name and press T to start the timer. Reuse this slide for every participant. No assistant on the screen during the ten minutes.","minutes":null,"lo":[]},{"id":"review","n":10,"title":"What the tools showed","kind":"content","session":0,"hash":"7822cf5b","md":"#### [capstone#review] What the tools showed\n\n*Trainer review*\n\n- **Strongest patterns.** What several repositories got right.\n- **Common gaps.** What most tools would fix next.\n- **One surprise.** Something nobody expected.","notes":"Fill these in from your scoring notes during the last break. Name repositories for strengths; keep gaps anonymous. Likely gaps: the order of the rules, a duplicate counted against a rejected first row, a note quoted in a rejection detail.","minutes":null,"lo":[]},{"id":"what-next","n":11,"title":"Keep going","kind":"content","session":0,"hash":"1b171dcb","md":"#### [capstone#what-next] Keep going\n\n*After the course*\n\n- **The follow-up task:** one new validation rule for Miqyas, with tests, reviewed by a peer. It is tracked: `labs/followup/`\n- **Your tool stays yours:** keep it reproducible, and add the next rule you named in \"what the tool does not check\"\n- **Next Academy courses:** FN-102 for version control, FN-104 for SQL and Arabic text normalisation, then the AI Engineering or the Data Science track","notes":"Agree the pairs for the peer review of the follow-up task before people leave, and the date by which it is handed in.","minutes":null,"lo":[]},{"id":"thanks","n":12,"title":"Thank you","kind":"content","session":0,"hash":"4241fdf3","md":"#### [capstone#thanks] Thank you\n\n*SDAIA Academy*\n\nPython for Data and AI Work","notes":"Close with the one habit each person named at the end of Day 4.","minutes":null,"lo":[]}],"activities":[],"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":"capstone.md","llms":"../llms.txt"},"tasks":[],"tools":[]},"bridge":{"allowedOrigins":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

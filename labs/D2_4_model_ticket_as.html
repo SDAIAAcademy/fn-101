@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 2.4 · Model and sort the ticket queue · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D2_4_model_ticket_as.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day2.html#lab-2-4">Back to the slides</a></nav></div>
+<span class="tag">Lab 2.4</span>
+<h1>Model and sort the ticket queue</h1>
+<p>Model a ticket as a data class and sort tickets by priority and age.</p>
+<div class="meta"><span>25 minutes</span><span>Day 2</span><span>Session 4: Records as data classes</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="2.4">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Give the service ticket a type of its own, a frozen data class with typed fields, and put the open tickets in the order customer care works them: most urgent first, oldest first within a priority.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>2.4</code> of the workspace: <code>tickets.py</code> and <code>data/tickets.jsonl</code> (400 tickets, text in Arabic and English)</li>
+    <li>AI policy: tutor. Hints and explanations of messages, no code</li>
+  </ul>
+
+  <div class="step">
+    <h3>Define the frozen data class and its age method <span class="min">8 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../2.4</code></pre>
+    <p>Open <code>tickets.py</code> and write the class where the comment of step 1 is. Six fields, in the order given; the decorator makes the class a record that cannot be changed after it is built.</p>
+    <pre class="code" data-file="tickets.py"><code class="language-python">from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Ticket:
+    ticket_id: str
+    opened: date
+    ...
+
+    def age_days(self, today: date) -> int:
+        ...</code></pre>
+    <p>Subtracting one date from another gives a difference that has a <code>.days</code>. The file's lines also hold a phone number and an identity number. The queue does not need them: do not give the class those fields.</p>
+  </div>
+
+  <div class="step">
+    <h3>Build tickets from the lines of the file <span class="min">6 min</span></h3>
+    <p>Write <code>from_record</code>: it takes the dictionary of one parsed line and returns a <code>Ticket</code>. Name each field when you build the record, and turn the text of <code>opened</code> into a date with <code>date.fromisoformat</code>.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python tickets.py</code></pre>
+    <p>The script now gets as far as the queue.</p>
+  </div>
+
+  <div class="step">
+    <h3>Sort the open tickets by priority, then age <span class="min">7 min</span></h3>
+    <p>Write <code>queue</code>. Keep the tickets whose status is <code>open</code>, then sort them with a key that returns a tuple: the rank of the priority (from <code>PRIORITY_RANK</code>), then the date opened, then the ticket id. Tuples compare item by item, so the second item decides only between tickets with the same first one.</p>
+    <pre class="code" data-file="tickets.py"><code class="language-python">return sorted(waiting, key=lambda t: (..., ..., ...))</code></pre>
+    <p>Run the script and read the first five lines. Are they all urgent, and do their dates rise?</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run mypy --strict tickets.py
+uv run ../lab.py check 2.4</code></pre>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Count the open tickets per district and priority with a dictionary whose keys are tuples, <code>dict[tuple[str, str], int]</code>, and print the three largest counts.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>Sorting by the text of the priority would put <code>high</code> before <code>urgent</code>. Why, and what did you sort by instead?</li>
+    <li>What happens at <code>ticket.priority = "low"</code> on your class, and why is that useful in a queue?</li>
+    <li>The identity number is in the file. Where is it in your program after <code>from_record</code> has run?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Reference run: 246 open tickets of 400. The queue starts T-20087 (urgent, opened 2026-08-21, 41 days old on the course's "today", 1 October 2026), T-20274 (38 days), T-20066 (37), T-20196 (36), T-20166 (35). The first ticket of the file, T-20001, is 18 days old.</p>
+    <p>The check wants a frozen data class without a phone or identity field, <code>opened</code> as a date, the right age and the exact order of all 246 tickets. Common errors: sorting by <code>t.priority</code>, which is alphabetical; forgetting the status filter (400 tickets); <code>reverse=True</code> to get urgent first, which also puts the newest first; keeping <code>opened</code> as text, which sorts correctly by luck in this format and fails <code>age_days</code>. Answers: text sorts by letters, the rank dictionary gives numbers; a <code>FrozenInstanceError</code>, so no step of a pipeline can change a ticket behind another's back; nowhere, it was never copied into the record. Reference: <code>labs/solutions/2.4/tickets.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D2_3_stream_large_readings.html" rel="prev">← Previous lab</a><a href="D3_1_load_readings_tickets.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"2.4","title":"Model and sort the ticket queue","summary":"Model a ticket as a data class and sort tickets by priority and age.","minutes":25,"day":2,"unit":"Day 2","session":4,"deck":"../slides/day2.html#lab-2-4","prev":"D2_3_stream_large_readings.html","next":"D3_1_load_readings_tickets.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

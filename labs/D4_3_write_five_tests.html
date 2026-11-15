@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 4.3 · Pin the anomaly rule down with tests · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D4_3_write_five_tests.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day4.html#lab-4-3">Back to the slides</a></nav></div>
+<span class="tag">Lab 4.3</span>
+<h1>Pin the anomaly rule down with tests</h1>
+<p>Write five tests for the anomaly rule, including empty and boundary inputs.</p>
+<div class="meta"><span>25 minutes</span><span>Day 4</span><span>Session 3: Tests as a safety net</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="4.3">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>The whole report rests on one rule of three lines. Write five tests that pin that rule down, then let the check swap the rule for four wrong versions of it and see how many your tests notice.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>4.3</code> of the workspace: the package <code>miqyas/</code> with <code>is_anomaly</code> in <code>anomalies.py</code>, and <code>test_anomalies.py</code> with one test written</li>
+    <li>AI policy: tutor. Ask what a boundary case is, if you need to; choosing the examples is the lab</li>
+  </ul>
+
+  <div class="step">
+    <h3>Read the rule's docstring and the one supplied test <span class="min">3 min</span></h3>
+    <pre class="code" data-file="miqyas/anomalies.py"><code class="language-python">def is_anomaly(value: float, history: list[float], factor: float = 3.0) -> bool:
+    """True when value is more than factor times the median of history.
+
+    With no history there is nothing to compare with: the answer is False.
+    Exactly factor times the median is not an anomaly.
+    """</code></pre>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../4.3
+uv run pytest test_anomalies.py</code></pre>
+    <p>The docstring makes three promises and the signature has three arguments. On paper, list what a wrong version of this function could get wrong. That list is your test plan.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write a test for the boundary and one for no history <span class="min">8 min</span></h3>
+    <p>Use a history whose median you can see without computing, such as three times 1.0. Write one test for a value exactly at factor times the median, and its neighbour just above. Then one test for an empty history. Each test has three parts: arrange the input, act with one call, assert the result.</p>
+    <pre class="code" data-file="test_anomalies.py"><code class="language-python">def test_exactly_three_times_the_median_is_not_an_anomaly():
+    history = [1.0, 1.0, 1.0]              # arrange
+    result = is_anomaly(3.0, history)      # act
+    assert result is False                 # assert</code></pre>
+    <p>Name each test after the sentence it proves. When it fails next year, the name is the first thing a colleague reads.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write three more: the median and the factor <span class="min">8 min</span></h3>
+    <p>Three questions, one test each. A clear anomaly: is it found? The median: can you build a history in which the median and the mean disagree, and a value that is an anomaly by one and not by the other? The factor: does passing <code>factor=2.0</code> change an answer?</p>
+    <p>Run the tests after each one. A new test that passes at once on the real rule is normal here; whether it is worth anything is what the next step measures.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the check against four wrong versions <span class="min">6 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../lab.py check 4.3</code></pre>
+    <p>The check copies your tests beside four versions of the rule, each with one planted change, and runs them. For each version it says whether a test failed. A version that all your tests pass is a mistake your tests would let through: read its description, add the example that tells the two rules apart, and run the check again.</p>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Rewrite your examples as one table with <code>pytest.mark.parametrize</code>: one row per case with the value, the history, the factor and the expected answer. Does the check still pass? What did you lose in the names?</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>All your tests pass. What have you proved, and what have you not?</li>
+    <li>Which of the four wrong versions would a test with the history 1.0, 1.0, 1.0 alone never catch, and why?</li>
+    <li>Why is a history of 30 real readings from the month file a poor test input?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>The four planted versions, in <code>VARIANTS</code> of <code>labs/kit/labtool.py</code>: the boundary counts as an anomaly (<code>&gt;=</code> for <code>&gt;</code>); no history counts as an anomaly; the mean is used in place of the median; the factor argument is ignored. The check wants at least six tests in the file (the supplied one and five), all passing on the real rule, and at least one failing for each version. The reference file has seven tests and catches all four.</p>
+    <p>Common errors: a boundary test with a history whose median is not a round number, so that floating point decides the answer (keep the median at 1.0 or 2.0); a "median" test with a symmetric history, where the mean and the median agree and the third version survives; testing only <code>True</code> results, so the second version survives; asserting <code>== True</code> on a truthy value. Do not show the four versions before the check runs: the lab is the step from "my tests pass" to "my tests would notice". Answers: that the rule gives the expected answer on these examples, not that it is right everywhere; the mean in place of the median, since both are 1.0 there; nobody can see by eye what the answer should be, so the test proves nothing a reader can check. Reference: <code>labs/solutions/4.3/test_anomalies.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D4_2_move_supplied_notebook.html" rel="prev">← Previous lab</a><a href="D4_4_get_hints_from.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"4.3","title":"Pin the anomaly rule down with tests","summary":"Write five tests for the anomaly rule, including empty and boundary inputs.","minutes":25,"day":4,"unit":"Day 4","session":3,"deck":"../slides/day4.html#lab-4-3","prev":"D4_2_move_supplied_notebook.html","next":"D4_4_get_hints_from.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

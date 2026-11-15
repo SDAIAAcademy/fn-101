@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 2.3 · Stream a large readings file · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D2_3_stream_large_readings.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day2.html#lab-2-3">Back to the slides</a></nav></div>
+<span class="tag">Lab 2.3</span>
+<h1>Stream a large readings file</h1>
+<p>Stream a large readings file with a generator and compare peak memory with a list.</p>
+<div class="meta"><span>25 minutes</span><span>Day 2</span><span>Session 3: Comprehensions and generators</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="2.3">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Add up a file of 100,000 readings twice: once by loading every row into a list, once with a generator that hands over one value at a time. Then measure the peak memory of both.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>2.3</code> of the workspace: <code>stream.py</code>, <code>memory.py</code> and <code>data/readings_large.csv</code> (100,000 rows)</li>
+    <li>AI policy: tutor. Hints and explanations of messages, no code</li>
+  </ul>
+
+  <div class="step">
+    <h3>Run the list version and read how it works <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../2.3
+uv run python stream.py</code></pre>
+    <p>The first total prints; the second stops at <code>NotImplementedError</code>. Read <code>total_list</code>: at its busiest moment, which collections exist at once, and how many items does each hold?</p>
+  </div>
+
+  <div class="step">
+    <h3>Write the generator that yields one value per row <span class="min">8 min</span></h3>
+    <p>Write <code>read_values</code>. It opens the file, loops over the reader and, for each row, <code>yield</code>s the consumption as a float. There is no list and no <code>return</code>.</p>
+    <pre class="code" data-file="stream.py"><code class="language-python">with open(path, encoding="utf-8", newline="") as file:
+    for row in csv.DictReader(file):
+        yield ...</code></pre>
+    <p>Try it at a prompt: <code>values = read_values("data/readings_large.csv")</code> prints nothing and reads nothing. <code>next(values)</code> gives the first value, <code>next(values)</code> again the second.</p>
+  </div>
+
+  <div class="step">
+    <h3>Add up the stream; compare the two totals <span class="min">4 min</span></h3>
+    <p>Write <code>total_stream</code> in one line: <code>sum</code> takes anything it can loop over, a generator included. Run the script: the two totals must be the same number.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python stream.py</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Measure both peaks of memory <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python memory.py</code></pre>
+    <p>The script measures the peak memory of each version with <code>tracemalloc</code> and writes <code>memory.txt</code>. Predict the ratio before you run it. Then predict what both peaks become for a file ten times as long.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run mypy --strict stream.py
+uv run ../lab.py check 2.3</code></pre>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>At a prompt, make one generator and pass it to <code>sum</code> twice in a row. Explain what the second call returns, and what you would have to do to get the total again.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>When does the file of <code>read_values</code> get opened: when the function is called, or later?</li>
+    <li>You need the highest value and the total. Can one pass over the generator give both?</li>
+    <li>Name one task on this file for which the list is the right choice.</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Reference run: both totals are 137,769.165 cubic metres. Peak memory on the build laptop: the list version about 35,900 KiB (35 MiB), the stream about 160 KiB, a ratio above 200. The absolute numbers depend on the Python version; the stream's peak does not grow with the file, the list's grows in step with it.</p>
+    <p>The check wants a generator function, equal totals and a stream peak at least twenty times below the list's. Common errors: a function that builds a list and returns it (works, fails the check); <code>yield</code> placed after the loop; <code>list(read_values(path))</code> inside <code>total_stream</code>, which brings the list back; reading the file outside the <code>with</code> block. Answers: at the first <code>next</code>, not at the call; yes, a loop that keeps a running total and a running maximum; anything that needs the rows more than once or in another order, such as sorting or a median. The stretch returns 0 the second time: a generator is used up. Reference: <code>labs/solutions/2.3/stream.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D2_2_find_meters_no.html" rel="prev">← Previous lab</a><a href="D2_4_model_ticket_as.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"2.3","title":"Stream a large readings file","summary":"Stream a large readings file with a generator and compare peak memory with a list.","minutes":25,"day":2,"unit":"Day 2","session":3,"deck":"../slides/day2.html#lab-2-3","prev":"D2_2_find_meters_no.html","next":"D2_4_model_ticket_as.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

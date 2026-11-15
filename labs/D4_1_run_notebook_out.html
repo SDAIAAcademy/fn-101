@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 4.1 · Find the notebook's hidden state · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D4_1_run_notebook_out.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day4.html#lab-4-1">Back to the slides</a></nav></div>
+<span class="tag">Lab 4.1</span>
+<h1>Find the notebook's hidden state</h1>
+<p>Run a notebook out of order, find the hidden-state bug, then restart and run all; then choose a home for four tasks.</p>
+<div class="meta"><span>25 minutes</span><span>Day 4</span><span>Session 1: What notebooks hide</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="4.1">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Salma's notebook shows 27 anomalies for September, and it has always worked for her. Find out what her kernel remembered that the file does not hold, repair the notebook so that it runs from top to bottom for anyone, and decide which of four tasks belong in a notebook at all.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>4.1</code> of the workspace: <code>analysis.ipynb</code>, <code>finding.md</code>, <code>homes.md</code> and the data</li>
+    <li>A way to open a notebook: JupyterLab, or an editor that opens notebooks with the workspace's environment as its kernel</li>
+    <li>AI policy: tutor. An assistant may explain an error message; the two findings are yours</li>
+  </ul>
+
+  <div class="step">
+    <h3>Read the saved notebook and its execution counts <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../4.1
+uv run --with jupyterlab jupyter lab analysis.ipynb</code></pre>
+    <p>Run nothing yet. Read the number in brackets beside each code cell, from the top of the page down, and write the sequence on paper. Which numbers are missing? Which cells were run after the cell below them? Note the anomaly count the page shows.</p>
+  </div>
+
+  <div class="step">
+    <h3>Restart and run all; find the missing name <span class="min">7 min</span></h3>
+    <p>In the menu: <b>Kernel</b>, then <b>Restart Kernel and Run All Cells</b>. The run stops. Read the last line of the error: which name is not defined, and which cell needed it? No cell on the page defines it, and the counts told you a cell was run and is gone.</p>
+    <p>Add a cell above the cleaning cell that defines the name from what the first cell already loaded: the set of the meter ids in the registry. Write finding 1 in <code>finding.md</code>: what was missing, and why the saved file did not show it.</p>
+  </div>
+
+  <div class="step">
+    <h3>Find the stale number and give factor one home <span class="min">7 min</span></h3>
+    <p>Restart and run all again. The run now reaches the end. Compare the anomaly count with the one you noted in the first step. Which cell changed <code>factor</code>, and in which order must the cells have been run for the page to show 27 under a cell that says 3.0?</p>
+    <p>Repair it so that the question "what if we were stricter?" cannot change the answer above it: give the second threshold its own name and its own list, and leave <code>factor</code> set in one cell only. Restart, run all, save. Write finding 2.</p>
+    <pre class="code" data-file="the last cell, repaired"><code class="language-python">strict_factor = 2.0
+strict = [...]      # the same rule, with strict_factor
+print(len(strict), "anomalies at the stricter factor")</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Choose a home for four tasks; run the check <span class="min">7 min</span></h3>
+    <p>Open <code>homes.md</code>. For each of the four tasks write one word, notebook, script or module, and one line of reason. Compare with your neighbour before you run the check.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../lab.py check 4.1</code></pre>
+    <p>The check runs your notebook in a fresh kernel, compares every saved output with what the code prints, and compares your four choices with the reference: three of four is the mark.</p>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Run the notebook without opening it, as a scheduled job would, and read the count in the copy it writes.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run --with nbconvert jupyter nbconvert --to notebook --execute analysis.ipynb --output run.ipynb</code></pre>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>The saved counts were 1, 3, 4, 8, 9, 7. What does each gap or step backwards tell you?</li>
+    <li>Why did the notebook "work" on Salma's laptop for weeks?</li>
+    <li>Which one habit would have caught both problems before the number went into a report?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>The stale notebook is generated by <code>labs/_tools/make_notebook.py</code>, which runs the cells in the order of the story and keeps what each last printed. Saved counts: 1 (load), 3 (clean), 4 (factor), 8 (find), 9 (table), 7 (what-if). Count 2 was the deleted cell <code>known = set(district_of)</code>; 5 and 6 were the first runs of find and table; then the what-if cell set <code>factor = 2.0</code> (7) and find and table were run again (8, 9). A fresh run stops with NameError: name 'known' is not defined. After the repair a clean run prints 17,561 readings kept and 18 anomalies; 27 is the count at factor 2.0.</p>
+    <p>The check wants: a fresh kernel reaching the end, 17,561 and 18 in the fresh outputs, <code>factor</code> assigned in exactly one cell, saved counts 1, 2, 3 and on, saved outputs equal to fresh ones (so the participant must restart, run all and save), both findings written, and three of four homes matching: notebook, script, module, notebook. Common errors: defining <code>known</code> in the cleaning cell itself (accepted); deleting the what-if cell (accepted, and worth a word: the question was legitimate, its place was not); saving without a restart, so the counts start above 1. If JupyterLab cannot be downloaded in the room, VS Code or VSCodium with the Jupyter extension opens the same file; choose the environment of the workspace as the kernel. Answers: a gap is a cell run and deleted, or run again later; a step backwards is a cell run before the cells above it were run again; her kernel had never been restarted since the cell was deleted; restart and run all before reading any number. Reference: <code>labs/solutions/4.1/</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D3_4_ai_off_find.html" rel="prev">← Previous lab</a><a href="D4_2_move_supplied_notebook.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"4.1","title":"Find the notebook's hidden state","summary":"Run a notebook out of order, find the hidden-state bug, then restart and run all; then choose a home for four tasks.","minutes":25,"day":4,"unit":"Day 4","session":1,"deck":"../slides/day4.html#lab-4-1","prev":"D3_4_ai_off_find.html","next":"D4_2_move_supplied_notebook.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 3.1 · Write a district summary with phones masked · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D3_1_load_readings_tickets.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day3.html#lab-3-1">Back to the slides</a></nav></div>
+<span class="tag">Lab 3.1</span>
+<h1>Write a district summary with phones masked</h1>
+<p>Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written.</p>
+<div class="meta"><span>25 minutes</span><span>Day 3</span><span>Session 1: CSV and JSON Lines</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="3.1">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Read two CSV files and a JSON Lines file, and write one JSON summary per district that a colleague can open. The tickets are personal data: no phone number and no identity number may reach the file or the screen.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>3.1</code> of the workspace: <code>summary.py</code>, and in <code>data/</code> the files <code>readings_clean.csv</code>, <code>meters.csv</code> and <code>tickets.jsonl</code></li>
+    <li>AI policy: tutor. Do not paste ticket lines into an assistant: in real work they would be customers' data</li>
+  </ul>
+
+  <div class="step">
+    <h3>Load the two CSV files and the JSON Lines file <span class="min">7 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../3.1
+uv run python summary.py</code></pre>
+    <p>Write <code>load_csv</code> and <code>load_jsonl</code>. Name the encoding in both; for CSV also pass <code>newline=""</code>, so that the csv module handles line ends itself. A JSON Lines file is one JSON value per line: one <code>json.loads</code> per line.</p>
+    <pre class="code" data-file="summary.py"><code class="language-python">with open(path, encoding="utf-8", newline="") as file:
+    return list(csv.DictReader(file))</code></pre>
+    <p>Look at the first line of <code>data/tickets.jsonl</code> in your editor. Which of its ten fields would you not want in an email?</p>
+  </div>
+
+  <div class="step">
+    <h3>Mask the phone field and the phone numbers in text <span class="min">8 min</span></h3>
+    <p>Write <code>mask_phone</code>: every digit except the last two becomes a star, other characters stay. Then <code>mask_text</code>: people type callback numbers into the free text, so every match of the supplied pattern <code>PHONE</code> is replaced by <code>[phone]</code>.</p>
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> mask_phone("+966555010042")
+'+**********42'
+>>> mask_text("call me on 0555012345")
+'call me on [phone]'</code></pre>
+    <p>The supplied function <code>summarise</code> calls both for the open urgent tickets of each district. It never copies the identity number.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write the summary as JSON; read it as a reviewer <span class="min">6 min</span></h3>
+    <p>Write <code>write_json</code> with <code>json.dump</code>: <code>indent=2</code> so that a person can read it, <code>ensure_ascii=False</code> so that Arabic stays Arabic, the encoding named.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python summary.py</code></pre>
+    <p>Open <code>out/summary.json</code> and read it as Abdulaziz, the data protection officer, would: search it for <code>055</code>, for <code>966</code> and for <code>national</code>. Then read two Arabic callback texts to the end.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run mypy --strict summary.py
+uv run ../lab.py check 3.1</code></pre>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Change <code>\d</code> in the pattern to <code>[0-9]</code>, run again and count the phone numbers that now slip through. Find one of them in the tickets file and say what is different about its digits. Put <code>\d</code> back.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>The summary never contains the identity number. Which line of the program made sure of that?</li>
+    <li>Why is masking done before <code>json.dump</code> and not by editing the file afterwards?</li>
+    <li>What does the file look like with <code>ensure_ascii</code> left at its default?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Reference run: open tickets per district Al-Faisaliyah 37, Al-Khuzama 39, Al-Murooj 41, Al-Naseem 34, Al-Rabwa 53, Al-Yasmin 42 (246 in all); 25 callbacks, two of which had a phone number in the text (T-20066 and T-20124). In the whole ticket file 14 texts hold a phone number; 5 of them are written in Arabic-Indic digits, which <code>\d</code> matches and <code>[0-9]</code> does not, so the stretch finds 9 of 14.</p>
+    <p>The check calls both mask functions with its own examples, including Arabic-Indic digits, and searches the output file and everything the script prints for a run of nine or more digits. Common errors: masking only the field and not the text; printing a ticket while debugging (the check reads the screen too); <code>json.dumps</code> without <code>ensure_ascii=False</code>, which writes every Arabic letter as an escape; opening the output without an encoding. Answers: no line copies it, the callback entry is built from four named fields; a file that was written once with the number has already leaked it, to the disk, to a backup, to a log; every Arabic letter becomes six characters such as ا. Reference: <code>labs/solutions/3.1/summary.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D2_4_model_ticket_as.html" rel="prev">← Previous lab</a><a href="D3_2_open_ticket_file.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"3.1","title":"Write a district summary with phones masked","summary":"Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written.","minutes":25,"day":3,"unit":"Day 3","session":1,"deck":"../slides/day3.html#lab-3-1","prev":"D2_4_model_ticket_as.html","next":"D3_2_open_ticket_file.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

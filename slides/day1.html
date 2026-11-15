@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="deck" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 1 · Read before you write · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="day1.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<div class="deck" data-course="Python for Data and AI Work" data-track="foundations" data-day="Day 1">
+<section class="slide title" id="title" data-auto="title" data-label="Welcome" data-n="1">
+  <div class="kicker">SDAIA Academy · Python for Data and AI Work</div>
+  <h1>Read before you write</h1>
+  <p class="lead mt">Day 1: Tracing code by hand, functions with contracts, type hints, and rebuilding code from its lines</p>
+  <div class="meta"><span class="track">Data &amp; AI Foundations Track</span><span>4 teaching days + capstone day</span><span>4 sessions · 4 labs</span><span>FN-101</span></div>
+  <aside class="notes"><p>Welcome. Ask who has written a loop in any language and who came through the pre-work: it sets the pace of the first session. Say the rhythm of every day: an AI-off drill of ten minutes, then four sessions, each about 25 minutes of concepts and a 25-minute lab. Breaks are yours to call: press B.</p></aside>
+</section>
+
+<section class="slide" id="four-days-one-tool" data-label="The week" data-n="2">
+  <div class="kicker">The week</div>
+  <h2>Four days from reading one line to shipping one tool</h2>
+  <div class="ladder" style="--n:5">
+    <div class="rung c-teal on"><b>Day 1</b>Read before you write<small>trace, functions, types</small></div>
+    <div class="rung c-cyan off"><b>Day 2</b>Collections<small>dictionaries, sets, generators, records</small></div>
+    <div class="rung c-purple off"><b>Day 3</b>Files, text and failure<small>CSV, encodings, exceptions, debugging</small></div>
+    <div class="rung c-coral off"><b>Day 4</b>From notebook to tool<small>entry point, tests, the tutor</small></div>
+    <div class="rung c-amber off"><b>Capstone</b>Your own tool<small>work orders, a public repository</small></div>
+  </div>
+  <div class="callout tip mt"><b>What you leave with.</b> A command-line tool that validates a month of readings, flags anomalies and writes the same report on every run, and the habit of reading code before trusting it.</div>
+  <aside class="notes"><p>The order is deliberate: reading comes before writing because every later skill, and every review of code an assistant wrote, depends on it. Each lab starts from its own supplied folder, so nobody is locked out of a lab by an earlier one.</p></aside>
+</section>
+
+<section class="slide" id="ai-off-tutor-full" data-label="How we work" data-n="3">
+  <div class="kicker">How we work</div>
+  <h2>Three ways of working with an assistant, and every lab says which</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>AI off</h4><p class="small mb0">The daily drills, the first attempt at each debugging lab, and the supervised check. Paper, an editor, the documentation.</p></div>
+    <div class="card c-teal"><h4>AI tutor</h4><p class="small mb0">The other labs. The assistant gives hints and explains messages. It does not give code.</p></div>
+    <div class="card c-purple"><h4>AI full</h4><p class="small mb0">The capstone. You may delegate, and you then walk through the code and change it live, on request.</p></div>
+  </div>
+  <div class="callout note mt"><b>Why not full from the start.</b> Day 4 shows the evidence: people who delegate while learning finish, and then cannot debug what they finished.</div>
+  <aside class="notes"><p>The course repository carries the tutor rule in its agent instructions, so an assistant opened in the workspace is told to hint and not to write. The supervised check, the first hour of the capstone day, is AI-off and needs 60% by itself: say it now, not on Day 4.</p></aside>
+</section>
+
+<section class="slide" id="manahil-case" data-label="Case study" data-n="4">
+  <div class="kicker">The case study</div>
+  <h2>Manahil Water Services: 600 meters, one month, two messy files</h2>
+  <div class="cols cols-2">
+    <table class="t small">
+      <tr><th>File</th><th>Holds</th></tr>
+      <tr><td><code>meters.csv</code></td><td>600 meters in six districts</td></tr>
+      <tr><td><code>readings_2026_09.csv</code></td><td>17,690 daily readings, 129 of them bad</td></tr>
+      <tr><td><code>tickets.jsonl</code></td><td>400 service tickets, Arabic and English</td></tr>
+    </table>
+    <ul class="bullets">
+      <li><b>Salma</b>, metering analyst, has a notebook nobody else can rerun</li>
+      <li><b>Badr</b>, customer care lead, wants the ticket queue sorted</li>
+      <li><b>You</b> join as Shouq, the junior analyst</li>
+      <li>The fix is <b>Miqyas</b>, a command-line tool you build by Day 4</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>All of it is synthetic.</b> No real person, meter or phone number. You still treat the tickets as personal data, because the habits are the point.</div>
+  <aside class="notes"><p>Manahil is fictional. The numbers on this slide come from the data generator of the labs: 17,690 rows in the month file, of which 17,561 are accepted and 129 rejected for six reasons. Participants meet each reason in a lab. Abdulaziz, the data protection officer, appears on Day 3; Mazen, the maintenance planner, owns the capstone data.</p></aside>
+</section>
+
+<section class="slide" id="workspace-setup" data-label="Setup" data-n="5">
+  <div class="kicker">Setup</div>
+  <h2>One command builds the workspace; every lab has its own folder</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run labs/kit/setup.py
+<span class="hljs-built_in">cd</span> ../manahil-labs
+uv run lab.py list
+<span class="hljs-built_in">cd</span> 1.1</code></pre>
+    <ul class="bullets">
+      <li><code>uv run …</code> runs Python with the project's tools: a test runner, a type checker, a linter</li>
+      <li><code>lab.py start 2.1 --discard</code> gives a lab back its supplied state</li>
+      <li><code>lab.py check 2.1</code> runs your code and says what is still to do</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Nothing to install by hand.</b> The first <code>uv run</code> downloads the tools once. No model is downloaded at any point of the course.</div>
+  <aside class="notes"><p>Do this together before the drill. The first run needs the network. On Windows in a very deep folder, set UV_PROJECT_ENVIRONMENT to a short folder first; the labs' README says how. Anyone without uv: the pre-work covered the install; pair them for the first lab.</p></aside>
+</section>
+
+<section class="slide dark" id="drill-1" data-label="Drill 1" data-lo="LO1" data-minutes="10" data-n="6">
+  <div class="kicker">Drill 1 · AI off</div>
+  <h1>Predict the output · 10 minutes</h1>
+  <div class="timer" data-minutes="10"></div>
+  <p class="lead">Five snippets on paper: <code>labs/drills/day1.md</code>. No computer, no assistant. Write what each prints.</p>
+  <aside class="notes"><p>Press T to start the timer. Hand out or show the sheet. Do not give answers yet: collect a show of hands per snippet and return to snippet 3 and 5 in session 1, where the room will see why. The answers are in labs/solutions/drills.md. The drill is the same kind of task as the supervised check.</p></aside>
+</section>
+
+<section class="slide" id="agenda" data-auto="agenda" data-label="Agenda" data-n="7">
+  <div class="kicker">Today</div>
+  <h2>Read before you write</h2>
+  <div class="agenda"><div class="item"><div><b>Session 1 · Values, names and references</b><small>Names bind to objects, assignment never copies, and a shared list changes for every name that holds it</small></div></div><div class="item"><div><b>Session 2 · Functions with clear contracts</b><small>One job per function, inputs and outputs stated, effects kept at the edge, and scope explained by the call stack</small></div></div><div class="item"><div><b>Session 3 · Type hints and a checker</b><small>Type hints as promises a checker verifies: built-in generics, None as a value that must be handled, and reading the checker's report</small></div></div><div class="item"><div><b>Session 4 · Parsons problems</b><small>Rebuilding a function from its scrambled lines: order, indentation, and the lines that do not belong</small></div></div></div>
+</section>
+
+<!-- Session 1 -->
+
+<section class="slide section" id="s1" data-auto="section" data-session="1" data-n="8">
+  <div class="kicker">Session 1</div>
+  <h1>Values, names and references</h1>
+  <ul class="bullets outcomes"><li>Trace a short program line by line with a table of names and objects</li><li>Predict when two names share one mutable object and when they do not</li><li>Distinguish rebinding a name from mutating an object</li></ul>
+  <div class="sess-no">01</div>
+</section>
+
+<section class="slide" id="a-name-is-a-label" data-lo="LO1" data-label="Names" data-n="9" data-session="1">
+  <div class="kicker">Names and objects</div>
+  <h2>A name is a label tied to an object, not a box that holds a value</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="names.py"><code class="language-python">reading = <span class="hljs-number">0.742</span>
+latest = reading
+reading = <span class="hljs-number">0.810</span>
+<span class="hljs-built_in">print</span>(latest)        <span class="hljs-comment"># 0.742</span></code></pre>
+    <ul class="bullets">
+      <li>Line 1 makes an object, <code>0.742</code>, and ties the name <code>reading</code> to it</li>
+      <li>Line 2 ties a <b>second name</b> to the same object</li>
+      <li>Line 3 ties <code>reading</code> to a new object; <code>latest</code> is not asked</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Read <code>=</code> as "now names".</b> The right side is worked out first; then the name on the left is tied to the result.</div>
+  <aside class="notes"><p>Draw it: two labels, one object, then move one label. Everything else in this session is this drawing with a list in place of the number. Ask what line 4 prints before you reveal the comment.</p></aside>
+</section>
+
+<section class="slide" id="assignment-never-copies" data-lo="LO1" data-label="No copy" data-n="10" data-session="1">
+  <div class="kicker">Aliasing</div>
+  <h2>Assignment never copies: <code>b = a</code> gives one list two names</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s1.py"><code class="language-python">a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+b = a
+b.append(<span class="hljs-number">4</span>)
+<span class="hljs-built_in">print</span>(a, <span class="hljs-built_in">len</span>(b))</code></pre>
+    <div class="stack">
+      <div class="card c-coral"><h4>It prints</h4><p class="mb0"><code>[1, 2, 3, 4] 4</code></p></div>
+      <p class="small">There was only ever one list. <code>append</code> changed it, and both names show the change.</p>
+    </div>
+  </div>
+  <div class="callout warn mt"><b>What goes wrong.</b> You "save the original" with <code>backup = rows</code>, clean <code>rows</code>, and the backup is cleaned too.</div>
+  <aside class="notes"><p>This is snippet 1 of the lab, and its answer is given on the lab page as the model of the form. Ask the room what <code>a is b</code> would print. Two names for one object is called an alias.</p></aside>
+</section>
+
+<section class="slide" id="mutate-or-rebind" data-lo="LO1" data-label="Two verbs" data-n="11" data-session="1">
+  <div class="kicker">Two different things a line can do</div>
+  <h2>A line either changes an object or moves a name. Know which.</h2>
+  <table class="t">
+    <tr><th>The line</th><th>What it does</th><th>Who sees it</th></tr>
+    <tr><td><code>b.append(4)</code>, <code>b[0] = 9</code>, <code>d["k"] = 1</code></td><td>changes the object (<b>mutation</b>)</td><td>every name tied to that object</td></tr>
+    <tr><td><code>b = b + [4]</code>, <code>b = []</code>, <code>n = n + 1</code></td><td>ties the name to another object (<b>rebinding</b>)</td><td>only that name</td></tr>
+  </table>
+  <div class="callout tip mt"><b>The test.</b> Is there a bare name on the left of <code>=</code>? Then it is rebinding. A dot or a bracket on the left, or a method that changes in place, is mutation.</div>
+  <aside class="notes"><p>Spend time here: this table decides snippets 3, 4 and 6. Note for the curious: <code>b += [4]</code> on a list mutates in place, which is why the table avoids it; say so only if asked.</p></aside>
+</section>
+
+<section class="slide" id="immutable-values" data-lo="LO1" data-label="Immutable" data-n="12" data-session="1">
+  <div class="kicker">Mutable and immutable</div>
+  <h2>Numbers, strings and tuples cannot change, so sharing them is harmless</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Cannot be changed</h4><p class="small mb0"><code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>tuple</code>, <code>None</code>. Every "change" makes a new object: <code>y = y + 5</code>, <code>name.upper()</code>.</p></div>
+    <div class="card c-coral"><h4>Can be changed in place</h4><p class="small mb0"><code>list</code>, <code>dict</code>, <code>set</code>, and most objects you define. Sharing one of these is where surprises come from.</p></div>
+  </div>
+  <pre class="code mt" data-file="snippets/s2.py"><code class="language-python">x = <span class="hljs-number">10</span>
+y = x
+y = y + <span class="hljs-number">5</span>
+<span class="hljs-built_in">print</span>(x, y)          <span class="hljs-comment"># 10 15</span></code></pre>
+  <aside class="notes"><p>Snippet 2 has the same shape as snippet 1 and the opposite result. The difference is not the type of the name, names have no type; it is that line 3 rebinds. With an immutable value rebinding is the only thing a line can do.</p></aside>
+</section>
+
+<section class="slide" id="copies-are-shallow" data-lo="LO1" data-label="Copies" data-n="13" data-session="1">
+  <div class="kicker">Copies</div>
+  <h2>A copy is one level deep: the outside is new, the inside is shared</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s6.py"><code class="language-python">meter = {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;M-0042&quot;</span>, <span class="hljs-string">&quot;readings&quot;</span>: [<span class="hljs-number">0.6</span>]}
+backup = <span class="hljs-built_in">dict</span>(meter)
+backup[<span class="hljs-string">&quot;id&quot;</span>] = <span class="hljs-string">&quot;M-0043&quot;</span>
+backup[<span class="hljs-string">&quot;readings&quot;</span>].append(<span class="hljs-number">0.7</span>)
+<span class="hljs-built_in">print</span>(meter[<span class="hljs-string">&quot;id&quot;</span>], meter[<span class="hljs-string">&quot;readings&quot;</span>])</code></pre>
+    <ul class="bullets">
+      <li><code>a[:]</code>, <code>list(a)</code>, <code>dict(d)</code> and <code>.copy()</code> make a new outer object</li>
+      <li>What is inside is <b>not</b> copied: both dictionaries point at one list of readings</li>
+      <li><code>copy.deepcopy</code> copies all levels, when you need it</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>It prints</b> <code>M-0042 [0.6, 0.7]</code>: the id was safe, the readings were not.</div>
+  <aside class="notes"><p>Draw two dictionaries with their own "id" arrows and one shared list. Records that hold lists are everywhere in data work, so this is the aliasing bug participants will really meet. Do not reveal the callout before the room has voted.</p></aside>
+</section>
+
+<section class="slide" id="equal-or-same" data-lo="LO1" data-label="== and is" data-n="14" data-session="1">
+  <div class="kicker">Two questions</div>
+  <h2><code>==</code> asks "equal value?"; <code>is</code> asks "the same object?"</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="same.py"><code class="language-python">a = [<span class="hljs-number">0.7</span>, <span class="hljs-number">0.9</span>]
+b = a
+c = a[:]
+<span class="hljs-built_in">print</span>(a == c, a <span class="hljs-keyword">is</span> c)    <span class="hljs-comment"># True False</span>
+<span class="hljs-built_in">print</span>(a == b, a <span class="hljs-keyword">is</span> b)    <span class="hljs-comment"># True True</span></code></pre>
+    <ul class="bullets">
+      <li>Use <code>==</code> for values, almost always</li>
+      <li>Use <code>is</code> for <code>None</code>: <code>if value is None</code></li>
+      <li>When a trace surprises you, <code>a is b</code> tells you whether you have one object or two</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Keep it short. The one rule to leave: compare with None using <code>is</code>; the type checker session returns to it.</p></aside>
+</section>
+
+<section class="slide" id="functions-share-arguments" data-lo="LO1" data-label="Arguments" data-n="15" data-session="1">
+  <div class="kicker">Calling a function</div>
+  <h2>A call ties the parameter name to the caller's object: no copy there either</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s4.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">add_reading</span>(<span class="hljs-params">log, value</span>):
+    log.append(value)
+    log = []
+    log.append(-<span class="hljs-number">1</span>)
+
+day = [<span class="hljs-number">1.2</span>]
+add_reading(day, <span class="hljs-number">0.8</span>)
+<span class="hljs-built_in">print</span>(day)</code></pre>
+    <div class="trace s">
+      <div class="ev call"><b>call</b><code>log</code> and <code>day</code> name one list</div>
+      <div class="ev result"><b>line 2</b>that list becomes <code>[1.2, 0.8]</code></div>
+      <div class="ev guard"><b>line 3</b><code>log</code> is tied to a new empty list</div>
+      <div class="ev result"><b>line 4</b>the new list gets <code>-1</code>; nobody else sees it</div>
+      <div class="ev final"><b>prints</b><code>[1.2, 0.8]</code></div>
+    </div>
+  </div>
+  <aside class="notes"><p>Demonstration: in the workspace, <code>uv run trace.py 1.1/snippets/s4.py</code> prints exactly these steps, with "one object, 2 names" where it applies. Show it after the lab's prediction step, not before. The lesson for tomorrow: a function that mutates its argument changes the caller's data.</p></aside>
+</section>
+
+<section class="slide" id="trace-table" data-lo="LO1" data-label="Trace table" data-n="16" data-session="1">
+  <div class="kicker">The method</div>
+  <h2>Trace on paper: a column per name, a row per line that runs</h2>
+  <table class="t small">
+    <tr><th>Line</th><th><code>readings</code></th><th><code>copy</code></th><th>Note</th></tr>
+    <tr><td><code>readings = [0.7, 0.9]</code></td><td>list A: 0.7, 0.9</td><td></td><td>a new list, A</td></tr>
+    <tr><td><code>copy = readings[:]</code></td><td>A</td><td>list B: 0.7, 0.9</td><td>a slice makes a second list</td></tr>
+    <tr><td><code>copy[0] = 9.9</code></td><td>A</td><td>B: 9.9, 0.9</td><td>mutation of B only</td></tr>
+    <tr><td><code>readings.append(1.1)</code></td><td>A: 0.7, 0.9, 1.1</td><td>B</td><td>mutation of A only</td></tr>
+    <tr class="hl"><td><code>print(readings, copy)</code></td><td colspan="3"><code>[0.7, 0.9, 1.1] [9.9, 0.9]</code></td></tr>
+  </table>
+  <div class="callout tip mt"><b>Give objects letters.</b> Two names with the same letter share an object. That is the whole trick, and it is what a step visualiser draws for you.</div>
+  <aside class="notes"><p>This is snippet 3. Do it on the board with the room dictating each row. In the lab they do the same eight times, then check with Python Tutor or the supplied tracer. Insist on paper first: the check cannot know, but the supervised check will.</p></aside>
+</section>
+
+<section class="slide" id="check-shared-list" data-lo="LO1" data-label="Checkpoint" data-n="17" data-session="1">
+  <div class="kicker">Checkpoint</div>
+  <h2>What does the last line print?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1" data-id="check-shared-list-q1">
+    <p class="lead">Salma keeps yesterday's readings before cleaning today's: <code>before = rows</code>, then <code>rows.remove(-1.0)</code>, then <code>rows = rows + [0.5]</code>. The list started as <code>[0.7, -1.0]</code>. What is <code>before</code> now?</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats assignment as a copy: before and rows were one list when remove ran" data-k="A">[0.7, -1.0]</div>
+      <div class="opt" data-ok data-k="B">[0.7]</div>
+      <div class="opt" data-why="Treats rows + [0.5] as a change in place: it builds a new list and rebinds rows only" data-k="C">[0.7, 0.5]</div>
+      <div class="opt" data-why="Swaps the two rules: treats remove as acting on a copy and rows + [0.5] as a change to the shared list" data-k="D">[0.7, -1.0, 0.5]</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> <code>remove</code> mutates the one shared list, so <code>before</code> loses the value too. <code>rows + [0.5]</code> makes a new list and ties only <code>rows</code> to it.</div>
+  </div>
+  <aside class="notes"><p>Answer: [0.7]. Both rules in one question: mutation is seen through every name, rebinding through one. If the room splits between the first and the second option, redraw the labels of the "no copy" slide.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-1" data-auto="lab" data-lab="1.1" data-label="Lab 1.1" data-n="18" data-session="1">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.1 · 25 min</div><h2>Trace eight snippets</h2><p class="lead small">Trace eight snippets on paper, then check each answer in a step visualiser.</p><a class="nb" href="../labs/D1_1_trace_eight_snippets.html">D1_1_trace_eight_snippets.html</a></div><ul class="checklist"><li>Build the workspace and open the lab folder <span class="min">4 min</span></li><li>Predict the output of all eight on paper <span class="min">10 min</span></li><li>Step through each wrong one in a visualiser <span class="min">7 min</span></li><li>Note what you misread; run the check <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Change one line of snippet 7 so that both grids print the same, and predict before you run</li></ul></div>
+  <aside class="notes"><p>AI off. Watch for people running the snippets first: the lab is worth nothing that way, say so kindly. The check prints a score and asks for a note per miss; it passes with wrong predictions as long as each has its note. Typical misses: s4, s6, s7, s8. Use the last four minutes to have two people explain one miss each. Snippet 8 returns in session 2.</p></aside>
+</section>
+
+<!-- Session 2 -->
+
+<section class="slide section" id="s2" data-auto="section" data-session="2" data-n="19">
+  <div class="kicker">Session 2</div>
+  <h1>Functions with clear contracts</h1>
+  <ul class="bullets outcomes"><li>Split a script into functions that each do one job</li><li>State a function's inputs and output in its signature and docstring</li><li>Explain what a function can see and change, using scope and the call stack</li></ul>
+  <div class="sess-no">02</div>
+</section>
+
+<section class="slide" id="one-job-per-function" data-lo="LO3" data-label="One job" data-n="20" data-session="2">
+  <div class="kicker">Decomposition</div>
+  <h2>A forty-line script does four jobs, and you can test none of them</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>1 · Load</b>read the file into rows</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>2 · Clean</b>keep the numbers, count the rest</div>
+    <div class="arrow">→</div>
+    <div class="step c-purple"><b>3 · Compute</b>the amount due</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>4 · Present</b>four lines of text</div>
+  </div>
+  <ul class="bullets mt">
+    <li>To check the tariff you must have a file, run everything, and read the last line</li>
+    <li>A function per job gives each job a <b>name</b>, a <b>way in</b> and a <b>way out</b></li>
+  </ul>
+  <aside class="notes"><p>The script is <code>monthly_bill.py</code> of lab 1.2: meter M-0042, 27 days billed and 3 skipped, 17.211 cubic metres, 44.95 SAR. The tariff is invented for the course. Ask: the tariff changes; how do you prove the new one is right for exactly 15 cubic metres?</p></aside>
+</section>
+
+<section class="slide" id="contract-in-signature" data-lo="LO3" data-label="Contract" data-n="21" data-session="2">
+  <div class="kicker">Contracts</div>
+  <h2>Everything in comes through parameters; everything out through <code>return</code></h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="monthly_bill.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bill</span>(<span class="hljs-params">total_m3</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Take a month&#x27;s consumption in
+    cubic metres; return the amount
+    due in SAR.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> total_m3 &lt;= <span class="hljs-number">15</span>:
+        amount = total_m3 * <span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">else</span>:
+        amount = <span class="hljs-number">30.0</span> + (total_m3 - <span class="hljs-number">15</span>) * <span class="hljs-number">4.5</span>
+    <span class="hljs-keyword">return</span> amount + <span class="hljs-number">5.0</span></code></pre>
+    <ul class="bullets">
+      <li>The first line and the docstring are the <b>contract</b>: what goes in, what comes out</li>
+      <li>No name from outside is read, nothing outside is changed</li>
+      <li>So one line checks it: <code>bill(15.0) == 35.0</code></li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>What goes wrong.</b> A function that <code>print</code>s its result returns <code>None</code>. The caller has nothing to work with.</div>
+  <aside class="notes"><p>The three values the lab's tests use: bill(0.0) is 5.0, bill(15.0) is 35.0, bill(20.0) is 57.5. Print against return is the most common beginner confusion: show <code>x = print(3)</code> then <code>print(x)</code> if the room hesitates.</p></aside>
+</section>
+
+<section class="slide" id="pure-core-effects-edge" data-lo="LO3" data-label="Edges" data-n="22" data-session="2">
+  <div class="kicker">Where the effects go</div>
+  <h2>Keep files and printing at the edge, and the middle becomes easy to test</h2>
+  <div class="cols cols-3">
+    <div class="card c-amber"><h4>Edge in</h4><p class="small mb0"><code>load_rows(path)</code> is the only function that opens a file.</p></div>
+    <div class="card c-teal"><h4>The middle</h4><p class="small mb0"><code>clean</code>, <code>bill</code>, <code>format_bill</code>: values in, values out. The same input always gives the same output.</p></div>
+    <div class="card c-amber"><h4>Edge out</h4><p class="small mb0"><code>main()</code> is the only place that prints.</p></div>
+  </div>
+  <div class="callout tip mt"><b>You will see this shape all week.</b> Miqyas loads at one end, writes a report at the other, and everything between is functions you can call with three rows typed by hand.</div>
+  <aside class="notes"><p>Do not use the word "pure" as jargon; "same input, same output, touches nothing else" is enough. Three of the four functions of the lab can be tested without any file on disk: that is the first question of the lab's "check yourself".</p></aside>
+</section>
+
+<section class="slide" id="scope-local-names" data-lo="LO1 LO3" data-label="Scope" data-n="23" data-session="2">
+  <div class="kicker">Scope</div>
+  <h2>A name bound inside a function lives inside that call, and nowhere else</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s5.py"><code class="language-python">total = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">value</span>):
+    total = value
+    <span class="hljs-keyword">return</span> total
+
+add(<span class="hljs-number">5</span>)
+<span class="hljs-built_in">print</span>(total, add(<span class="hljs-number">7</span>))     <span class="hljs-comment"># 0 7</span></code></pre>
+    <ul class="bullets">
+      <li>Assigning to <code>total</code> inside <code>add</code> makes a <b>local</b> name</li>
+      <li>The <code>total</code> of line 1 is a different name in a different scope</li>
+      <li>A function may <b>read</b> an outer name; assigning never reaches it</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>So do not rely on outer names at all.</b> Pass what the function needs; return what it produces.</div>
+  <aside class="notes"><p>Snippet 5. There is a <code>global</code> statement; mention it only to say the course never needs it. The useful consequence: a function cannot quietly change your variables by assignment. It can change your lists by mutation, as snippet 4 showed.</p></aside>
+</section>
+
+<section class="slide" id="call-stack" data-lo="LO1" data-label="Call stack" data-n="24" data-session="2">
+  <div class="kicker">The call stack</div>
+  <h2>Every call gets its own frame of names, stacked on the caller's</h2>
+  <div class="cols cols-2">
+    <div class="flow v">
+      <div class="step c-coral"><b>bill(17.211)</b>total_m3, amount</div>
+      <div class="arrow">↓</div>
+      <div class="step c-cyan"><b>main()</b>rows, values, skipped</div>
+      <div class="arrow">↓</div>
+      <div class="step c-navy"><b>the module</b>load_rows, clean, bill, main</div>
+    </div>
+    <ul class="bullets">
+      <li>The top frame is the function running now</li>
+      <li>When it returns, its frame and its local names are gone</li>
+      <li>A <b>traceback</b> is this stack printed at the moment of an error, the top frame last</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The stack is read from the bottom of the slide up: the module called main, main called bill. Tie it forward: on Day 3 they read tracebacks from the last line upward, which is this picture. A debugger's "step into" and "step out" move along it.</p></aside>
+</section>
+
+<section class="slide" id="docstrings-and-doctests" data-lo="LO3" data-label="Docstrings" data-n="25" data-session="2">
+  <div class="kicker">Saying the contract</div>
+  <h2>A docstring states the contract; a doctest is an example that runs</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="readings.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_value</span>(<span class="hljs-params">text</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Turn the consumption cell into
+    cubic metres.
+
+    &gt;&gt;&gt; parse_value(&quot; 0.750 &quot;)
+    0.75
+    &gt;&gt;&gt; parse_value(&quot;12&quot;)
+    12.0
+    &quot;&quot;&quot;</span></code></pre>
+    <ul class="bullets">
+      <li>First line: what goes in, what comes out, in words</li>
+      <li>Lines that start with <code>&gt;&gt;&gt;</code> are a session someone can retype</li>
+      <li><code>python -m doctest file.py</code> runs them and reports any that no longer hold</li>
+    </ul>
+  </div>
+  <div class="callout note mt"><b>Examples age well.</b> A sentence can drift from the code without anyone noticing; an example that runs cannot.</div>
+  <aside class="notes"><p>This function is from Miqyas, the tool they meet on Day 3. Doctests are for a few telling examples; the full tests live in test files, which is Day 4. The stretch of lab 1.2 adds one doctest.</p></aside>
+</section>
+
+<section class="slide" id="main-guard" data-lo="LO3 LO6" data-label="Main guard" data-n="26" data-session="2">
+  <div class="kicker">Run or import</div>
+  <h2>The main guard lets a file be both a script and something to import</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="monthly_bill.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    rows = load_rows(<span class="hljs-string">&quot;data/sample_meter.csv&quot;</span>)
+    values, skipped = clean(rows)
+    amount = bill(<span class="hljs-built_in">sum</span>(values))
+    ...
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    main()</code></pre>
+    <ul class="bullets">
+      <li>Run the file: Python sets <code>__name__</code> to <code>"__main__"</code>, so <code>main()</code> runs</li>
+      <li>Import the file: <code>__name__</code> is <code>"monthly_bill"</code>, nothing runs</li>
+      <li>The tests import it. Without the guard, every test run would print a bill</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The lab's check imports the file and expects no output. This two-line idiom is the seed of Day 4, session 2, where the script becomes a command with arguments.</p></aside>
+</section>
+
+<section class="slide" id="default-argument-trap" data-lo="LO1" data-label="Defaults" data-n="27" data-session="2">
+  <div class="kicker">A trap in the signature</div>
+  <h2>A default value is made once, when the function is defined</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s8.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tag</span>(<span class="hljs-params">reading, tags=[]</span>):
+    tags.append(reading)
+    <span class="hljs-keyword">return</span> tags
+
+first = tag(<span class="hljs-string">&quot;high&quot;</span>)
+second = tag(<span class="hljs-string">&quot;low&quot;</span>)
+<span class="hljs-built_in">print</span>(first, second, first <span class="hljs-keyword">is</span> second)</code></pre>
+    <div class="stack">
+      <div class="card c-coral"><h4>It prints</h4><p class="small mb0"><code>['high', 'low'] ['high', 'low'] True</code></p></div>
+      <pre class="code s" data-file="the fix"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tag</span>(<span class="hljs-params">reading, tags=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">if</span> tags <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        tags = []</code></pre>
+    </div>
+  </div>
+  <div class="callout warn mt"><b>One list for every call.</b> A mutable default remembers what earlier calls did. Remember this slide on Day 3.</div>
+  <aside class="notes"><p>Snippet 8. It is aliasing again: the default object is shared by all calls that do not pass their own. One of the seeded defects of the Day 3 debugging lab is exactly this, in a function that loads readings; do not say which.</p></aside>
+</section>
+
+<section class="slide" id="check-function-contract" data-lo="LO3" data-label="Checkpoint" data-n="28" data-session="2">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which version of the function can be tested with one line?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="check-function-contract-q1">
+    <p class="lead">Shouq needs a function that counts the rows of a month with an empty consumption cell. Four colleagues propose one each. Which can be checked by a single <code>assert</code>, with no file on disk?</p>
+    <div class="opts">
+      <div class="opt" data-why="Hides an input: the function opens a fixed file, so a test needs that file and cannot choose the rows" data-k="A">count_missing() opens the month's file and returns the count</div>
+      <div class="opt" data-why="Confuses showing with returning: the caller receives None and has nothing to compare" data-k="B">count_missing(rows) prints the count</div>
+      <div class="opt" data-ok data-k="C">count_missing(rows) returns the count</div>
+      <div class="opt" data-why="Uses a hidden output: the result lands in a global that any other code can overwrite before it is read" data-k="D">count_missing(rows) stores the count in a global named missing</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Rows in through the parameter, a number out through <code>return</code>: <code>assert count_missing([{"consumption_m3": ""}]) == 1</code>.</div>
+  </div>
+  <aside class="notes"><p>Answer: the third. Each wrong option breaks one half of the contract: a hidden input, no output, a hidden output. Ask which of the three the forty-line script has (all of them).</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-2" data-auto="lab" data-lab="1.2" data-label="Lab 1.2" data-n="29" data-session="2">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.2 · 25 min</div><h2>Split a script into four functions</h2><p class="lead small">Split a 40-line script into four functions with stated inputs and outputs.</p><a class="nb" href="../labs/D1_2_split_40_line.html">D1_2_split_40_line.html</a></div><ul class="checklist"><li>Run the script and mark its four jobs <span class="min">5 min</span></li><li>Move each job into a function with a docstring <span class="min">12 min</span></li><li>Put the script part under a main guard <span class="min">4 min</span></li><li>Run the tests and the check <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Add a doctest to bill for a month of exactly 15 cubic metres and run it</li></ul></div>
+  <aside class="notes"><p>AI tutor. The tests are the contract: send people to <code>test_bill.py</code> before they write a line. At the start pytest stops with an import error, which is expected. The bill must stay Meter M-0042, 27 days and 3 skipped, 17.211 m3, 44.95 SAR. Typical problems: a function still reading the global rows; print in place of return; no main guard, which the check reports as output on import. Anyone stuck after ten minutes: write <code>bill</code> together, the smallest of the four.</p></aside>
+</section>
+
+<!-- Session 3 -->
+
+<section class="slide section" id="s3" data-auto="section" data-session="3" data-n="30">
+  <div class="kicker">Session 3</div>
+  <h1>Type hints and a checker</h1>
+  <ul class="bullets outcomes"><li>Annotate parameters and return values with built-in types</li><li>Read a type checker's report and find the line it points at</li><li>Handle a value that may be None before using it</li></ul>
+  <div class="sess-no">03</div>
+</section>
+
+<section class="slide" id="hints-are-promises" data-lo="LO3" data-label="Hints" data-n="31" data-session="3">
+  <div class="kicker">Type hints</div>
+  <h2>A type hint is a promise about a value, written where a tool can check it</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="parser.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_value</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">float</span> | <span class="hljs-literal">None</span>:
+    <span class="hljs-keyword">if</span> text == <span class="hljs-string">&quot;&quot;</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(text)</code></pre>
+    <ul class="bullets">
+      <li><code>text: str</code>: callers promise to pass text</li>
+      <li><code>-> float | None</code>: the function promises a number, or <code>None</code></li>
+      <li>Python itself <b>ignores</b> hints when it runs the code</li>
+      <li>A <b>type checker</b> reads them and finds every line that breaks a promise</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The contract of session 2, made precise enough for a machine. Stress the third bullet: <code>parse_value(3)</code> still runs and still crashes; hints are for the checker and for the reader.</p></aside>
+</section>
+
+<section class="slide" id="built-in-generics" data-lo="LO3" data-label="Collections" data-n="32" data-session="3">
+  <div class="kicker">Hints for collections</div>
+  <h2>Say what is inside: a list of what, a dictionary from what to what</h2>
+  <table class="t">
+    <tr><th>Hint</th><th>Reads as</th><th>At Manahil</th></tr>
+    <tr><td><code>list[float]</code></td><td>a list of numbers</td><td>one meter's month</td></tr>
+    <tr><td><code>dict[str, int]</code></td><td>text keys, whole-number values</td><td>readings per district</td></tr>
+    <tr><td><code>set[str]</code></td><td>a set of text</td><td>the known meter ids</td></tr>
+    <tr><td><code>tuple[str, str, float]</code></td><td>exactly three values, in this order</td><td>meter, day, cubic metres</td></tr>
+    <tr><td><code>dict[str, str]</code></td><td>text to text</td><td>one row of a CSV file</td></tr>
+  </table>
+  <div class="callout tip mt"><b>The last row matters.</b> A CSV reader gives you text for every cell, numbers included. The hint says so, and the checker stops you adding text to a number.</div>
+  <aside class="notes"><p>These are the built-in names, lower case, no import needed on any Python the course supports. Tomorrow's collections session uses these same five shapes.</p></aside>
+</section>
+
+<section class="slide" id="none-is-a-value" data-lo="LO3" data-label="None" data-n="33" data-session="3">
+  <div class="kicker">The value that is not there</div>
+  <h2>"Or <code>None</code>" in a hint forces every caller to handle the missing case</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="before"><code class="language-python">value = parse_value(text)
+<span class="hljs-keyword">return</span> meter_id, day, <span class="hljs-built_in">round</span>(value, <span class="hljs-number">3</span>)</code></pre>
+    <pre class="code" data-file="after"><code class="language-python">value = parse_value(text)
+<span class="hljs-keyword">if</span> value <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+<span class="hljs-keyword">return</span> meter_id, day, <span class="hljs-built_in">round</span>(value, <span class="hljs-number">3</span>)</code></pre>
+  </div>
+  <ul class="bullets mt">
+    <li>Before: an empty cell crashes at <code>round(None, 3)</code>, some day, on some file</li>
+    <li>After the check, the checker knows <code>value</code> is a <code>float</code> on the last line: this is called <b>narrowing</b></li>
+  </ul>
+  <div class="callout warn mt"><b>Not <code>if not value</code>.</b> A reading of <code>0.0</code> is a real reading, and it is "not value" too.</div>
+  <aside class="notes"><p>The warning is a real bug in utility data: empty houses read zero. <code>is None</code> asks the question you mean. Most of the nine errors of the lab are this one pattern in different places.</p></aside>
+</section>
+
+<section class="slide" id="checker-reads-annotated-only" data-lo="LO3" data-label="No hints" data-n="34" data-session="3">
+  <div class="kicker">From the lab's run</div>
+  <h2>On code without hints, a clean report from the checker proves nothing</h2>
+  <div class="cols cols-3">
+    <div class="stat center"><div class="big">0</div><div class="lbl">issues reported on the supplied parser, while 4 of its 6 tests fail</div></div>
+    <div class="stat center"><div class="big">9</div><div class="lbl">errors in strict mode: every one says "missing a type annotation"</div></div>
+    <div class="stat center"><div class="big">9</div><div class="lbl">different errors once five signatures are annotated: each a real bug</div></div>
+  </div>
+  <div class="callout tip mt"><b>Strict mode</b> refuses unannotated functions, so "no issues" means what it says. The labs and the capstone use <code>mypy --strict</code>.</div>
+  <aside class="notes"><p>Numbers from the reference run of lab 1.3 with mypy: plain run "Success: no issues found in 1 source file"; strict run on the unannotated file 9 errors; after adding only the five signatures 9 errors again, none of them about annotations. By default mypy checks only functions that carry annotations. Sources: mypy documentation.</p></aside>
+</section>
+
+<section class="slide" id="read-a-checker-report" data-lo="LO3" data-label="The report" data-n="35" data-session="3">
+  <div class="kicker">Reading the report</div>
+  <h2>Every line of the report is a place, a complaint and a code</h2>
+  <pre class="code s" data-file="uv run mypy --strict parser.py"><code class="language-text">parser.py:26: error: &quot;None&quot; object is not iterable  [misc]
+parser.py:43: error: Unsupported operand types for &gt; (&quot;float&quot; and &quot;str&quot;)  [operator]
+parser.py:45: error: Incompatible return value type (got &quot;str&quot;, expected &quot;float | None&quot;)  [return-value]</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-teal"><h4>Line 26</h4><p class="small mb0">Three names are unpacked from something that may be <code>None</code>.</p></div>
+    <div class="card flat c-coral"><h4>Line 43</h4><p class="small mb0">A number is compared with text. Python would raise a TypeError here.</p></div>
+    <div class="card flat c-purple"><h4>Line 45</h4><p class="small mb0">The function returns text where its hint promised a number.</p></div>
+  </div>
+  <aside class="notes"><p>Three of the nine messages of the lab, copied from the run. Method: start at the top, open the line, ask "which promise does this line break?", fix, run again. One fix often removes several messages. The code in brackets is what you search the documentation for.</p></aside>
+</section>
+
+<section class="slide" id="hints-do-not-validate-data" data-lo="LO3 LO4" data-label="Limits" data-n="36" data-session="3">
+  <div class="kicker">What hints cannot do</div>
+  <h2>A checker verifies your code, not the file someone sends you</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>The checker catches</h4><p class="small mb0">Text added to a number, a forgotten <code>None</code>, a wrong return, a misspelt field of a record: mistakes in the <b>program</b>.</p></div>
+    <div class="card c-coral"><h4>The checker cannot see</h4><p class="small mb0">A cell that holds <code>N/A</code>, a reading of 9,000 cubic metres, a meter that is not in the registry: mistakes in the <b>data</b>.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Both are needed.</b> Hints keep the code honest. Validation at the door, with a reason for every rejected row, keeps the data honest. That is Day 3.</div>
+  <aside class="notes"><p>Prevent the false comfort: "it type-checks" says nothing about whether row 12,440 holds a number. The lab of session 4 builds the first validation function; Day 3 makes it report reasons.</p></aside>
+</section>
+
+<section class="slide" id="checker-and-linter" data-lo="LO3" data-label="Tools" data-n="37" data-session="3">
+  <div class="kicker">Two kinds of tool</div>
+  <h2>A type checker and a linter read your code without running it</h2>
+  <table class="t">
+    <tr><th>Tool</th><th>Asks</th><th>Examples</th><th>In the workspace</th></tr>
+    <tr><td>Type checker</td><td>do the values fit the hints?</td><td>mypy, Pyright</td><td><code>uv run mypy --strict file.py</code></td></tr>
+    <tr><td>Linter</td><td>is anything unused, shadowed or suspicious?</td><td>Ruff</td><td><code>uv run ruff check</code></td></tr>
+    <tr><td>Formatter</td><td>is the layout the usual one?</td><td>Ruff</td><td><code>uv run ruff format</code></td></tr>
+  </table>
+  <div class="callout note mt"><b>The names are examples.</b> An editor such as VS Code or VSCodium shows the same reports as you type. What matters is that a clean report is part of "done".</div>
+  <aside class="notes"><p>Tools are examples, not endorsements; any checker that implements the standard typing rules will do. The capstone rubric scores "structure and types" on a clean strict report.</p></aside>
+</section>
+
+<section class="slide" id="check-optional-return" data-lo="LO3" data-label="Checkpoint" data-n="38" data-session="3">
+  <div class="kicker">Checkpoint</div>
+  <h2>The checker rejects this line. What is the right repair?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="check-optional-return-q1">
+    <p class="lead"><code>highest(lines)</code> is annotated <code>-> float | None</code>. A colleague writes <code>peak = highest(lines) * 1.1</code> and the checker reports that <code>None</code> does not support <code>*</code>.</p>
+    <div class="opts">
+      <div class="opt" data-ok data-k="A">Keep the result in a name, test it <code>is None</code> first, then multiply</div>
+      <div class="opt" data-why="Silences the report and keeps the crash: an empty file still multiplies None at run time" data-k="B">Add <code># type: ignore</code> to the line, since the files are never empty in practice</div>
+      <div class="opt" data-why="Changes the promise to fit the caller: the function still returns None for an empty file, now without warning anyone" data-k="C">Change the hint of <code>highest</code> to <code>-> float</code></div>
+      <div class="opt" data-why="Treats zero as missing: a month whose highest reading is 0.0 would be handled as if there were no readings" data-k="D">Write <code>if not highest(lines)</code> and return early</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The hint says a missing value is possible. Only the caller knows what to do then, and the checker makes sure the question is answered.</div>
+  </div>
+  <aside class="notes"><p>Answer: the first. The second and third are the two ways people make a checker quiet without making the code right; the lab's check refuses both. The fourth is the zero trap from the None slide.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-3" data-auto="lab" data-lab="1.3" data-label="Lab 1.3" data-n="39" data-session="3">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.3 · 25 min</div><h2>Annotate the reading parser</h2><p class="lead small">Annotate the supplied reading parser and fix every error the type checker reports.</p><a class="nb" href="../labs/D1_3_annotate_supplied_reading.html">D1_3_annotate_supplied_reading.html</a></div><ul class="checklist"><li>Run the tests and the checker on the supplied parser <span class="min">4 min</span></li><li>Annotate every function <span class="min">7 min</span></li><li>Fix each error the checker reports <span class="min">10 min</span></li><li>Run the tests, the strict check and the lab check <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Replace the tuple with a NamedTuple so that reading[2] becomes reading.m3</li></ul></div>
+  <aside class="notes"><p>AI tutor. Let the room be surprised by step 1: four failing tests and "Success: no issues found". Give the five signatures on the lab page to anyone who is slow at step 2; the learning is in step 3. After the signatures the count is 9. Typical problems: annotating <code>highest</code> as returning text because the code does; starting the total at 0 and not 0.0; <code>if not value</code>. The check refuses "type: ignore" and Any.</p></aside>
+</section>
+
+<!-- Session 4 -->
+
+<section class="slide section" id="s4" data-auto="section" data-session="4" data-n="40">
+  <div class="kicker">Session 4</div>
+  <h1>Parsons problems</h1>
+  <ul class="bullets outcomes"><li>Order the lines of a function so that each name is bound before it is used</li><li>Use indentation to say which lines belong to a branch, a loop or a try</li><li>Reject a distractor by saying what it would do</li></ul>
+  <div class="sess-no">04</div>
+</section>
+
+<section class="slide" id="what-is-a-parsons-problem" data-lo="LO1" data-label="Parsons" data-n="41" data-session="4">
+  <div class="kicker">Parsons problems</div>
+  <h2>All the lines are given, scrambled. You decide order and indentation.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="scrambled"><code class="language-python"><span class="hljs-keyword">return</span> total
+<span class="hljs-keyword">if</span> value &gt;= <span class="hljs-number">0</span>:
+total = value
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">total_valid</span>(<span class="hljs-params">values</span>):
+total += value
+<span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> values:
+total = <span class="hljs-number">0.0</span></code></pre>
+    <ul class="bullets">
+      <li>No syntax to recall: every character you need is on the page</li>
+      <li>What is left is the <b>structure</b>: what runs first, what is inside what</li>
+      <li>One line is a <b>distractor</b>: it looks right and does not belong</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Why practise this.</b> It is the skill between reading and writing, and it is one part of the supervised check.</div>
+  <aside class="notes"><p>This is the warm-up of lab 1.4. Let the room solve it aloud: someone names the first line, the next person the second. The distractor is <code>total = value</code>: ask what the function would return for [1.5, 2.5] with it (2.5, the last value).</p></aside>
+</section>
+
+<section class="slide" id="bind-before-use" data-lo="LO1" data-label="Order" data-n="42" data-session="4">
+  <div class="kicker">Rule 1</div>
+  <h2>A line can run only after the lines that bind the names it reads</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>text = row[…].strip()</b>needs <code>row</code>, a parameter</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>value = float(text)</b>needs <code>text</code></div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>if value &lt; 0 or value &gt; 200:</b>needs <code>value</code></div>
+  </div>
+  <ul class="bullets mt">
+    <li>For each line, list the names it <b>reads</b>; find the line that <b>binds</b> each</li>
+    <li>That gives you chains like this one before you think about meaning at all</li>
+    <li>Run a line too early and Python says <code>NameError: name 'value' is not defined</code></li>
+  </ul>
+  <aside class="notes"><p>It is session 1 again: names are bound by assignment, by <code>def</code>, by parameters, by <code>for</code>. A NameError in the lab means an order mistake, and the message names the name.</p></aside>
+</section>
+
+<section class="slide" id="indentation-is-structure" data-lo="LO1" data-label="Indentation" data-n="43" data-session="4">
+  <div class="kicker">Rule 2</div>
+  <h2>Indentation says what belongs to what, and one level changes the answer</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="right"><code class="language-python"><span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> values:
+    <span class="hljs-keyword">if</span> value &gt;= <span class="hljs-number">0</span>:
+        total += value
+<span class="hljs-keyword">return</span> total</code></pre>
+    <pre class="code" data-file="one level off"><code class="language-python"><span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> values:
+    <span class="hljs-keyword">if</span> value &gt;= <span class="hljs-number">0</span>:
+        total += value
+    <span class="hljs-keyword">return</span> total</code></pre>
+  </div>
+  <ul class="bullets mt">
+    <li>Left: return after the loop, the sum of all valid values</li>
+    <li>Right: return <b>inside</b> the loop, so the function ends after the first value</li>
+    <li>Both are valid Python. Only a test, or a trace, tells them apart</li>
+  </ul>
+  <aside class="notes"><p>For [1.5, -2.0, 0.0, 2.5] the left version returns 4.0 and the right one 1.5. The lab's warm-up test uses exactly this list. Ask: what does the right version return for an empty list? (None: the loop body never runs and the function falls off the end.)</p></aside>
+</section>
+
+<section class="slide" id="guard-clauses-first" data-lo="LO1 LO4" data-label="Guards" data-n="44" data-session="4">
+  <div class="kicker">The shape of a validation function</div>
+  <h2>Reject each bad case early; what reaches the last line is good</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="validate.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">validate_reading</span>(<span class="hljs-params">row, known</span>):
+    text = row[<span class="hljs-string">&quot;consumption_m3&quot;</span>].strip()
+    <span class="hljs-keyword">if</span> text == <span class="hljs-string">&quot;&quot;</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;MISSING_VALUE&quot;</span>
+    ...
+    <span class="hljs-keyword">if</span> row[<span class="hljs-string">&quot;meter_id&quot;</span>] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> known:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;UNKNOWN_METER&quot;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span></code></pre>
+    <ul class="bullets">
+      <li>Each <code>if</code> guards one <code>return</code> with one reason</li>
+      <li>The order of the guards is part of the specification</li>
+      <li>The final line is not indented under any <code>if</code></li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Pair them up.</b> In a scrambled validation function, match every <code>if</code> with its <code>return</code> first. Half the puzzle is done.</div>
+  <aside class="notes"><p>The four reasons of the lab, in order: MISSING_VALUE, NOT_A_NUMBER, OUT_OF_RANGE, UNKNOWN_METER. They are four of the six reason codes Miqyas reports; the month file holds 40, 15, 18 and 20 rows of them. On Day 3 the returns become exceptions with a reason.</p></aside>
+</section>
+
+<section class="slide" id="try-wraps-one-line" data-lo="LO1 LO4" data-label="try" data-n="45" data-session="4">
+  <div class="kicker">Where the try goes</div>
+  <h2><code>try</code> wraps the one line that can fail; <code>except</code> names that failure</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="validate.py"><code class="language-python"><span class="hljs-keyword">try</span>:
+    value = <span class="hljs-built_in">float</span>(text)
+<span class="hljs-keyword">except</span> ValueError:
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;NOT_A_NUMBER&quot;</span></code></pre>
+    <ul class="bullets">
+      <li><code>float("N/A")</code> raises <b>ValueError</b></li>
+      <li><code>except TypeError:</code> would catch nothing here: the error passes through and the function crashes</li>
+      <li><code>except:</code> alone would catch everything, including your own typing mistakes</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>Name the exception you expect.</b> You find its name by trying the failing call once and reading the last line of what Python prints.</div>
+  <aside class="notes"><p>Demonstration: at a Python prompt type <code>float("N/A")</code> and read "ValueError: could not convert string to float: 'N/A'". Then <code>float("0,742")</code>: also ValueError; the month file has 7 values written with a decimal comma. Exceptions get a whole session on Day 3.</p></aside>
+</section>
+
+<section class="slide" id="distractors-look-alike" data-lo="LO1" data-label="Distractors" data-n="46" data-session="4">
+  <div class="kicker">Distractors</div>
+  <h2>Decide between two lines that look alike by running one concrete row in your head</h2>
+  <table class="t">
+    <tr><th>The row has</th><th><code>if value &lt; 0 or value &gt; 200:</code></th><th><code>if value &lt; 0 and value &gt; 200:</code></th></tr>
+    <tr><td><code>"250"</code></td><td>False or True: <b>rejected</b></td><td>False and True: accepted</td></tr>
+    <tr><td><code>"-0.5"</code></td><td>True or False: <b>rejected</b></td><td>True and False: accepted</td></tr>
+    <tr><td><code>"0.742"</code></td><td>accepted</td><td>accepted</td></tr>
+  </table>
+  <div class="callout tip mt"><b>No number is below 0 and above 200 at once.</b> The second line never rejects anything. You see it in ten seconds with one value; you may not see it in ten minutes of staring.</div>
+  <aside class="notes"><p>The habit to build: do not judge a line by how it looks; give it an input. This is the same move as predicting output in session 1, on one line. It is also how to review a line an assistant suggests.</p></aside>
+</section>
+
+<section class="slide" id="from-lines-to-writing" data-lo="LO1 LO3" data-label="Next step" data-n="47" data-session="4">
+  <div class="kicker">From reading to writing</div>
+  <h2>The same three questions build a function when no lines are given</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>1 · What is the contract?</h4><p class="small mb0">Inputs, output, and the cases in words. Session 2.</p></div>
+    <div class="card c-cyan"><h4>2 · What must exist first?</h4><p class="small mb0">The chain of names: load, then convert, then compare. Today's rule 1.</p></div>
+    <div class="card c-coral"><h4>3 · What is inside what?</h4><p class="small mb0">Which lines belong to the loop, the branch, the try. Today's rule 2.</p></div>
+  </div>
+  <div class="callout note mt"><b>From tomorrow you write.</b> Every lab still starts from a supplied state and a set of tests that say what "right" means.</div>
+  <aside class="notes"><p>Close the day's arc: trace, state a contract, promise types, order lines. Tomorrow they write functions over collections; if someone freezes on a blank file, send them back to these three questions.</p></aside>
+</section>
+
+<section class="slide" id="check-parsons-order" data-lo="LO1" data-label="Checkpoint" data-n="48" data-session="4">
+  <div class="kicker">Checkpoint</div>
+  <h2>Where does the last line of the function go?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1" data-id="check-parsons-order-q1">
+    <p class="lead">A function counts the good rows. Placed so far: <code>count = 0</code>, the <code>for</code> line, the <code>if</code> line, <code>count += 1</code>. Left: <code>return count</code>. A test shows it returns 1 for 30 good rows.</p>
+    <div class="opts">
+      <div class="opt" data-why="Puts the result before the work: count is still 0 here and the loop below never runs" data-k="A">Directly under <code>count = 0</code>, before the loop</div>
+      <div class="opt" data-why="Returns from inside the branch: the function ends at the first good row, which is the reported 1" data-k="B">Under <code>count += 1</code>, at the same depth</div>
+      <div class="opt" data-why="Returns from inside the loop: the function ends after the first row, whatever it is" data-k="C">Under the <code>if</code> line, at the depth of the <code>if</code></div>
+      <div class="opt" data-ok data-k="D">After the loop, at the depth of the <code>for</code> line</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A result that depends on every row is returned once, after the loop. A return of 1 for 30 good rows says the return sits inside the loop.</div>
+  </div>
+  <aside class="notes"><p>Answer: the last option. The scenario describes the bug of the second option: ask which wrong position produces exactly 1 for 30 good rows, and which produces 0 or 1 depending on the first row (the third).</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-4" data-auto="lab" data-lab="1.4" data-label="Lab 1.4" data-n="49" data-session="4">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.4 · 25 min</div><h2>Rebuild a validation function</h2><p class="lead small">Reorder scrambled lines, with distractors, into a working validation function.</p><a class="nb" href="../labs/D1_4_reorder_scrambled_lines.html">D1_4_reorder_scrambled_lines.html</a></div><ul class="checklist"><li>Order the warm-up on paper, then in the editor <span class="min">6 min</span></li><li>Order and indent the validation function <span class="min">11 min</span></li><li>Run the tests; fix order or indentation <span class="min">4 min</span></li><li>Say why each distractor is wrong; check <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Write one more distractor for a neighbour and say which test catches it</li></ul></div>
+  <aside class="notes"><p>AI off: this is practice for the supervised check. Paper first, numbers and depths, then the editor. The files are not valid Python until the lines are in order, so the editor underlines everything at the start; say so. The check accepts only supplied lines and none of the four distractors. Typical problems: the final return indented under the last if; "return NOT_A_NUMBER" placed under try. The order of the last two guards is fixed by the specification and by the last test, not by names.</p></aside>
+</section>
+
+<section class="slide" id="wrap-up" data-n="50" data-session="4">
+  <div class="kicker">Day 1 · wrap-up</div>
+  <h2>Three things to keep</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>One object, many names</h4><p class="small mb0">Assignment and calls never copy. Mutation is seen through every name; rebinding through one.</p></div>
+    <div class="card c-coral"><h4>A function is a contract</h4><p class="small mb0">In through parameters, out through return, effects at the edge. Hints make the contract checkable.</p></div>
+    <div class="card c-purple"><h4>Give the line an input</h4><p class="small mb0">To judge a line, a distractor or a suggestion, run one concrete value through it by hand.</p></div>
+  </div>
+  <aside class="notes"><p>Ask each table for the line of code that surprised them most today. Collect the answers of drill 1 now if you did not in session 1.</p></aside>
+</section>
+
+<section class="slide dark" id="next" data-label="Next" data-n="51" data-session="4">
+  <div class="kicker">Next</div>
+  <h2>Day 2: Collections for data work</h2>
+  <p class="lead">Finish any lab at home from its own folder; each one starts from a supplied state. Tomorrow opens with drill 2, on lists and dictionaries that share their contents.</p>
+  <aside class="notes"><p>Nothing to install for tomorrow. Lab 2.1 writes a 100,000-row file when the workspace is built; anyone who built the workspace today already has it.</p></aside>
+</section>
+</div>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"deck":{"id":"day1","kind":"day","day":1,"label":"Day 1","title":"Read before you write","prev":null,"next":"day2.html","md":"day1.md","alt":{}},"sessions":[{"n":1,"label":"Session 1","title":"Values, names and references","slide":"s1","outcomes":["Trace a short program line by line with a table of names and objects","Predict when two names share one mutable object and when they do not","Distinguish rebinding a name from mutating an object"],"minutes":50,"lab":{"id":"1.1","title":"Trace eight snippets","minutes":25,"href":"../labs/D1_1_trace_eight_snippets.html"}},{"n":2,"label":"Session 2","title":"Functions with clear contracts","slide":"s2","outcomes":["Split a script into functions that each do one job","State a function's inputs and output in its signature and docstring","Explain what a function can see and change, using scope and the call stack"],"minutes":50,"lab":{"id":"1.2","title":"Split a script into four functions","minutes":25,"href":"../labs/D1_2_split_40_line.html"}},{"n":3,"label":"Session 3","title":"Type hints and a checker","slide":"s3","outcomes":["Annotate parameters and return values with built-in types","Read a type checker's report and find the line it points at","Handle a value that may be None before using it"],"minutes":50,"lab":{"id":"1.3","title":"Annotate the reading parser","minutes":25,"href":"../labs/D1_3_annotate_supplied_reading.html"}},{"n":4,"label":"Session 4","title":"Parsons problems","slide":"s4","outcomes":["Order the lines of a function so that each name is bound before it is used","Use indentation to say which lines belong to a branch, a loop or a try","Reject a distractor by saying what it would do"],"minutes":50,"lab":{"id":"1.4","title":"Rebuild a validation function","minutes":25,"href":"../labs/D1_4_reorder_scrambled_lines.html"}}],"slides":[{"id":"title","n":1,"title":"Read before you write","kind":"title","session":0,"hash":"42a8f90e","md":"#### [day1#title] Read before you write\n\n*SDAIA Academy · Python for Data and AI Work*\n\nDay 1: Tracing code by hand, functions with contracts, type hints, and rebuilding code from its lines\n\nData & AI Foundations Track · 4 teaching days + capstone day · 4 sessions · 4 labs · FN-101","notes":"Welcome. Ask who has written a loop in any language and who came through the pre-work: it sets the pace of the first session. Say the rhythm of every day: an AI-off drill of ten minutes, then four sessions, each about 25 minutes of concepts and a 25-minute lab. Breaks are yours to call: press B.","minutes":null,"lo":[]},{"id":"four-days-one-tool","n":2,"title":"Four days from reading one line to shipping one tool","kind":"content","session":0,"hash":"44375072","md":"#### [day1#four-days-one-tool] Four days from reading one line to shipping one tool\n\n*The week*\n\n1. **Day 1**: Read before you write (trace, functions, types)\n2. **Day 2**: Collections (dictionaries, sets, generators, records)\n3. **Day 3**: Files, text and failure (CSV, encodings, exceptions, debugging)\n4. **Day 4**: From notebook to tool (entry point, tests, the tutor)\n5. **Capstone**: Your own tool (work orders, a public repository)\n\n> **What you leave with.** A command-line tool that validates a month of readings, flags anomalies and writes the same report on every run, and the habit of reading code before trusting it.","notes":"The order is deliberate: reading comes before writing because every later skill, and every review of code an assistant wrote, depends on it. Each lab starts from its own supplied folder, so nobody is locked out of a lab by an earlier one.","minutes":null,"lo":[]},{"id":"ai-off-tutor-full","n":3,"title":"Three ways of working with an assistant, and every lab says which","kind":"content","session":0,"hash":"a43447d0","md":"#### [day1#ai-off-tutor-full] Three ways of working with an assistant, and every lab says which\n\n*How we work*\n\n- **AI off.** The daily drills, the first attempt at each debugging lab, and the supervised check. Paper, an editor, the documentation.\n- **AI tutor.** The other labs. The assistant gives hints and explains messages. It does not give code.\n- **AI full.** The capstone. You may delegate, and you then walk through the code and change it live, on request.\n\n> **Why not full from the start.** Day 4 shows the evidence: people who delegate while learning finish, and then cannot debug what they finished.","notes":"The course repository carries the tutor rule in its agent instructions, so an assistant opened in the workspace is told to hint and not to write. The supervised check, the first hour of the capstone day, is AI-off and needs 60% by itself: say it now, not on Day 4.","minutes":null,"lo":[]},{"id":"manahil-case","n":4,"title":"Manahil Water Services: 600 meters, one month, two messy files","kind":"content","session":0,"hash":"ce991297","md":"#### [day1#manahil-case] Manahil Water Services: 600 meters, one month, two messy files\n\n*The case study*\n\n| File | Holds |\n| --- | --- |\n| `meters.csv` | 600 meters in six districts |\n| `readings_2026_09.csv` | 17,690 daily readings, 129 of them bad |\n| `tickets.jsonl` | 400 service tickets, Arabic and English |\n\n- **Salma**, metering analyst, has a notebook nobody else can rerun\n- **Badr**, customer care lead, wants the ticket queue sorted\n- **You** join as Shouq, the junior analyst\n- The fix is **Miqyas**, a command-line tool you build by Day 4\n\n> **All of it is synthetic.** No real person, meter or phone number. You still treat the tickets as personal data, because the habits are the point.","notes":"Manahil is fictional. The numbers on this slide come from the data generator of the labs: 17,690 rows in the month file, of which 17,561 are accepted and 129 rejected for six reasons. Participants meet each reason in a lab. Abdulaziz, the data protection officer, appears on Day 3; Mazen, the maintenance planner, owns the capstone data.","minutes":null,"lo":[]},{"id":"workspace-setup","n":5,"title":"One command builds the workspace; every lab has its own folder","kind":"content","session":0,"hash":"77cf4678","md":"#### [day1#workspace-setup] One command builds the workspace; every lab has its own folder\n\n*Setup*\n\n```bash\n# file: terminal\nuv run labs/kit/setup.py\ncd ../manahil-labs\nuv run lab.py list\ncd 1.1\n```\n\n- `uv run …` runs Python with the project's tools: a test runner, a type checker, a linter\n- `lab.py start 2.1 --discard` gives a lab back its supplied state\n- `lab.py check 2.1` runs your code and says what is still to do\n\n> **Nothing to install by hand.** The first `uv run` downloads the tools once. No model is downloaded at any point of the course.","notes":"Do this together before the drill. The first run needs the network. On Windows in a very deep folder, set UV_PROJECT_ENVIRONMENT to a short folder first; the labs' README says how. Anyone without uv: the pre-work covered the install; pair them for the first lab.","minutes":null,"lo":[]},{"id":"drill-1","n":6,"title":"Predict the output · 10 minutes","kind":"content","session":0,"hash":"c48c9b9b","md":"#### [day1#drill-1] Predict the output · 10 minutes\n\n*Drill 1 · AI off*\n\nFive snippets on paper: `labs/drills/day1.md`. No computer, no assistant. Write what each prints.","notes":"Press T to start the timer. Hand out or show the sheet. Do not give answers yet: collect a show of hands per snippet and return to snippet 3 and 5 in session 1, where the room will see why. The answers are in labs/solutions/drills.md. The drill is the same kind of task as the supervised check.","minutes":10,"lo":["LO1"]},{"id":"agenda","n":7,"title":"Read before you write","kind":"content","session":0,"hash":"a6cdd10d","md":"#### [day1#agenda] Read before you write\n\n*Today*\n\n- **Session 1 · Values, names and references**: Names bind to objects, assignment never copies, and a shared list changes for every name that holds it\n- **Session 2 · Functions with clear contracts**: One job per function, inputs and outputs stated, effects kept at the edge, and scope explained by the call stack\n- **Session 3 · Type hints and a checker**: Type hints as promises a checker verifies: built-in generics, None as a value that must be handled, and reading the checker's report\n- **Session 4 · Parsons problems**: Rebuilding a function from its scrambled lines: order, indentation, and the lines that do not belong","notes":"","minutes":null,"lo":[]},{"id":"s1","n":8,"title":"Values, names and references","kind":"section","session":1,"hash":"e187c866","md":"#### [day1#s1] Values, names and references\n\n*Session 1*\n\n- Trace a short program line by line with a table of names and objects\n- Predict when two names share one mutable object and when they do not\n- Distinguish rebinding a name from mutating an object","notes":"","minutes":null,"lo":["LO1"]},{"id":"a-name-is-a-label","n":9,"title":"A name is a label tied to an object, not a box that holds a value","kind":"content","session":1,"hash":"496bed99","md":"#### [day1#a-name-is-a-label] A name is a label tied to an object, not a box that holds a value\n\n*Names and objects*\n\n```python\n# file: names.py\nreading = 0.742\nlatest = reading\nreading = 0.810\nprint(latest)        # 0.742\n```\n\n- Line 1 makes an object, `0.742`, and ties the name `reading` to it\n- Line 2 ties a **second name** to the same object\n- Line 3 ties `reading` to a new object; `latest` is not asked\n\n> **Read `=` as \"now names\".** The right side is worked out first; then the name on the left is tied to the result.","notes":"Draw it: two labels, one object, then move one label. Everything else in this session is this drawing with a list in place of the number. Ask what line 4 prints before you reveal the comment.","minutes":null,"lo":["LO1"]},{"id":"assignment-never-copies","n":10,"title":"Assignment never copies: b = a gives one list two names","kind":"content","session":1,"hash":"6f90590f","md":"#### [day1#assignment-never-copies] Assignment never copies: b = a gives one list two names\n\n*Aliasing*\n\n```python\n# file: snippets/s1.py\na = [1, 2, 3]\nb = a\nb.append(4)\nprint(a, len(b))\n```\n\n- **It prints.** `[1, 2, 3, 4] 4`\n\nThere was only ever one list. `append` changed it, and both names show the change.\n\n> **What goes wrong.** You \"save the original\" with `backup = rows`, clean `rows`, and the backup is cleaned too.","notes":"This is snippet 1 of the lab, and its answer is given on the lab page as the model of the form. Ask the room what `a is b` would print. Two names for one object is called an alias.","minutes":null,"lo":["LO1"]},{"id":"mutate-or-rebind","n":11,"title":"A line either changes an object or moves a name. Know which.","kind":"content","session":1,"hash":"3dfd035a","md":"#### [day1#mutate-or-rebind] A line either changes an object or moves a name. Know which.\n\n*Two different things a line can do*\n\n| The line | What it does | Who sees it |\n| --- | --- | --- |\n| `b.append(4)`, `b[0] = 9`, `d[\"k\"] = 1` | changes the object (**mutation**) | every name tied to that object |\n| `b = b + [4]`, `b = []`, `n = n + 1` | ties the name to another object (**rebinding**) | only that name |\n\n> **The test.** Is there a bare name on the left of `=`? Then it is rebinding. A dot or a bracket on the left, or a method that changes in place, is mutation.","notes":"Spend time here: this table decides snippets 3, 4 and 6. Note for the curious: `b += [4]` on a list mutates in place, which is why the table avoids it; say so only if asked.","minutes":null,"lo":["LO1"]},{"id":"immutable-values","n":12,"title":"Numbers, strings and tuples cannot change, so sharing them is harmless","kind":"content","session":1,"hash":"a0c5245f","md":"#### [day1#immutable-values] Numbers, strings and tuples cannot change, so sharing them is harmless\n\n*Mutable and immutable*\n\n- **Cannot be changed.** `int`, `float`, `str`, `bool`, `tuple`, `None`. Every \"change\" makes a new object: `y = y + 5`, `name.upper()`.\n- **Can be changed in place.** `list`, `dict`, `set`, and most objects you define. Sharing one of these is where surprises come from.\n\n```python\n# file: snippets/s2.py\nx = 10\ny = x\ny = y + 5\nprint(x, y)          # 10 15\n```","notes":"Snippet 2 has the same shape as snippet 1 and the opposite result. The difference is not the type of the name, names have no type; it is that line 3 rebinds. With an immutable value rebinding is the only thing a line can do.","minutes":null,"lo":["LO1"]},{"id":"copies-are-shallow","n":13,"title":"A copy is one level deep: the outside is new, the inside is shared","kind":"content","session":1,"hash":"660989ad","md":"#### [day1#copies-are-shallow] A copy is one level deep: the outside is new, the inside is shared\n\n*Copies*\n\n```python\n# file: snippets/s6.py\nmeter = {\"id\": \"M-0042\", \"readings\": [0.6]}\nbackup = dict(meter)\nbackup[\"id\"] = \"M-0043\"\nbackup[\"readings\"].append(0.7)\nprint(meter[\"id\"], meter[\"readings\"])\n```\n\n- `a[:]`, `list(a)`, `dict(d)` and `.copy()` make a new outer object\n- What is inside is **not** copied: both dictionaries point at one list of readings\n- `copy.deepcopy` copies all levels, when you need it\n\n> **It prints** `M-0042 [0.6, 0.7]`: the id was safe, the readings were not.","notes":"Draw two dictionaries with their own \"id\" arrows and one shared list. Records that hold lists are everywhere in data work, so this is the aliasing bug participants will really meet. Do not reveal the callout before the room has voted.","minutes":null,"lo":["LO1"]},{"id":"equal-or-same","n":14,"title":"== asks \"equal value?\"; is asks \"the same object?\"","kind":"content","session":1,"hash":"102114d2","md":"#### [day1#equal-or-same] == asks \"equal value?\"; is asks \"the same object?\"\n\n*Two questions*\n\n```python\n# file: same.py\na = [0.7, 0.9]\nb = a\nc = a[:]\nprint(a == c, a is c)    # True False\nprint(a == b, a is b)    # True True\n```\n\n- Use `==` for values, almost always\n- Use `is` for `None`: `if value is None`\n- When a trace surprises you, `a is b` tells you whether you have one object or two","notes":"Keep it short. The one rule to leave: compare with None using `is`; the type checker session returns to it.","minutes":null,"lo":["LO1"]},{"id":"functions-share-arguments","n":15,"title":"A call ties the parameter name to the caller's object: no copy there either","kind":"content","session":1,"hash":"068cff19","md":"#### [day1#functions-share-arguments] A call ties the parameter name to the caller's object: no copy there either\n\n*Calling a function*\n\n```python\n# file: snippets/s4.py\ndef add_reading(log, value):\n    log.append(value)\n    log = []\n    log.append(-1)\n\nday = [1.2]\nadd_reading(day, 0.8)\nprint(day)\n```\n\n- call: `log` and `day` name one list\n- line 2: that list becomes `[1.2, 0.8]`\n- line 3: `log` is tied to a new empty list\n- line 4: the new list gets `-1`; nobody else sees it\n- prints: `[1.2, 0.8]`","notes":"Demonstration: in the workspace, `uv run trace.py 1.1/snippets/s4.py` prints exactly these steps, with \"one object, 2 names\" where it applies. Show it after the lab's prediction step, not before. The lesson for tomorrow: a function that mutates its argument changes the caller's data.","minutes":null,"lo":["LO1"]},{"id":"trace-table","n":16,"title":"Trace on paper: a column per name, a row per line that runs","kind":"content","session":1,"hash":"a68c24af","md":"#### [day1#trace-table] Trace on paper: a column per name, a row per line that runs\n\n*The method*\n\n| Line | `readings` | `copy` | Note |\n| --- | --- | --- | --- |\n| `readings = [0.7, 0.9]` | list A: 0.7, 0.9 |  | a new list, A |\n| `copy = readings[:]` | A | list B: 0.7, 0.9 | a slice makes a second list |\n| `copy[0] = 9.9` | A | B: 9.9, 0.9 | mutation of B only |\n| `readings.append(1.1)` | A: 0.7, 0.9, 1.1 | B | mutation of A only |\n| `print(readings, copy)` | `[0.7, 0.9, 1.1] [9.9, 0.9]` |  |  |\n\n> **Give objects letters.** Two names with the same letter share an object. That is the whole trick, and it is what a step visualiser draws for you.","notes":"This is snippet 3. Do it on the board with the room dictating each row. In the lab they do the same eight times, then check with Python Tutor or the supplied tracer. Insist on paper first: the check cannot know, but the supervised check will.","minutes":null,"lo":["LO1"]},{"id":"check-shared-list","n":17,"title":"What does the last line print?","kind":"quiz","session":1,"hash":"307a8d40","md":"#### [day1#check-shared-list] What does the last line print?\n\n*Checkpoint*\n\n**Question:** Salma keeps yesterday's readings before cleaning today's: `before = rows`, then `rows.remove(-1.0)`, then `rows = rows + [0.5]`. The list started as `[0.7, -1.0]`. What is `before` now?\n\n- A. [0.7, -1.0]\n- B. [0.7]\n- C. [0.7, 0.5]\n- D. [0.7, -1.0, 0.5]","notes":"Answer: [0.7]. Both rules in one question: mutation is seen through every name, rebinding through one. If the room splits between the first and the second option, redraw the labels of the \"no copy\" slide.","minutes":null,"lo":["LO1"]},{"id":"lab-1-1","n":18,"title":"Trace eight snippets","kind":"lab","session":1,"hash":"3bba5421","md":"#### [day1#lab-1-1] Trace eight snippets\n\nLab 1.1 · 25 min\n\nTrace eight snippets on paper, then check each answer in a step visualiser.\n\n[D1_1_trace_eight_snippets.html](https://sdaiaacademy.github.io/fn-101/labs/D1_1_trace_eight_snippets.html)\n\n- [ ] Build the workspace and open the lab folder (4 min)\n- [ ] Predict the output of all eight on paper (10 min)\n- [ ] Step through each wrong one in a visualiser (7 min)\n- [ ] Note what you misread; run the check (4 min)\n- [ ] ✱ Stretch: Change one line of snippet 7 so that both grids print the same, and predict before you run","notes":"AI off. Watch for people running the snippets first: the lab is worth nothing that way, say so kindly. The check prints a score and asks for a note per miss; it passes with wrong predictions as long as each has its note. Typical misses: s4, s6, s7, s8. Use the last four minutes to have two people explain one miss each. Snippet 8 returns in session 2.","minutes":null,"lo":[]},{"id":"s2","n":19,"title":"Functions with clear contracts","kind":"section","session":2,"hash":"ca26bfd3","md":"#### [day1#s2] Functions with clear contracts\n\n*Session 2*\n\n- Split a script into functions that each do one job\n- State a function's inputs and output in its signature and docstring\n- Explain what a function can see and change, using scope and the call stack","notes":"","minutes":null,"lo":["LO3"]},{"id":"one-job-per-function","n":20,"title":"A forty-line script does four jobs, and you can test none of them","kind":"content","session":2,"hash":"3d122c28","md":"#### [day1#one-job-per-function] A forty-line script does four jobs, and you can test none of them\n\n*Decomposition*\n\n1. **1 · Load** read the file into rows\n2. **2 · Clean** keep the numbers, count the rest\n3. **3 · Compute** the amount due\n4. **4 · Present** four lines of text\n\n- To check the tariff you must have a file, run everything, and read the last line\n- A function per job gives each job a **name**, a **way in** and a **way out**","notes":"The script is `monthly_bill.py` of lab 1.2: meter M-0042, 27 days billed and 3 skipped, 17.211 cubic metres, 44.95 SAR. The tariff is invented for the course. Ask: the tariff changes; how do you prove the new one is right for exactly 15 cubic metres?","minutes":null,"lo":["LO3"]},{"id":"contract-in-signature","n":21,"title":"Everything in comes through parameters; everything out through return","kind":"content","session":2,"hash":"f4279ffd","md":"#### [day1#contract-in-signature] Everything in comes through parameters; everything out through return\n\n*Contracts*\n\n```python\n# file: monthly_bill.py\ndef bill(total_m3):\n    \"\"\"Take a month's consumption in\n    cubic metres; return the amount\n    due in SAR.\"\"\"\n    if total_m3 \u003c= 15:\n        amount = total_m3 * 2.0\n    else:\n        amount = 30.0 + (total_m3 - 15) * 4.5\n    return amount + 5.0\n```\n\n- The first line and the docstring are the **contract**: what goes in, what comes out\n- No name from outside is read, nothing outside is changed\n- So one line checks it: `bill(15.0) == 35.0`\n\n> **What goes wrong.** A function that `print`s its result returns `None`. The caller has nothing to work with.","notes":"The three values the lab's tests use: bill(0.0) is 5.0, bill(15.0) is 35.0, bill(20.0) is 57.5. Print against return is the most common beginner confusion: show `x = print(3)` then `print(x)` if the room hesitates.","minutes":null,"lo":["LO3"]},{"id":"pure-core-effects-edge","n":22,"title":"Keep files and printing at the edge, and the middle becomes easy to test","kind":"content","session":2,"hash":"e4ce2807","md":"#### [day1#pure-core-effects-edge] Keep files and printing at the edge, and the middle becomes easy to test\n\n*Where the effects go*\n\n- **Edge in.** `load_rows(path)` is the only function that opens a file.\n- **The middle.** `clean`, `bill`, `format_bill`: values in, values out. The same input always gives the same output.\n- **Edge out.** `main()` is the only place that prints.\n\n> **You will see this shape all week.** Miqyas loads at one end, writes a report at the other, and everything between is functions you can call with three rows typed by hand.","notes":"Do not use the word \"pure\" as jargon; \"same input, same output, touches nothing else\" is enough. Three of the four functions of the lab can be tested without any file on disk: that is the first question of the lab's \"check yourself\".","minutes":null,"lo":["LO3"]},{"id":"scope-local-names","n":23,"title":"A name bound inside a function lives inside that call, and nowhere else","kind":"content","session":2,"hash":"ca25bc3e","md":"#### [day1#scope-local-names] A name bound inside a function lives inside that call, and nowhere else\n\n*Scope*\n\n```python\n# file: snippets/s5.py\ntotal = 0\n\ndef add(value):\n    total = value\n    return total\n\nadd(5)\nprint(total, add(7))     # 0 7\n```\n\n- Assigning to `total` inside `add` makes a **local** name\n- The `total` of line 1 is a different name in a different scope\n- A function may **read** an outer name; assigning never reaches it\n\n> **So do not rely on outer names at all.** Pass what the function needs; return what it produces.","notes":"Snippet 5. There is a `global` statement; mention it only to say the course never needs it. The useful consequence: a function cannot quietly change your variables by assignment. It can change your lists by mutation, as snippet 4 showed.","minutes":null,"lo":["LO1","LO3"]},{"id":"call-stack","n":24,"title":"Every call gets its own frame of names, stacked on the caller's","kind":"content","session":2,"hash":"6987e013","md":"#### [day1#call-stack] Every call gets its own frame of names, stacked on the caller's\n\n*The call stack*\n\n1. **bill(17.211)** total_m3, amount\n2. **main()** rows, values, skipped\n3. **the module** load_rows, clean, bill, main\n\n- The top frame is the function running now\n- When it returns, its frame and its local names are gone\n- A **traceback** is this stack printed at the moment of an error, the top frame last","notes":"The stack is read from the bottom of the slide up: the module called main, main called bill. Tie it forward: on Day 3 they read tracebacks from the last line upward, which is this picture. A debugger's \"step into\" and \"step out\" move along it.","minutes":null,"lo":["LO1"]},{"id":"docstrings-and-doctests","n":25,"title":"A docstring states the contract; a doctest is an example that runs","kind":"content","session":2,"hash":"77251ea2","md":"#### [day1#docstrings-and-doctests] A docstring states the contract; a doctest is an example that runs\n\n*Saying the contract*\n\n```python\n# file: readings.py\ndef parse_value(text):\n    \"\"\"Turn the consumption cell into\n    cubic metres.\n\n    >>> parse_value(\" 0.750 \")\n    0.75\n    >>> parse_value(\"12\")\n    12.0\n    \"\"\"\n```\n\n- First line: what goes in, what comes out, in words\n- Lines that start with `>>>` are a session someone can retype\n- `python -m doctest file.py` runs them and reports any that no longer hold\n\n> **Examples age well.** A sentence can drift from the code without anyone noticing; an example that runs cannot.","notes":"This function is from Miqyas, the tool they meet on Day 3. Doctests are for a few telling examples; the full tests live in test files, which is Day 4. The stretch of lab 1.2 adds one doctest.","minutes":null,"lo":["LO3"]},{"id":"main-guard","n":26,"title":"The main guard lets a file be both a script and something to import","kind":"content","session":2,"hash":"3968b779","md":"#### [day1#main-guard] The main guard lets a file be both a script and something to import\n\n*Run or import*\n\n```python\n# file: monthly_bill.py\ndef main():\n    rows = load_rows(\"data/sample_meter.csv\")\n    values, skipped = clean(rows)\n    amount = bill(sum(values))\n    ...\n\nif __name__ == \"__main__\":\n    main()\n```\n\n- Run the file: Python sets `__name__` to `\"__main__\"`, so `main()` runs\n- Import the file: `__name__` is `\"monthly_bill\"`, nothing runs\n- The tests import it. Without the guard, every test run would print a bill","notes":"The lab's check imports the file and expects no output. This two-line idiom is the seed of Day 4, session 2, where the script becomes a command with arguments.","minutes":null,"lo":["LO3","LO6"]},{"id":"default-argument-trap","n":27,"title":"A default value is made once, when the function is defined","kind":"content","session":2,"hash":"00ae6e20","md":"#### [day1#default-argument-trap] A default value is made once, when the function is defined\n\n*A trap in the signature*\n\n```python\n# file: snippets/s8.py\ndef tag(reading, tags=[]):\n    tags.append(reading)\n    return tags\n\nfirst = tag(\"high\")\nsecond = tag(\"low\")\nprint(first, second, first is second)\n```\n\n- **It prints.** `['high', 'low'] ['high', 'low'] True`\n\n```python\n# file: the fix\ndef tag(reading, tags=None):\n    if tags is None:\n        tags = []\n```\n\n> **One list for every call.** A mutable default remembers what earlier calls did. Remember this slide on Day 3.","notes":"Snippet 8. It is aliasing again: the default object is shared by all calls that do not pass their own. One of the seeded defects of the Day 3 debugging lab is exactly this, in a function that loads readings; do not say which.","minutes":null,"lo":["LO1"]},{"id":"check-function-contract","n":28,"title":"Which version of the function can be tested with one line?","kind":"quiz","session":2,"hash":"30b02633","md":"#### [day1#check-function-contract] Which version of the function can be tested with one line?\n\n*Checkpoint*\n\n**Question:** Shouq needs a function that counts the rows of a month with an empty consumption cell. Four colleagues propose one each. Which can be checked by a single `assert`, with no file on disk?\n\n- A. count_missing() opens the month's file and returns the count\n- B. count_missing(rows) prints the count\n- C. count_missing(rows) returns the count\n- D. count_missing(rows) stores the count in a global named missing","notes":"Answer: the third. Each wrong option breaks one half of the contract: a hidden input, no output, a hidden output. Ask which of the three the forty-line script has (all of them).","minutes":null,"lo":["LO3"]},{"id":"lab-1-2","n":29,"title":"Split a script into four functions","kind":"lab","session":2,"hash":"3bcd71e8","md":"#### [day1#lab-1-2] Split a script into four functions\n\nLab 1.2 · 25 min\n\nSplit a 40-line script into four functions with stated inputs and outputs.\n\n[D1_2_split_40_line.html](https://sdaiaacademy.github.io/fn-101/labs/D1_2_split_40_line.html)\n\n- [ ] Run the script and mark its four jobs (5 min)\n- [ ] Move each job into a function with a docstring (12 min)\n- [ ] Put the script part under a main guard (4 min)\n- [ ] Run the tests and the check (4 min)\n- [ ] ✱ Stretch: Add a doctest to bill for a month of exactly 15 cubic metres and run it","notes":"AI tutor. The tests are the contract: send people to `test_bill.py` before they write a line. At the start pytest stops with an import error, which is expected. The bill must stay Meter M-0042, 27 days and 3 skipped, 17.211 m3, 44.95 SAR. Typical problems: a function still reading the global rows; print in place of return; no main guard, which the check reports as output on import. Anyone stuck after ten minutes: write `bill` together, the smallest of the four.","minutes":null,"lo":[]},{"id":"s3","n":30,"title":"Type hints and a checker","kind":"section","session":3,"hash":"ec1d10bb","md":"#### [day1#s3] Type hints and a checker\n\n*Session 3*\n\n- Annotate parameters and return values with built-in types\n- Read a type checker's report and find the line it points at\n- Handle a value that may be None before using it","notes":"","minutes":null,"lo":["LO3"]},{"id":"hints-are-promises","n":31,"title":"A type hint is a promise about a value, written where a tool can check it","kind":"content","session":3,"hash":"3d82a5b4","md":"#### [day1#hints-are-promises] A type hint is a promise about a value, written where a tool can check it\n\n*Type hints*\n\n```python\n# file: parser.py\ndef parse_value(text: str) -> float | None:\n    if text == \"\":\n        return None\n    return float(text)\n```\n\n- `text: str`: callers promise to pass text\n- `-> float | None`: the function promises a number, or `None`\n- Python itself **ignores** hints when it runs the code\n- A **type checker** reads them and finds every line that breaks a promise","notes":"The contract of session 2, made precise enough for a machine. Stress the third bullet: `parse_value(3)` still runs and still crashes; hints are for the checker and for the reader.","minutes":null,"lo":["LO3"]},{"id":"built-in-generics","n":32,"title":"Say what is inside: a list of what, a dictionary from what to what","kind":"content","session":3,"hash":"a9688275","md":"#### [day1#built-in-generics] Say what is inside: a list of what, a dictionary from what to what\n\n*Hints for collections*\n\n| Hint | Reads as | At Manahil |\n| --- | --- | --- |\n| `list[float]` | a list of numbers | one meter's month |\n| `dict[str, int]` | text keys, whole-number values | readings per district |\n| `set[str]` | a set of text | the known meter ids |\n| `tuple[str, str, float]` | exactly three values, in this order | meter, day, cubic metres |\n| `dict[str, str]` | text to text | one row of a CSV file |\n\n> **The last row matters.** A CSV reader gives you text for every cell, numbers included. The hint says so, and the checker stops you adding text to a number.","notes":"These are the built-in names, lower case, no import needed on any Python the course supports. Tomorrow's collections session uses these same five shapes.","minutes":null,"lo":["LO3"]},{"id":"none-is-a-value","n":33,"title":"\"Or None\" in a hint forces every caller to handle the missing case","kind":"content","session":3,"hash":"5953216b","md":"#### [day1#none-is-a-value] \"Or None\" in a hint forces every caller to handle the missing case\n\n*The value that is not there*\n\n```python\n# file: before\nvalue = parse_value(text)\nreturn meter_id, day, round(value, 3)\n```\n\n```python\n# file: after\nvalue = parse_value(text)\nif value is None:\n    return None\nreturn meter_id, day, round(value, 3)\n```\n\n- Before: an empty cell crashes at `round(None, 3)`, some day, on some file\n- After the check, the checker knows `value` is a `float` on the last line: this is called **narrowing**\n\n> **Not `if not value`.** A reading of `0.0` is a real reading, and it is \"not value\" too.","notes":"The warning is a real bug in utility data: empty houses read zero. `is None` asks the question you mean. Most of the nine errors of the lab are this one pattern in different places.","minutes":null,"lo":["LO3"]},{"id":"checker-reads-annotated-only","n":34,"title":"On code without hints, a clean report from the checker proves nothing","kind":"content","session":3,"hash":"6c13ce18","md":"#### [day1#checker-reads-annotated-only] On code without hints, a clean report from the checker proves nothing\n\n*From the lab's run*\n\n- **0** issues reported on the supplied parser, while 4 of its 6 tests fail\n- **9** errors in strict mode: every one says \"missing a type annotation\"\n- **9** different errors once five signatures are annotated: each a real bug\n\n> **Strict mode** refuses unannotated functions, so \"no issues\" means what it says. The labs and the capstone use `mypy --strict`.","notes":"Numbers from the reference run of lab 1.3 with mypy: plain run \"Success: no issues found in 1 source file\"; strict run on the unannotated file 9 errors; after adding only the five signatures 9 errors again, none of them about annotations. By default mypy checks only functions that carry annotations. Sources: mypy documentation.","minutes":null,"lo":["LO3"]},{"id":"read-a-checker-report","n":35,"title":"Every line of the report is a place, a complaint and a code","kind":"content","session":3,"hash":"c101e8cd","md":"#### [day1#read-a-checker-report] Every line of the report is a place, a complaint and a code\n\n*Reading the report*\n\n```text\n# file: uv run mypy --strict parser.py\nparser.py:26: error: \"None\" object is not iterable  [misc]\nparser.py:43: error: Unsupported operand types for > (\"float\" and \"str\")  [operator]\nparser.py:45: error: Incompatible return value type (got \"str\", expected \"float | None\")  [return-value]\n```\n\n- **Line 26.** Three names are unpacked from something that may be `None`.\n- **Line 43.** A number is compared with text. Python would raise a TypeError here.\n- **Line 45.** The function returns text where its hint promised a number.","notes":"Three of the nine messages of the lab, copied from the run. Method: start at the top, open the line, ask \"which promise does this line break?\", fix, run again. One fix often removes several messages. The code in brackets is what you search the documentation for.","minutes":null,"lo":["LO3"]},{"id":"hints-do-not-validate-data","n":36,"title":"A checker verifies your code, not the file someone sends you","kind":"content","session":3,"hash":"7a131c09","md":"#### [day1#hints-do-not-validate-data] A checker verifies your code, not the file someone sends you\n\n*What hints cannot do*\n\n- **The checker catches.** Text added to a number, a forgotten `None`, a wrong return, a misspelt field of a record: mistakes in the **program**.\n- **The checker cannot see.** A cell that holds `N/A`, a reading of 9,000 cubic metres, a meter that is not in the registry: mistakes in the **data**.\n\n> **Both are needed.** Hints keep the code honest. Validation at the door, with a reason for every rejected row, keeps the data honest. That is Day 3.","notes":"Prevent the false comfort: \"it type-checks\" says nothing about whether row 12,440 holds a number. The lab of session 4 builds the first validation function; Day 3 makes it report reasons.","minutes":null,"lo":["LO3","LO4"]},{"id":"checker-and-linter","n":37,"title":"A type checker and a linter read your code without running it","kind":"content","session":3,"hash":"88623e36","md":"#### [day1#checker-and-linter] A type checker and a linter read your code without running it\n\n*Two kinds of tool*\n\n| Tool | Asks | Examples | In the workspace |\n| --- | --- | --- | --- |\n| Type checker | do the values fit the hints? | mypy, Pyright | `uv run mypy --strict file.py` |\n| Linter | is anything unused, shadowed or suspicious? | Ruff | `uv run ruff check` |\n| Formatter | is the layout the usual one? | Ruff | `uv run ruff format` |\n\n> **The names are examples.** An editor such as VS Code or VSCodium shows the same reports as you type. What matters is that a clean report is part of \"done\".","notes":"Tools are examples, not endorsements; any checker that implements the standard typing rules will do. The capstone rubric scores \"structure and types\" on a clean strict report.","minutes":null,"lo":["LO3"]},{"id":"check-optional-return","n":38,"title":"The checker rejects this line. What is the right repair?","kind":"quiz","session":3,"hash":"a99b9df1","md":"#### [day1#check-optional-return] The checker rejects this line. What is the right repair?\n\n*Checkpoint*\n\n**Question:** `highest(lines)` is annotated `-> float | None`. A colleague writes `peak = highest(lines) * 1.1` and the checker reports that `None` does not support `*`.\n\n- A. Keep the result in a name, test it `is None` first, then multiply\n- B. Add `# type: ignore` to the line, since the files are never empty in practice\n- C. Change the hint of `highest` to `-> float`\n- D. Write `if not highest(lines)` and return early","notes":"Answer: the first. The second and third are the two ways people make a checker quiet without making the code right; the lab's check refuses both. The fourth is the zero trap from the None slide.","minutes":null,"lo":["LO3"]},{"id":"lab-1-3","n":39,"title":"Annotate the reading parser","kind":"lab","session":3,"hash":"6682a5bc","md":"#### [day1#lab-1-3] Annotate the reading parser\n\nLab 1.3 · 25 min\n\nAnnotate the supplied reading parser and fix every error the type checker reports.\n\n[D1_3_annotate_supplied_reading.html](https://sdaiaacademy.github.io/fn-101/labs/D1_3_annotate_supplied_reading.html)\n\n- [ ] Run the tests and the checker on the supplied parser (4 min)\n- [ ] Annotate every function (7 min)\n- [ ] Fix each error the checker reports (10 min)\n- [ ] Run the tests, the strict check and the lab check (4 min)\n- [ ] ✱ Stretch: Replace the tuple with a NamedTuple so that reading[2] becomes reading.m3","notes":"AI tutor. Let the room be surprised by step 1: four failing tests and \"Success: no issues found\". Give the five signatures on the lab page to anyone who is slow at step 2; the learning is in step 3. After the signatures the count is 9. Typical problems: annotating `highest` as returning text because the code does; starting the total at 0 and not 0.0; `if not value`. The check refuses \"type: ignore\" and Any.","minutes":null,"lo":[]},{"id":"s4","n":40,"title":"Parsons problems","kind":"section","session":4,"hash":"0f1de22c","md":"#### [day1#s4] Parsons problems\n\n*Session 4*\n\n- Order the lines of a function so that each name is bound before it is used\n- Use indentation to say which lines belong to a branch, a loop or a try\n- Reject a distractor by saying what it would do","notes":"","minutes":null,"lo":["LO1"]},{"id":"what-is-a-parsons-problem","n":41,"title":"All the lines are given, scrambled. You decide order and indentation.","kind":"content","session":4,"hash":"68ec2522","md":"#### [day1#what-is-a-parsons-problem] All the lines are given, scrambled. You decide order and indentation.\n\n*Parsons problems*\n\n```python\n# file: scrambled\nreturn total\nif value >= 0:\ntotal = value\ndef total_valid(values):\ntotal += value\nfor value in values:\ntotal = 0.0\n```\n\n- No syntax to recall: every character you need is on the page\n- What is left is the **structure**: what runs first, what is inside what\n- One line is a **distractor**: it looks right and does not belong\n\n> **Why practise this.** It is the skill between reading and writing, and it is one part of the supervised check.","notes":"This is the warm-up of lab 1.4. Let the room solve it aloud: someone names the first line, the next person the second. The distractor is `total = value`: ask what the function would return for [1.5, 2.5] with it (2.5, the last value).","minutes":null,"lo":["LO1"]},{"id":"bind-before-use","n":42,"title":"A line can run only after the lines that bind the names it reads","kind":"content","session":4,"hash":"22e129f5","md":"#### [day1#bind-before-use] A line can run only after the lines that bind the names it reads\n\n*Rule 1*\n\n1. **text = row[…].strip()** needs `row`, a parameter\n2. **value = float(text)** needs `text`\n3. **if value \u003c 0 or value > 200:** needs `value`\n\n- For each line, list the names it **reads**; find the line that **binds** each\n- That gives you chains like this one before you think about meaning at all\n- Run a line too early and Python says `NameError: name 'value' is not defined`","notes":"It is session 1 again: names are bound by assignment, by `def`, by parameters, by `for`. A NameError in the lab means an order mistake, and the message names the name.","minutes":null,"lo":["LO1"]},{"id":"indentation-is-structure","n":43,"title":"Indentation says what belongs to what, and one level changes the answer","kind":"content","session":4,"hash":"079e5cd7","md":"#### [day1#indentation-is-structure] Indentation says what belongs to what, and one level changes the answer\n\n*Rule 2*\n\n```python\n# file: right\nfor value in values:\n    if value >= 0:\n        total += value\nreturn total\n```\n\n```python\n# file: one level off\nfor value in values:\n    if value >= 0:\n        total += value\n    return total\n```\n\n- Left: return after the loop, the sum of all valid values\n- Right: return **inside** the loop, so the function ends after the first value\n- Both are valid Python. Only a test, or a trace, tells them apart","notes":"For [1.5, -2.0, 0.0, 2.5] the left version returns 4.0 and the right one 1.5. The lab's warm-up test uses exactly this list. Ask: what does the right version return for an empty list? (None: the loop body never runs and the function falls off the end.)","minutes":null,"lo":["LO1"]},{"id":"guard-clauses-first","n":44,"title":"Reject each bad case early; what reaches the last line is good","kind":"content","session":4,"hash":"111a5d13","md":"#### [day1#guard-clauses-first] Reject each bad case early; what reaches the last line is good\n\n*The shape of a validation function*\n\n```python\n# file: validate.py\ndef validate_reading(row, known):\n    text = row[\"consumption_m3\"].strip()\n    if text == \"\":\n        return \"MISSING_VALUE\"\n    ...\n    if row[\"meter_id\"] not in known:\n        return \"UNKNOWN_METER\"\n    return \"\"\n```\n\n- Each `if` guards one `return` with one reason\n- The order of the guards is part of the specification\n- The final line is not indented under any `if`\n\n> **Pair them up.** In a scrambled validation function, match every `if` with its `return` first. Half the puzzle is done.","notes":"The four reasons of the lab, in order: MISSING_VALUE, NOT_A_NUMBER, OUT_OF_RANGE, UNKNOWN_METER. They are four of the six reason codes Miqyas reports; the month file holds 40, 15, 18 and 20 rows of them. On Day 3 the returns become exceptions with a reason.","minutes":null,"lo":["LO1","LO4"]},{"id":"try-wraps-one-line","n":45,"title":"try wraps the one line that can fail; except names that failure","kind":"content","session":4,"hash":"ee51acc0","md":"#### [day1#try-wraps-one-line] try wraps the one line that can fail; except names that failure\n\n*Where the try goes*\n\n```python\n# file: validate.py\ntry:\n    value = float(text)\nexcept ValueError:\n    return \"NOT_A_NUMBER\"\n```\n\n- `float(\"N/A\")` raises **ValueError**\n- `except TypeError:` would catch nothing here: the error passes through and the function crashes\n- `except:` alone would catch everything, including your own typing mistakes\n\n> **Name the exception you expect.** You find its name by trying the failing call once and reading the last line of what Python prints.","notes":"Demonstration: at a Python prompt type `float(\"N/A\")` and read \"ValueError: could not convert string to float: 'N/A'\". Then `float(\"0,742\")`: also ValueError; the month file has 7 values written with a decimal comma. Exceptions get a whole session on Day 3.","minutes":null,"lo":["LO1","LO4"]},{"id":"distractors-look-alike","n":46,"title":"Decide between two lines that look alike by running one concrete row in your head","kind":"content","session":4,"hash":"a7bb206d","md":"#### [day1#distractors-look-alike] Decide between two lines that look alike by running one concrete row in your head\n\n*Distractors*\n\n| The row has | `if value \u003c 0 or value > 200:` | `if value \u003c 0 and value > 200:` |\n| --- | --- | --- |\n| `\"250\"` | False or True: **rejected** | False and True: accepted |\n| `\"-0.5\"` | True or False: **rejected** | True and False: accepted |\n| `\"0.742\"` | accepted | accepted |\n\n> **No number is below 0 and above 200 at once.** The second line never rejects anything. You see it in ten seconds with one value; you may not see it in ten minutes of staring.","notes":"The habit to build: do not judge a line by how it looks; give it an input. This is the same move as predicting output in session 1, on one line. It is also how to review a line an assistant suggests.","minutes":null,"lo":["LO1"]},{"id":"from-lines-to-writing","n":47,"title":"The same three questions build a function when no lines are given","kind":"content","session":4,"hash":"3c84e0ae","md":"#### [day1#from-lines-to-writing] The same three questions build a function when no lines are given\n\n*From reading to writing*\n\n- **1 · What is the contract?** Inputs, output, and the cases in words. Session 2.\n- **2 · What must exist first?** The chain of names: load, then convert, then compare. Today's rule 1.\n- **3 · What is inside what?** Which lines belong to the loop, the branch, the try. Today's rule 2.\n\n> **From tomorrow you write.** Every lab still starts from a supplied state and a set of tests that say what \"right\" means.","notes":"Close the day's arc: trace, state a contract, promise types, order lines. Tomorrow they write functions over collections; if someone freezes on a blank file, send them back to these three questions.","minutes":null,"lo":["LO1","LO3"]},{"id":"check-parsons-order","n":48,"title":"Where does the last line of the function go?","kind":"quiz","session":4,"hash":"669ae79c","md":"#### [day1#check-parsons-order] Where does the last line of the function go?\n\n*Checkpoint*\n\n**Question:** A function counts the good rows. Placed so far: `count = 0`, the `for` line, the `if` line, `count += 1`. Left: `return count`. A test shows it returns 1 for 30 good rows.\n\n- A. Directly under `count = 0`, before the loop\n- B. Under `count += 1`, at the same depth\n- C. Under the `if` line, at the depth of the `if`\n- D. After the loop, at the depth of the `for` line","notes":"Answer: the last option. The scenario describes the bug of the second option: ask which wrong position produces exactly 1 for 30 good rows, and which produces 0 or 1 depending on the first row (the third).","minutes":null,"lo":["LO1"]},{"id":"lab-1-4","n":49,"title":"Rebuild a validation function","kind":"lab","session":4,"hash":"0c4c79a8","md":"#### [day1#lab-1-4] Rebuild a validation function\n\nLab 1.4 · 25 min\n\nReorder scrambled lines, with distractors, into a working validation function.\n\n[D1_4_reorder_scrambled_lines.html](https://sdaiaacademy.github.io/fn-101/labs/D1_4_reorder_scrambled_lines.html)\n\n- [ ] Order the warm-up on paper, then in the editor (6 min)\n- [ ] Order and indent the validation function (11 min)\n- [ ] Run the tests; fix order or indentation (4 min)\n- [ ] Say why each distractor is wrong; check (4 min)\n- [ ] ✱ Stretch: Write one more distractor for a neighbour and say which test catches it","notes":"AI off: this is practice for the supervised check. Paper first, numbers and depths, then the editor. The files are not valid Python until the lines are in order, so the editor underlines everything at the start; say so. The check accepts only supplied lines and none of the four distractors. Typical problems: the final return indented under the last if; \"return NOT_A_NUMBER\" placed under try. The order of the last two guards is fixed by the specification and by the last test, not by names.","minutes":null,"lo":[]},{"id":"wrap-up","n":50,"title":"Three things to keep","kind":"content","session":4,"hash":"d3850ed5","md":"#### [day1#wrap-up] Three things to keep\n\n*Day 1 · wrap-up*\n\n- **One object, many names.** Assignment and calls never copy. Mutation is seen through every name; rebinding through one.\n- **A function is a contract.** In through parameters, out through return, effects at the edge. Hints make the contract checkable.\n- **Give the line an input.** To judge a line, a distractor or a suggestion, run one concrete value through it by hand.","notes":"Ask each table for the line of code that surprised them most today. Collect the answers of drill 1 now if you did not in session 1.","minutes":null,"lo":[]},{"id":"next","n":51,"title":"Day 2: Collections for data work","kind":"content","session":4,"hash":"8e8a3f74","md":"#### [day1#next] Day 2: Collections for data work\n\n*Next*\n\nFinish any lab at home from its own folder; each one starts from a supplied state. Tomorrow opens with drill 2, on lists and dictionaries that share their contents.","notes":"Nothing to install for tomorrow. Lab 2.1 writes a 100,000-row file when the workspace is built; anyone who built the workspace today already has it.","minutes":null,"lo":[]}],"activities":[{"id":"check-shared-list-q1","slide":"check-shared-list","type":"single","prompt":"Salma keeps yesterday's readings before cleaning today's: before = rows, then rows.remove(-1.0), then rows = rows + [0.5]. The list started as [0.7, -1.0]. What is before now?","options":[{"key":"A","text":"[0.7, -1.0]"},{"key":"B","text":"[0.7]"},{"key":"C","text":"[0.7, 0.5]"},{"key":"D","text":"[0.7, -1.0, 0.5]"}],"correct":[1],"explanation":"remove mutates the one shared list, so before loses the value too. rows + [0.5] makes a new list and ties only rows to it.","misconceptions":["Treats assignment as a copy: before and rows were one list when remove ran","","Treats rows + [0.5] as a change in place: it builds a new list and rebinds rows only","Swaps the two rules: treats remove as acting on a copy and rows + [0.5] as a change to the shared list"],"lo":["LO1"]},{"id":"check-function-contract-q1","slide":"check-function-contract","type":"single","prompt":"Shouq needs a function that counts the rows of a month with an empty consumption cell. Four colleagues propose one each. Which can be checked by a single assert, with no file on disk?","options":[{"key":"A","text":"count_missing() opens the month's file and returns the count"},{"key":"B","text":"count_missing(rows) prints the count"},{"key":"C","text":"count_missing(rows) returns the count"},{"key":"D","text":"count_missing(rows) stores the count in a global named missing"}],"correct":[2],"explanation":"Rows in through the parameter, a number out through return: assert count_missing([{\"consumption_m3\": \"\"}]) == 1.","misconceptions":["Hides an input: the function opens a fixed file, so a test needs that file and cannot choose the rows","Confuses showing with returning: the caller receives None and has nothing to compare","","Uses a hidden output: the result lands in a global that any other code can overwrite before it is read"],"lo":["LO3"]},{"id":"check-optional-return-q1","slide":"check-optional-return","type":"single","prompt":"highest(lines) is annotated -> float | None. A colleague writes peak = highest(lines) * 1.1 and the checker reports that None does not support *.","options":[{"key":"A","text":"Keep the result in a name, test it is None first, then multiply"},{"key":"B","text":"Add # type: ignore to the line, since the files are never empty in practice"},{"key":"C","text":"Change the hint of highest to -> float"},{"key":"D","text":"Write if not highest(lines) and return early"}],"correct":[0],"explanation":"The hint says a missing value is possible. Only the caller knows what to do then, and the checker makes sure the question is answered.","misconceptions":["","Silences the report and keeps the crash: an empty file still multiplies None at run time","Changes the promise to fit the caller: the function still returns None for an empty file, now without warning anyone","Treats zero as missing: a month whose highest reading is 0.0 would be handled as if there were no readings"],"lo":["LO3"]},{"id":"check-parsons-order-q1","slide":"check-parsons-order","type":"single","prompt":"A function counts the good rows. Placed so far: count = 0, the for line, the if line, count += 1. Left: return count. A test shows it returns 1 for 30 good rows.","options":[{"key":"A","text":"Directly under count = 0, before the loop"},{"key":"B","text":"Under count += 1, at the same depth"},{"key":"C","text":"Under the if line, at the depth of the if"},{"key":"D","text":"After the loop, at the depth of the for line"}],"correct":[3],"explanation":"A result that depends on every row is returned once, after the loop. A return of 1 for 30 good rows says the return sits inside the loop.","misconceptions":["Puts the result before the work: count is still 0 here and the loop below never runs","Returns from inside the branch: the function ends at the first good row, which is the reported 1","Returns from inside the loop: the function ends after the first row, whatever it is",""],"lo":["LO1"]}],"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":"day1.md","llms":"../llms.txt"},"tasks":[],"tools":[]},"bridge":{"allowedOrigins":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

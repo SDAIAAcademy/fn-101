@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 3.4 · Find and fix two seeded defects · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D3_4_ai_off_find.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day3.html#lab-3-4">Back to the slides</a></nav></div>
+<span class="tag">Lab 3.4</span>
+<h1>Find and fix two seeded defects</h1>
+<p>With AI off, find and fix two seeded defects and write a regression test for each.</p>
+<div class="meta"><span>25 minutes</span><span>Day 3</span><span>Session 4: A debugging method</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="3.4">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Two colleagues report that Miqyas gives wrong results. With no assistant, find each defect by the six-step method, fix it, and leave behind a test that would catch it if it ever came back.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>3.4</code> of the workspace: the package <code>miqyas/</code> (four modules and a command line, about 320 lines), <code>symptoms.md</code>, <code>two_runs.py</code>, <code>debug_log.md</code>, <code>test_regression.py</code>, and the data</li>
+    <li>AI policy: off for the whole first attempt. If you are still stuck on a defect after the lab, ask the tutor for a hint tomorrow, in lab 4.4's way</li>
+  </ul>
+
+  <div class="step">
+    <h3>Reproduce both reports and write what you see <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../3.4
+uv run python two_runs.py
+uv run python -m miqyas report --readings data/readings_2026_09.csv --meters data/meters.csv --out out/report.md</code></pre>
+    <p>Read <code>symptoms.md</code>, run both commands, and write under <b>Reproduce</b> in <code>debug_log.md</code>, for each defect, the command and the wrong output. Neither command crashes: both give a wrong answer quietly. Do not open the package yet.</p>
+  </div>
+
+  <div class="step">
+    <h3>Defect A: shrink, hypothesis, test, fix <span class="min">8 min</span></h3>
+    <p><b>Shrink.</b> Does it need 17,690 rows? Try <code>data/tiny.csv</code>, two rows. Does it need two calls? Write down the smallest case that still fails.</p>
+    <p><b>Hypothesis.</b> Read <code>load_readings</code> in <code>miqyas/readings.py</code> with the small case in mind and write one sentence: "I think … because …", with the line.</p>
+    <p><b>Test.</b> Prove it before you change anything: a <code>print</code> on the first line of the function, or <code>breakpoint()</code> there and <code>p</code> to print a name. What does the function start with on the second call?</p>
+    <p><b>Fix.</b> Change the one line, run <code>two_runs.py</code> again, and note the before and after in the log.</p>
+  </div>
+
+  <div class="step">
+    <h3>Defect B: shrink, hypothesis, test, fix <span class="min">7 min</span></h3>
+    <p>The report's number for M-0012 is wrong, and Salma has given you the right one. Which function produces that number? Shrink until no file is needed at all: three values you can check in your head. Then the same four steps, in the log.</p>
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> from miqyas.anomalies import median
+>>> median([1.0, 2.0, 3.0])</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Write a regression test for each; run the check <span class="min">5 min</span></h3>
+    <p>In <code>test_regression.py</code>, write one test per defect from your shrunk case. A good regression test is small, needs no explanation, and fails for the right reason.</p>
+    <pre class="code" data-file="test_regression.py"><code class="language-python">def test_defect_b_median_does_not_depend_on_the_order():
+    assert median([3.0, 1.0, 2.0]) == 2.0</code></pre>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run pytest test_regression.py
+uv run ../lab.py check 3.4</code></pre>
+    <p>The check puts each defect back into a copy of the package and runs your tests against it: a test that still passes there guards nothing.</p>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Put defect A back and step through it with the debugger: add <code>breakpoint()</code> as the first line of <code>load_readings</code>, run <code>two_runs.py</code>, and at each stop type <code>p len(seen)</code>, then <code>c</code> to continue.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>Which slide of Day 1 showed defect A, in four lines?</li>
+    <li>Defect B changed no count in this month's report. Why is it still a defect worth a test?</li>
+    <li>Your fix works. What does the regression test add?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Defect A: <code>load_readings</code> has a mutable default argument, <code>seen = set()</code>, so the pairs accepted by the first call are still "seen" in the second. Run 1: 17,561 accepted and 129 rejected; run 2: 0 accepted and 17,690 rejected, every valid row as DUPLICATE. Fix: default <code>None</code>, and a new set inside the function. Defect B: <code>median</code> does not sort (<code>ordered = values</code>). The report gives 0.653 for M-0012, the true median is 0.696; the count of anomalies stays 18 this month. Smallest case: <code>median([3.0, 1.0, 2.0])</code> returns 1.0. Fix: <code>sorted(values)</code>.</p>
+    <p>The check wants all six steps written for both defects, the tests passing on the participant's package, at least one test failing when each defect is put back, 17,561 rows on both runs, 18 anomalies and a clean strict type check. Common errors: fixing A by passing <code>seen=set()</code> in <code>two_runs.py</code> (the caller is repaired, the function is not, and the check's own test still fails); a regression test for B on a sorted list, which passes on the defect; tests that read the month file and take seconds. Tests here use the supplied <code>data/tiny.csv</code> rather than a temporary folder. Answers: the default-argument slide, <code>tag(reading, tags=[])</code>; a wrong median flags the wrong days as soon as the data arrives in another order; it keeps the fix, when someone "simplifies" the function next year. Reference: <code>labs/solutions/3.4/</code>, and the sound package in <code>labs/kit/base/miqyas/</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D3_3_reject_malformed_lines.html" rel="prev">← Previous lab</a><a href="D4_1_run_notebook_out.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"3.4","title":"Find and fix two seeded defects","summary":"With AI off, find and fix two seeded defects and write a regression test for each.","minutes":25,"day":3,"unit":"Day 3","session":4,"deck":"../slides/day3.html#lab-3-4","prev":"D3_3_reject_malformed_lines.html","next":"D4_1_run_notebook_out.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

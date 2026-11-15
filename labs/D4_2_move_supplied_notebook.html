@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 4.2 · Give the notebook a command line · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D4_2_move_supplied_notebook.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day4.html#lab-4-2">Back to the slides</a></nav></div>
+<span class="tag">Lab 4.2</span>
+<h1>Give the notebook a command line</h1>
+<p>Move the supplied notebook logic into a module with a command-line entry point.</p>
+<div class="meta"><span>25 minutes</span><span>Day 4</span><span>Session 2: Scripts, modules and an entry point</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="4.2">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Turn the repaired notebook into a tool that whoever is on duty can run with one command. The cells have already become functions in a package; you write what is left of the notebook, the order of the calls, as a command line with arguments, logging and an exit code, and you show that two runs write the same bytes.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>4.2</code> of the workspace: the repaired <code>analysis.ipynb</code>, the package <code>miqyas/</code> with <code>readings.py</code>, <code>anomalies.py</code>, <code>report.py</code> and a skeleton <code>cli.py</code>, and the data</li>
+    <li>AI policy: tutor. Ask for hints about argparse or logging; the lines of <code>main</code> are yours</li>
+  </ul>
+
+  <div class="step">
+    <h3>Match the notebook's cells to the package's functions <span class="min">4 min</span></h3>
+    <p>Open the notebook beside the three modules. For each code cell, find the function that now does its work and write the pairs on paper: the loading cell, the cleaning cell, the anomaly cell, the district table. Two things the notebook did have no function: it chose the file names, and it ran the cells in order. Those two are the command line.</p>
+  </div>
+
+  <div class="step">
+    <h3>Add the three arguments and the entry point <span class="min">6 min</span></h3>
+    <p>In <code>miqyas/cli.py</code>, <code>build_parser</code> has one argument. Add <code>--meters</code> and <code>--out</code>, both paths and both required, and <code>--factor</code>, a float with 3.0 as its default. Then create <code>miqyas/__main__.py</code>, the file Python runs for <code>python -m miqyas</code>:</p>
+    <pre class="code" data-file="miqyas/__main__.py"><code class="language-python">from miqyas.cli import main
+
+raise SystemExit(main())</code></pre>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../4.2
+uv run python -m miqyas report --help</code></pre>
+    <p>The help text should list four arguments and <code>-v</code>. You wrote none of that text: argparse built it from your calls.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write main: the cells' order as calls, with logging <span class="min">9 min</span></h3>
+    <p>Follow the comments of step 2 in <code>main</code>. If an input file is missing, log an error and return 2. Otherwise load the meters, load the readings against the set of known ids, find the anomalies with <code>args.factor</code>, render the report, and write it as UTF-8 with <code>newline="\n"</code>. Use <code>log.info</code> for what each step did. No <code>print</code>: the report goes to the file, the messages to the log.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python -m miqyas report --readings data/readings_2026_09.csv --meters data/meters.csv --out out/report.md -v</code></pre>
+    <p>Read <code>out/report.md</code>: 17,561 accepted, 129 rejected, 18 anomalies, the numbers of the notebook.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run twice, compare the bytes, run the check <span class="min">6 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python -m miqyas report --readings data/readings_2026_09.csv --meters data/meters.csv --out out/second.md
+uv run python -c "from pathlib import Path; print(Path('out/report.md').read_bytes() == Path('out/second.md').read_bytes())"
+uv run python -m miqyas report --readings data/missing.csv --meters data/meters.csv --out out/none.md
+uv run mypy --strict miqyas
+uv run ../lab.py check 4.2</code></pre>
+    <p>The second command must print True. The third must end with one line and no traceback. The check also runs the tool with <code>--factor 2</code> and expects 27 anomalies.</p>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Add an optional argument <code>--rejections</code> that writes every rejected row to a CSV file with the columns line_no, reason and detail. An analyst who doubts a count can then open the 129 rows.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>What does <code>import miqyas.cli</code> run, and what does <code>python -m miqyas</code> run in addition?</li>
+    <li>Why does the report hold no date and no time of the run?</li>
+    <li>A scheduled job runs the tool every month. What does the job read to know whether it worked?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>The lab starts from the sound modules and a skeleton <code>cli.py</code> whose <code>main</code> raises NotImplementedError; there is no <code>__main__.py</code>, so the first run of <code>python -m miqyas</code> answers "No module named miqyas.__main__", which is the point of the second step. The reference command line is <code>labs/kit/base/miqyas/cli.py</code>; it also has the stretch's <code>--rejections</code>.</p>
+    <p>The check wants: both files present, the four arguments in the help, a normal run that prints nothing, two runs with equal bytes, a report equal byte for byte to the reference (so <code>render</code> must be called as given and the file written with <code>newline="\n"</code>), 27 anomalies at <code>--factor 2</code>, exit code 2 and no traceback for a missing file, at least three INFO lines with <code>-v</code>, no <code>print</code> in the package, and a clean strict type check. Common errors: <code>write_text</code> without <code>newline</code>, which writes other line ends on Windows and fails the byte comparison; forgetting to pass <code>args.factor</code>; <code>return</code> without a value at the end of <code>main</code>, which the type checker reports; creating the output folder is forgotten. Answers: an import runs the module's top level, which only defines things, and <code>-m</code> also runs <code>__main__.py</code>, which calls <code>main</code>; a time in the report would make every run differ, so "same input, same bytes" could not be checked; the exit code, then the log. Reference: <code>uv run labs/solutions/run_all.py 4.2</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D4_1_run_notebook_out.html" rel="prev">← Previous lab</a><a href="D4_3_write_five_tests.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"4.2","title":"Give the notebook a command line","summary":"Move the supplied notebook logic into a module with a command-line entry point.","minutes":25,"day":4,"unit":"Day 4","session":2,"deck":"../slides/day4.html#lab-4-2","prev":"D4_1_run_notebook_out.html","next":"D4_3_write_five_tests.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

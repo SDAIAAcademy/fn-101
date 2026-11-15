@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="deck" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3 · Files, text and failure · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="day3.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<div class="deck" data-course="Python for Data and AI Work" data-track="foundations" data-day="Day 3">
+<section class="slide title" id="title" data-auto="title" data-label="Welcome" data-n="1">
+  <div class="kicker">SDAIA Academy · Python for Data and AI Work</div>
+  <h1>Files, text and failure</h1>
+  <p class="lead mt">Day 3: Reading and writing CSV and JSON Lines, bytes and encodings, exceptions that give a reason, and a method for debugging</p>
+  <div class="meta"><span class="track">Data &amp; AI Foundations Track</span><span>4 teaching days + capstone day</span><span>4 sessions · 4 labs</span><span>FN-101</span></div>
+  <aside class="notes"><p>Day 3. Until now the files were clean and the code was sound. Today neither is: wrong encodings, broken lines, and two defects planted in the tool. The thread of the day is one sentence: nothing crashes the run, and nothing disappears without a reason.</p></aside>
+</section>
+
+<section class="slide dark" id="drill-3" data-label="Drill 3" data-lo="LO5" data-minutes="10" data-n="2">
+  <div class="kicker">Drill 3 · AI off</div>
+  <h1>Read a traceback · 10 minutes</h1>
+  <div class="timer" data-minutes="10"></div>
+  <p class="lead">One program, the traceback it ended with, five questions: <code>labs/drills/day3.md</code>. On paper, no computer, no assistant.</p>
+  <aside class="notes"><p>Press T. The traceback has three frames and ends in a ValueError on the text N/A. Question 3 asks for the chain of calls read from the bottom up; session 4 returns to it. Answers: labs/solutions/drills.md.</p></aside>
+</section>
+
+<section class="slide" id="review-day2" data-lo="LO3" data-label="Review" data-n="3">
+  <div class="kicker">Review of Day 2</div>
+  <h2>Which collection answers the question?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="review-day2-q1">
+    <p class="lead">For each of 17,690 rows you must decide whether its meter id is one of the 600 registered ids. Which choice keeps the whole job to one pass with one step per row?</p>
+    <div class="opts">
+      <div class="opt" data-why="Searches up to 600 ids for every row: the loop inside a loop of yesterday's timing" data-k="A">A list of the registered ids, tested with <code>in</code></div>
+      <div class="opt" data-why="Sorting makes the list tidy, and in on a list still walks it item by item" data-k="B">A sorted list of the registered ids, tested with <code>in</code></div>
+      <div class="opt" data-ok data-k="C">A set of the registered ids, tested with <code>in</code></div>
+      <div class="opt" data-why="A generator can be walked once: the second row would find it empty" data-k="D">A generator of the registered ids, tested with <code>in</code></div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A set answers membership in one step whatever its size. This is the <code>known</code> argument of every validation function this week.</div>
+  </div>
+  <aside class="notes"><p>Answer: the set. The fourth option connects yesterday's two sessions: a generator is consumed by the first search.</p></aside>
+</section>
+
+<section class="slide" id="agenda" data-auto="agenda" data-label="Agenda" data-n="4">
+  <div class="kicker">Today</div>
+  <h2>Files, text and failure</h2>
+  <div class="agenda"><div class="item"><div><b>Session 1 · CSV and JSON Lines</b><small>Reading CSV and JSON Lines with the standard library, writing JSON that reruns the same, and keeping personal data out of every output</small></div></div><div class="item"><div><b>Session 2 · Text, bytes and encodings</b><small>Text is bytes plus an encoding: UTF-8, the default that open uses, decoding errors, and why ignoring them is not a repair</small></div></div><div class="item"><div><b>Session 3 · Exceptions that explain</b><small>Raising early with a specific exception, an exception of your own that carries a reason code, and a loop that accounts for every line</small></div></div><div class="item"><div><b>Session 4 · A debugging method</b><small>Six steps that turn a symptom into a fix that stays fixed: reproduce, shrink, hypothesis, test, fix, regression</small></div></div></div>
+</section>
+
+<!-- Session 1 -->
+
+<section class="slide section" id="s1" data-auto="section" data-session="1" data-n="5">
+  <div class="kicker">Session 1</div>
+  <h1>CSV and JSON Lines</h1>
+  <ul class="bullets outcomes"><li>Read a CSV file and a JSON Lines file with the encoding and newline handling named</li><li>Write JSON output that is the same on every run and keeps Arabic readable</li><li>Mask personal data before anything is written, printed or logged</li></ul>
+  <div class="sess-no">01</div>
+</section>
+
+<section class="slide" id="open-with-names" data-lo="LO3" data-label="Opening" data-n="6" data-session="1">
+  <div class="kicker">Opening a file</div>
+  <h2>Three things to say every time you open a text file</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="load.py"><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path, encoding=<span class="hljs-string">&quot;utf-8&quot;</span>,
+          newline=<span class="hljs-string">&quot;&quot;</span>) <span class="hljs-keyword">as</span> file:
+    rows = <span class="hljs-built_in">list</span>(csv.DictReader(file))</code></pre>
+    <ul class="bullets">
+      <li><code>with</code>: the file is closed when the block ends, also when an error happens inside it</li>
+      <li><code>encoding="utf-8"</code>: you decide how bytes become text, not the machine you happen to be on</li>
+      <li><code>newline=""</code>: for CSV, let the csv module handle line ends, so that a line break inside a quoted cell survives</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>What goes wrong.</b> Leave the encoding out and the same script reads Arabic on one laptop and crashes on the next. Session 2 shows it.</div>
+  <aside class="notes"><p>The forty-line script of Day 1 used open and close by hand. From today every open is a with. The newline argument is what the csv documentation asks for; say it once and move on.</p></aside>
+</section>
+
+<section class="slide" id="csv-everything-is-text" data-lo="LO3" data-label="CSV" data-n="7" data-session="1">
+  <div class="kicker">CSV</div>
+  <h2>A CSV reader hands you text for every cell. Numbers and dates are your job.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="at a prompt"><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>row = rows[<span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>row
+{<span class="hljs-string">&#x27;meter_id&#x27;</span>: <span class="hljs-string">&#x27;M-0001&#x27;</span>, <span class="hljs-string">&#x27;date&#x27;</span>: <span class="hljs-string">&#x27;2026-09-01&#x27;</span>,
+ <span class="hljs-string">&#x27;consumption_m3&#x27;</span>: <span class="hljs-string">&#x27;5.399&#x27;</span>}
+<span class="hljs-meta">&gt;&gt;&gt; </span>row[<span class="hljs-string">&quot;consumption_m3&quot;</span>] * <span class="hljs-number">2</span>
+<span class="hljs-string">&#x27;5.3995.399&#x27;</span></code></pre>
+    <ul class="bullets">
+      <li><code>csv.DictReader</code> uses the header line as keys: one <code>dict[str, str]</code> per row</li>
+      <li>CSV has no types. <code>'5.399'</code> is five characters until you call <code>float</code></li>
+      <li>Convert in one place, at the door, and reject there what will not convert</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The doubled text is the classic first surprise; a type checker catches the next one, text plus number. The row is the first data row of the month file. "At the door" is Miqyas's parse_row: text in, a typed Reading or a rejection out.</p></aside>
+</section>
+
+<section class="slide" id="csv-is-not-split" data-lo="LO3" data-label="Not split" data-n="8" data-session="1">
+  <div class="kicker">Why a module, not split</div>
+  <h2>A comma inside a cell is why <code>line.split(",")</code> is not a CSV reader</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="readings_2026_09.csv"><code class="language-text">meter_id,date,consumption_m3
+M-0001,2026-09-01,5.399
+M-0580,2026-09-01,&quot;0,361&quot;</code></pre>
+    <table class="t small">
+      <tr><th></th><th>Third row gives</th></tr>
+      <tr><td><code>line.split(",")</code></td><td>four pieces: <code>"0</code> and <code>361"</code> apart</td></tr>
+      <tr><td><code>csv.DictReader</code></td><td>three cells; the value is <code>0,361</code></td></tr>
+    </table>
+  </div>
+  <ul class="bullets mt">
+    <li>A spreadsheet set to a comma as the decimal mark writes numbers this way, in quotes</li>
+    <li>The month file has 7 such cells. The reader gets them whole; <code>float</code> then refuses them, and they are rejected as NOT_A_NUMBER with the text in the detail</li>
+  </ul>
+  <aside class="notes"><p>The two rows are lines 2 and 569 of the month file. The 7 cells are counted by the generator: 15 NOT_A_NUMBER rows, 8 with N/A and 7 with a decimal comma. Should the tool convert 0,361 to 0.361? Not silently: that is a decision for the metering team, and until they make it the row is reported.</p></aside>
+</section>
+
+<section class="slide" id="json-lines" data-lo="LO3" data-label="JSON Lines" data-n="9" data-session="1">
+  <div class="kicker">JSON Lines</div>
+  <h2>JSON Lines is one JSON value per line: a file you can read one record at a time</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="load.py"><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path, encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> file:
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file:
+        ticket = json.loads(line)</code></pre>
+    <ul class="bullets">
+      <li>Each line stands alone: a broken line spoils one record, not the file</li>
+      <li>Records can be appended, and streamed with a generator</li>
+      <li>Unlike CSV, a value has a type: text, number, true or false, null, list, object</li>
+    </ul>
+  </div>
+  <div class="card c-teal mt"><h4>At Manahil</h4><p class="small mb0">Each of the 400 tickets is one line with ten fields. The free text is Arabic, English or both in one sentence.</p></div>
+  <aside class="notes"><p>JSON Lines is also the usual format for logs, for model inputs and outputs and for evaluation sets, which is why the tracks ahead use it everywhere. json.loads returns "anything": a dictionary if the line is an object, and a list or a number if it is not; session 3 checks for that.</p></aside>
+</section>
+
+<section class="slide" id="write-reproducible" data-lo="LO3 LO6" data-label="Writing" data-n="10" data-session="1">
+  <div class="kicker">Writing</div>
+  <h2>Write output that is the same bytes on every run, and that a person can read</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="summary.py"><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path, <span class="hljs-string">&quot;w&quot;</span>, encoding=<span class="hljs-string">&quot;utf-8&quot;</span>,
+          newline=<span class="hljs-string">&quot;\n&quot;</span>) <span class="hljs-keyword">as</span> file:
+    json.dump(summary, file,
+              ensure_ascii=<span class="hljs-literal">False</span>, indent=<span class="hljs-number">2</span>)
+    file.write(<span class="hljs-string">&quot;\n&quot;</span>)</code></pre>
+    <ul class="bullets">
+      <li><code>ensure_ascii=False</code>: Arabic is written as Arabic, not as escapes such as <code>ا</code></li>
+      <li><code>indent=2</code>: one field per line, so that two versions can be compared</li>
+      <li>Keys in a fixed order: build the dictionary from <code>sorted</code> names</li>
+      <li>No clock time inside the file: put that in the log</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Same input, same bytes.</b> Then "did anything change?" is answered by comparing two files, and Day 4's tool can prove it reruns.</div>
+  <aside class="notes"><p>Reproducibility is one criterion of the capstone rubric. The enemies are all on this slide: unordered sets, the current time, platform line ends, platform encodings.</p></aside>
+</section>
+
+<section class="slide" id="tickets-are-personal-data" data-lo="LO4" data-label="Personal data" data-n="11" data-session="1">
+  <div class="kicker">Responsible use</div>
+  <h2>A ticket is personal data in three places, and the third is easy to miss</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>The phone field</h4><p class="small mb0">Every ticket has one. Callbacks need to recognise it, not to show it: the last two digits are enough.</p></div>
+    <div class="card c-coral"><h4>The identity field</h4><p class="small mb0">No report needs it. It is never copied out of the input.</p></div>
+    <div class="card c-purple"><h4>The free text</h4><p class="small mb0">"Call me on 05…": 14 of the 400 texts hold a phone number the customer typed in.</p></div>
+  </div>
+  <div class="callout warn mt"><b>Mask before anything is written, printed or logged.</b> A debug print of one ticket is a leak with a shorter name.</div>
+  <aside class="notes"><p>All data here is synthetic; the habit is what the course teaches. The count of 14 is from the generator and from the reference run of lab 3.1. The national reference is the Personal Data Protection Law with its implementing regulation, listed in the sources; the slide makes no claim about their text. Also say: do not paste ticket lines into an assistant.</p></aside>
+</section>
+
+<section class="slide" id="mask-before-write" data-lo="LO4" data-label="Masking" data-n="12" data-session="1">
+  <div class="kicker">From the lab's run</div>
+  <h2>A pattern that looks right finds 9 of the 14 phone numbers</h2>
+  <div class="cols cols-2">
+    <table class="t">
+      <tr><th>Pattern</th><th class="num">Found</th></tr>
+      <tr><td><code>\+?[0-9]{9,}</code></td><td class="num">9 of 14</td></tr>
+      <tr class="hl"><td><code>\+?\d{9,}</code></td><td class="num">14 of 14</td></tr>
+    </table>
+    <ul class="bullets">
+      <li>Five customers typed their number in Arabic-Indic digits: <span class="ar">٠٥٥…</span></li>
+      <li>In Python, <code>\d</code> matches a digit of any script; <code>[0-9]</code> matches ten characters only</li>
+      <li>You find this by counting what the mask caught, not by reading the pattern</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Test a mask on the data it must protect.</b> Then have someone else search the output for what should not be there.</div>
+  <aside class="notes"><p>Counts from the ticket file of the labs: 14 texts with a number, 9 in Western digits, 5 in Arabic-Indic digits. It is the stretch of lab 3.1. Normalising Arabic text properly, digits and letter forms, is FN-104; here it is enough to know that the pattern must not assume one script.</p></aside>
+</section>
+
+<section class="slide" id="check-mask-where" data-lo="LO4" data-label="Checkpoint" data-n="13" data-session="1">
+  <div class="kicker">Checkpoint</div>
+  <h2>Where does the masking go?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4" data-id="check-mask-where-q1">
+    <p class="lead">A script loads tickets, logs each ticket it processes "for debugging", builds a summary and writes it to a file. The phone numbers must not leave the program. Where is masking applied?</p>
+    <div class="opts">
+      <div class="opt" data-why="Protects one output and forgets the other: the log line has already carried the number out" data-k="A">In the function that writes the summary file</div>
+      <div class="opt" data-ok data-k="B">Where each ticket line is first turned into a record</div>
+      <div class="opt" data-why="Repairs after the leak: the file existed with the numbers in it, on disk and perhaps in a backup" data-k="C">In a second script that cleans the summary file afterwards</div>
+      <div class="opt" data-why="Relies on readers to behave: an output that holds the number has disclosed it, whoever opens it" data-k="D">Nowhere, if the file is only sent to colleagues</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Everything downstream, the log included, can only leak what it was given. Mask or drop at the door, and no later line can get it wrong.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. It is yesterday's Ticket record without a phone field, generalised: what is never carried cannot be printed.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-1" data-auto="lab" data-lab="3.1" data-label="Lab 3.1" data-n="14" data-session="1">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.1 · 25 min</div><h2>Write a district summary with phones masked</h2><p class="lead small">Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written.</p><a class="nb" href="../labs/D3_1_load_readings_tickets.html">D3_1_load_readings_tickets.html</a></div><ul class="checklist"><li>Load the two CSV files and the JSON Lines file <span class="min">7 min</span></li><li>Mask the phone field and the phone numbers in text <span class="min">8 min</span></li><li>Write the summary as JSON; read it as a reviewer <span class="min">6 min</span></li><li>Run the type checker and the lab check <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Change the pattern to [0-9] and count the phone numbers that now slip through; say why</li></ul></div>
+  <aside class="notes"><p>AI tutor, and no ticket lines pasted into an assistant. Expected: 246 open tickets (37, 39, 41, 34, 53, 42 by district), 25 callbacks. The check reads the output file and the screen for any run of nine digits, in any script. Typical problems: masking the field and not the text; a leftover debug print; no ensure_ascii=False; no encoding on the output file. In the review step, have neighbours search each other's file.</p></aside>
+</section>
+
+<!-- Session 2 -->
+
+<section class="slide section" id="s2" data-auto="section" data-session="2" data-n="15">
+  <div class="kicker">Session 2</div>
+  <h1>Text, bytes and encodings</h1>
+  <ul class="bullets outcomes"><li>Explain the difference between bytes and text, and what an encoding does</li><li>Read a UnicodeDecodeError: the codec, the byte and the position</li><li>Decode a file line by line and report the lines that fail instead of ignoring them</li></ul>
+  <div class="sess-no">02</div>
+</section>
+
+<section class="slide" id="bytes-and-text" data-lo="LO4" data-label="Bytes" data-n="16" data-session="2">
+  <div class="kicker">Bytes and text</div>
+  <h2>A file holds bytes. Text appears only when an encoding is applied.</h2>
+  <div class="cols cols-2">
+    <table class="t">
+      <tr><th>The word <span class="ar">عداد</span> (meter)</th><th>Bytes</th></tr>
+      <tr><td>in UTF-8</td><td><code>d8 b9 d8 af d8 a7 d8 af</code></td></tr>
+      <tr><td>in Windows-1256</td><td><code>da cf c7 cf</code></td></tr>
+    </table>
+    <ul class="bullets">
+      <li><b>Text</b> (<code>str</code>) is a sequence of characters: 4 here</li>
+      <li><b>Bytes</b> are numbers from 0 to 255: 8 here, or 4</li>
+      <li>An <b>encoding</b> is the table between the two. <code>encode</code> goes to bytes, <code>decode</code> comes back</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>The bytes do not say which table wrote them.</b> Someone has to tell you, or you have to find out.</div>
+  <aside class="notes"><p>At a prompt: "عداد".encode("utf-8").hex(" ") and the same with "cp1256"; the outputs are the two rows of the table. len of the text is 4, of the UTF-8 bytes 8.</p></aside>
+</section>
+
+<section class="slide" id="utf8-in-one-slide" data-lo="LO4" data-label="UTF-8" data-n="17" data-session="2">
+  <div class="kicker">UTF-8</div>
+  <h2>UTF-8 covers every script and is the encoding to write, always</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>One byte</h4><p class="small mb0">English letters, digits, punctuation: the same bytes as ASCII. <code>M-0042</code> is six bytes.</p></div>
+    <div class="card c-cyan"><h4>Two bytes</h4><p class="small mb0">Each Arabic letter. The letter <span class="ar">ف</span> is <code>d9 81</code>.</p></div>
+    <div class="card c-purple"><h4>Not every byte order is valid</h4><p class="small mb0">A decoder can tell when bytes are <b>not</b> UTF-8. That is a feature: wrong input fails loudly.</p></div>
+  </div>
+  <ul class="bullets mt">
+    <li>Older systems wrote one byte per Arabic letter (Windows-1256). Their files are still arriving</li>
+    <li>Read what you are given, with the encoding it was written in. Write UTF-8</li>
+  </ul>
+  <aside class="notes"><p>Keep the history to one line. The practical point is the third card: UTF-8 detects a wrong file, the one-byte encodings mostly cannot, which the mojibake slide shows.</p></aside>
+</section>
+
+<section class="slide" id="default-encoding-trap" data-lo="LO4" data-label="The default" data-n="18" data-session="2">
+  <div class="kicker">The trap</div>
+  <h2><code>open(path)</code> without an encoding uses whatever the machine prefers</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="decode.py"><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path) <span class="hljs-keyword">as</span> file:        <span class="hljs-comment"># which encoding?</span>
+    <span class="hljs-keyword">return</span> [json.loads(line) <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file]</code></pre>
+    <ul class="bullets">
+      <li>On many Windows laptops the default is a one-byte Western table (cp1252)</li>
+      <li>On most servers and in notebooks in the cloud it is UTF-8</li>
+      <li>So the same script works in one place and fails in the other, on the same file</li>
+    </ul>
+  </div>
+  <div class="callout note mt"><b>This is changing.</b> PEP 686 makes UTF-8 the default from Python 3.15. Until every machine you meet runs it, and for every file that is not UTF-8, name the encoding.</div>
+  <aside class="notes"><p>The lab's first script names the laptop default explicitly, cp1252, so that every participant sees the same failure whatever their system. Sources: PEP 686, "Make UTF-8 mode default", which lists Python 3.15 as its version.</p></aside>
+</section>
+
+<section class="slide" id="read-a-decode-error" data-lo="LO4" data-label="The error" data-n="19" data-session="2">
+  <div class="kicker">Reading the error</div>
+  <h2>A decode error names the codec, the byte and the position. Use all three.</h2>
+  <pre class="code s" data-file="uv run python decode.py"><code class="language-text">UnicodeDecodeError: &#x27;charmap&#x27; codec can&#x27;t decode byte 0x81 in position 131:
+    character maps to &lt;undefined&gt;</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-teal"><h4>The codec</h4><p class="small mb0">"charmap": a one-byte table was decoding. Nobody chose it; it was the default.</p></div>
+    <div class="card flat c-coral"><h4>The byte</h4><p class="small mb0"><code>0x81</code> has no character in that table. In UTF-8 it is the second half of <span class="ar">ف</span>.</p></div>
+    <div class="card flat c-purple"><h4>The position</h4><p class="small mb0">Byte 131 of what was being decoded: where to look in the file.</p></div>
+  </div>
+  <aside class="notes"><p>The message of the first step of lab 3.2, copied from the run. The second step produces the other classic: 'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte. There the codec is right for most of the file and the byte is an Arabic letter in Windows-1256.</p></aside>
+</section>
+
+<section class="slide" id="mojibake" data-lo="LO4" data-label="Mojibake" data-n="20" data-session="2">
+  <div class="kicker">The quiet failure</div>
+  <h2>The wrong one-byte table raises nothing and gives you the wrong text</h2>
+  <table class="t">
+    <tr><th>The UTF-8 bytes of <span class="ar">عداد</span>, decoded as</th><th>Result</th><th>Error?</th></tr>
+    <tr class="hl"><td>UTF-8</td><td class="ar">عداد</td><td>no</td></tr>
+    <tr><td>Windows-1256</td><td class="ar">ط¹ط¯ط§ط¯</td><td>no</td></tr>
+    <tr><td>cp1252, errors replaced</td><td><span class="ltr">Ø¹Ø¯Ø§Ø¯</span></td><td>no</td></tr>
+  </table>
+  <div class="callout warn mt"><b>"It opened without an error" is not "it was decoded correctly".</b> Text like the second and third rows, in a report or a database, means a file was read with the wrong table somewhere upstream.</div>
+  <aside class="notes"><p>All three results are from a prompt: the eight UTF-8 bytes of the word decoded three ways. Once such text is saved, the damage travels; recognising the look of it is a real skill. In the lab the stretch decodes a good line as cp1256 to see exactly this.</p></aside>
+</section>
+
+<section class="slide" id="never-ignore" data-lo="LO4" data-label="errors=" data-n="21" data-session="2">
+  <div class="kicker">The tempting repair</div>
+  <h2><code>errors="ignore"</code> makes the error go away by deleting the customer's words</h2>
+  <table class="t small">
+    <tr><th>Line 12 of the branch file, decoded as UTF-8 with</th><th>The text of the ticket becomes</th></tr>
+    <tr><td><code>errors="strict"</code> (the default)</td><td>a <code>UnicodeDecodeError</code>: you are told</td></tr>
+    <tr><td><code>errors="ignore"</code></td><td>a few spaces, one stray letter and <span class="ltr">M-0365</span></td></tr>
+    <tr><td><code>errors="replace"</code></td><td>rows of <span class="ltr">�</span> marks and <span class="ltr">M-0365</span></td></tr>
+    <tr class="hl"><td>the encoding it was written in (Windows-1256)</td><td class="ar">الفاتورة مرتفعة جدا هذا الشهر، أرجو مراجعة قراءة العداد <span class="ltr">M-0365</span></td></tr>
+  </table>
+  <div class="callout tip mt"><b>Fail loudly, then report.</b> Decode strictly, catch the error per line, and list the lines that fail with the byte that stopped you. Then someone can decide.</div>
+  <aside class="notes"><p>From the reference data of lab 3.2: line 12 is one of the seven lines written by an old terminal. With "ignore" the complaint, a bill that is far too high, is gone and the line still parses as JSON: a ticket with an empty text and nobody the wiser. That is the worst outcome of the four.</p></aside>
+</section>
+
+<section class="slide" id="line-by-line-report" data-lo="LO4" data-label="Line by line" data-n="22" data-session="2">
+  <div class="kicker">The method</div>
+  <h2>Decode each line by itself, so that one bad line cannot hide the rest</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="decode.py"><code class="language-python">data = Path(path).read_bytes()
+<span class="hljs-keyword">for</span> line_no, raw <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(
+        data.splitlines(), start=<span class="hljs-number">1</span>):
+    <span class="hljs-keyword">try</span>:
+        decoded.append(raw.decode(encoding))
+    <span class="hljs-keyword">except</span> UnicodeDecodeError <span class="hljs-keyword">as</span> problem:
+        failed.append(...)</code></pre>
+    <div class="stack">
+      <div class="stat center"><div class="big">113 + 7</div><div class="lbl">lines decoded and lines reported: all 120 accounted for</div></div>
+      <p class="small">Lines 12, 22, 37, 55, 82, 84 and 94 fail, each at an Arabic letter written in Windows-1256.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Reading the whole file reports one error, at position 2184, and stops. Reading as bytes and decoding per line turns "the file is broken" into "seven lines of 120, here they are". The same shape, try around one record and collect the failures, is session 3. Do not leave the code on screen during the lab.</p></aside>
+</section>
+
+<section class="slide" id="check-decode-choice" data-lo="LO4" data-label="Checkpoint" data-n="23" data-session="2">
+  <div class="kicker">Checkpoint</div>
+  <h2>The export fails on a few lines. What do you do?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4" data-id="check-decode-choice-q1">
+    <p class="lead">A nightly file of 50,000 tickets is declared UTF-8. Tonight the load stops with a <code>UnicodeDecodeError</code> at one byte. Badr needs the queue in the morning.</p>
+    <div class="opts">
+      <div class="opt" data-why="Trades a loud failure for a silent one: the tickets load with parts of their text deleted and nobody is told" data-k="A">Add <code>errors="ignore"</code> so that the load finishes</div>
+      <div class="opt" data-why="Guesses a table that raises nothing: the 50,000 good tickets would load as unreadable text" data-k="B">Switch the whole file to Windows-1256, which never raises</div>
+      <div class="opt" data-why="Stops everything for a few lines: thousands of good tickets wait for a problem that concerns a handful" data-k="C">Refuse the file until the sender fixes it</div>
+      <div class="opt" data-ok data-k="D">Load the lines that decode; report the rest by line and byte</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The good lines are good. The bad ones are few, and a report that says which and where lets someone repair them at the source. Nothing is lost and nothing is invented.</div>
+  </div>
+  <aside class="notes"><p>Answer: the last. The third option is not absurd, some pipelines must be all or nothing, but then the refusal still needs the per-line report to be useful to the sender.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-2" data-auto="lab" data-lab="3.2" data-label="Lab 3.2" data-n="24" data-session="2">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.2 · 25 min</div><h2>Decode a ticket file that fails</h2><p class="lead small">Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail.</p><a class="nb" href="../labs/D3_2_open_ticket_file.html">D3_2_open_ticket_file.html</a></div><ul class="checklist"><li>Run the loader and read the error it raises <span class="min">5 min</span></li><li>Open the file with its declared encoding <span class="min">5 min</span></li><li>Decode line by line and collect each failure <span class="min">9 min</span></li><li>Write the report; run the lab check <span class="min">6 min</span></li><li class="stretch">✱ Stretch: Decode the failing lines as Windows-1256 and print the tickets they hold</li></ul></div>
+  <aside class="notes"><p>AI tutor. Step 1 fails with the charmap error at position 131 on every machine, because the script names the laptop default. Step 2 fails with the utf-8 error at position 2184. Expected at the end: 113 decoded, 7 failed (12, 22, 37, 55, 82, 84, 94). The check refuses errors="ignore" and "replace". Typical problems: looping over a file opened in text mode; lines counted from 0; position in the file, not in the line. A Windows console may refuse to print some characters of the stretch; set PYTHONUTF8=1 or write the result to a file.</p></aside>
+</section>
+
+<!-- Session 3 -->
+
+<section class="slide section" id="s3" data-auto="section" data-session="3" data-n="25">
+  <div class="kicker">Session 3</div>
+  <h1>Exceptions that explain</h1>
+  <ul class="bullets outcomes"><li>Raise and catch specific exceptions, around the one call that can fail</li><li>Define an exception that carries a reason code and a detail</li><li>Write a loader in which accepted plus rejected equals the lines of the input</li></ul>
+  <div class="sess-no">03</div>
+</section>
+
+<section class="slide" id="three-ways-to-meet-bad-data" data-lo="LO4" data-label="Three ways" data-n="26" data-session="3">
+  <div class="kicker">Bad input</div>
+  <h2>A program can meet a bad record in three ways. Only one is acceptable.</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>Crash</h4><p class="small mb0">Line 37 is broken, so nobody gets the other 434. And tomorrow, line 52.</p></div>
+    <div class="card c-coral"><h4>Pass silently</h4><p class="small mb0">Skip it, or fill in a default. The report looks complete and is wrong by an unknown amount.</p></div>
+    <div class="card c-teal"><h4>Reject with a reason</h4><p class="small mb0">The run finishes, the good records are used, and each bad one is listed with where and why.</p></div>
+  </div>
+  <div class="callout tip mt"><b>The rule of the house.</b> Accepted plus rejected equals the lines of the input. Always, and checked by the program itself.</div>
+  <aside class="notes"><p>Ask for an example of the middle card from the room's own experience: a total that was quietly missing a branch, a month. Silent loss is the expensive one because nobody goes looking.</p></aside>
+</section>
+
+<section class="slide" id="exceptions-travel" data-lo="LO4" data-label="Travel" data-n="27" data-session="3">
+  <div class="kicker">Exceptions</div>
+  <h2>An exception travels up the call stack until some caller catches it</h2>
+  <div class="cols cols-2">
+    <div class="flow v">
+      <div class="step c-coral"><b>parse_value("N/A")</b>raises ValueError</div>
+      <div class="arrow">↓</div>
+      <div class="step c-cyan"><b>parse_row(row)</b>no handler: passes it on</div>
+      <div class="arrow">↓</div>
+      <div class="step c-teal"><b>load_readings(path)</b>has try and except: handles it, goes on</div>
+    </div>
+    <ul class="bullets">
+      <li><code>raise</code> stops the function at once; nothing is returned</li>
+      <li>Each caller in turn either handles it or is stopped too</li>
+      <li>If nobody handles it, the program ends and prints the stack: the traceback</li>
+      <li>So the place that <b>detects</b> a problem need not be the place that <b>decides</b> what to do</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Day 1's call-stack picture, with an error moving through it. The last bullet is the design idea: parse_value knows the text is not a number; only the loop knows that the right response is to record the row and continue.</p></aside>
+</section>
+
+<section class="slide" id="catch-specific" data-lo="LO4" data-label="Specific" data-n="28" data-session="3">
+  <div class="kicker">Catching</div>
+  <h2>Catch the exception you expect, by name. A wide net catches your own mistakes too.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="too wide"><code class="language-python"><span class="hljs-keyword">try</span>:
+    value = flaot(text)
+<span class="hljs-keyword">except</span> Exception:
+    skipped += <span class="hljs-number">1</span></code></pre>
+    <pre class="code" data-file="specific"><code class="language-python"><span class="hljs-keyword">try</span>:
+    value = <span class="hljs-built_in">float</span>(text)
+<span class="hljs-keyword">except</span> ValueError:
+    skipped += <span class="hljs-number">1</span></code></pre>
+  </div>
+  <ul class="bullets mt">
+    <li>Left: the misspelt <code>flaot</code> raises a <code>NameError</code> on every row. The net catches it, and the script reports that all 17,690 rows were "skipped"</li>
+    <li>Right: only "this text is not a number" is handled. Anything else still stops the run and shows you where</li>
+  </ul>
+  <div class="callout warn mt"><b>A bare <code>except:</code> is the widest net of all.</b> The labs' checks refuse it.</div>
+  <aside class="notes"><p>Let the room find the typo on the left before you say it. The lesson is not style: a wide except converts programming errors into wrong data, which is the silent failure of the first slide.</p></aside>
+</section>
+
+<section class="slide" id="own-exception-with-reason" data-lo="LO4" data-label="A reason" data-n="29" data-session="3">
+  <div class="kicker">Your own exception</div>
+  <h2>An exception of your own can carry what the handler needs: a code and a detail</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="intake.py"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rejected</span>(<span class="hljs-title class_ inherited__">Exception</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, reason, detail</span>):
+        <span class="hljs-built_in">super</span>().__init__(<span class="hljs-string">f&quot;<span class="hljs-subst">{reason}</span>: <span class="hljs-subst">{detail}</span>&quot;</span>)
+        <span class="hljs-variable language_">self</span>.reason = reason
+        <span class="hljs-variable language_">self</span>.detail = detail
+
+<span class="hljs-keyword">raise</span> Rejected(<span class="hljs-string">&quot;BAD_PRIORITY&quot;</span>,
+               <span class="hljs-string">f&quot;priority is <span class="hljs-subst">{value!r}</span>&quot;</span>)</code></pre>
+    <ul class="bullets">
+      <li>A <b>reason code</b> for programs: it can be counted, grouped and tested</li>
+      <li>A <b>detail</b> for people: the actual value, so that someone can repair the line</li>
+      <li>The handler catches <code>Rejected</code> and nothing else: every other exception is a bug to see</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Six lines of class are all the object-oriented programming this session needs: a kind of exception with two extra fields. <code>!r</code> shows the value with its quotes, which makes an empty text or a stray space visible in the log.</p></aside>
+</section>
+
+<section class="slide" id="raise-early-guards" data-lo="LO4" data-label="Guards" data-n="30" data-session="3">
+  <div class="kicker">Validation as guards</div>
+  <h2>Day 1's guard clauses, with <code>raise</code> in place of <code>return</code></h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="intake.py"><code class="language-python"><span class="hljs-keyword">if</span> ticket[<span class="hljs-string">&quot;priority&quot;</span>] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> PRIORITIES:
+    <span class="hljs-keyword">raise</span> Rejected(<span class="hljs-string">&quot;BAD_PRIORITY&quot;</span>, ...)
+<span class="hljs-keyword">try</span>:
+    date.fromisoformat(ticket[<span class="hljs-string">&quot;opened&quot;</span>])
+<span class="hljs-keyword">except</span> ValueError:
+    <span class="hljs-keyword">raise</span> Rejected(<span class="hljs-string">&quot;BAD_DATE&quot;</span>, ...) <span class="hljs-keyword">from</span> <span class="hljs-literal">None</span>
+<span class="hljs-keyword">return</span> ticket</code></pre>
+    <ul class="bullets">
+      <li>The function now returns <b>only</b> good tickets. A caller cannot forget to look at a reason</li>
+      <li>Let the library judge: <code>fromisoformat</code> knows that September has 30 days</li>
+      <li>Translate its <code>ValueError</code> into your own exception, with your own code</li>
+      <li>The first guard that fires wins: one reason per line</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>On Day 1 validate_reading returned a reason text and "" for a good row; every caller had to remember to test it. Raising makes the good path the only path. "from None" keeps the traceback short; mention it only if asked.</p></aside>
+</section>
+
+<section class="slide" id="try-around-one-record" data-lo="LO4" data-label="The loop" data-n="31" data-session="3">
+  <div class="kicker">The loop</div>
+  <h2>The <code>try</code> wraps one call for one line, and the loop goes on</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="intake.py"><code class="language-python"><span class="hljs-keyword">for</span> line_no, line <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(file, start=<span class="hljs-number">1</span>):
+    <span class="hljs-keyword">try</span>:
+        accepted.append(parse_ticket(line))
+    <span class="hljs-keyword">except</span> Rejected <span class="hljs-keyword">as</span> problem:
+        rejected.append((line_no,
+                         problem.reason,
+                         problem.detail))</code></pre>
+    <ul class="bullets">
+      <li>Inside the loop: one bad line costs one line</li>
+      <li>A <code>try</code> around the <b>whole loop</b> would end at the first rejection and lose every line after it</li>
+      <li>The line number is counted here, where it is known, and stored with the reason</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>You wrote this shape an hour ago.</b> Decode each line, catch the decode error, collect the failure: the same loop with another exception.</div>
+  <aside class="notes"><p>This is the reference loop of lab 3.3; hide it during the lab. Two outputs, two lists, one pass: also why this is a loop and not a comprehension, as yesterday's session 3 said.</p></aside>
+</section>
+
+<section class="slide" id="account-for-every-line" data-lo="LO4" data-label="Accounting" data-n="32" data-session="3">
+  <div class="kicker">From the lab's run</div>
+  <h2>435 lines in: 400 accepted, 35 rejected, 0 unaccounted for</h2>
+  <div class="cols cols-2">
+    <table class="t small">
+      <tr><th>Reason</th><th class="num">Lines</th></tr>
+      <tr><td>MISSING_FIELD</td><td class="num">8</td></tr>
+      <tr><td>BAD_JSON</td><td class="num">6</td></tr>
+      <tr><td>BAD_PRIORITY</td><td class="num">5</td></tr>
+      <tr><td>BAD_DATE, BAD_METER_ID</td><td class="num">4 + 4</td></tr>
+      <tr><td>EMPTY_LINE, EMPTY_TEXT</td><td class="num">3 + 3</td></tr>
+      <tr><td>NOT_OBJECT</td><td class="num">2</td></tr>
+    </table>
+    <div class="stack">
+      <pre class="code s" data-file="intake.py"><code class="language-python"><span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(accepted) + <span class="hljs-built_in">len</span>(rejected) == lines</code></pre>
+      <ul class="bullets">
+        <li>The program checks its own accounting on every run</li>
+        <li>The table tells the sender what to fix first</li>
+        <li>The log, <code>rejections.csv</code>, says which line and what was in it</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>Counts from the reference run of lab 3.3. This is the evidence the fourth course outcome asks for: a rejection log that accounts for every input line. A bad priority written in Arabic, or in capitals with exclamation marks, is rejected on purpose: guessing what the sender meant is not validation.</p></aside>
+</section>
+
+<section class="slide" id="check-except-scope" data-lo="LO4" data-label="Checkpoint" data-n="33" data-session="3">
+  <div class="kicker">Checkpoint</div>
+  <h2>The log says 435 rejected and 0 accepted. Why?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4" data-id="check-except-scope-q1">
+    <p class="lead">A colleague's intake finishes without a crash. Every line is in the rejection log with the reason <code>UNKNOWN</code>. The loop reads: <code>try: accepted.append(parse_tiket(line))</code>, then <code>except Exception: rejected.append((line_no, "UNKNOWN", ""))</code>.</p>
+    <div class="opts">
+      <div class="opt" data-why="Blames the data: 400 of the lines are known to be good" data-k="A">Every line of the file is malformed</div>
+      <div class="opt" data-ok data-k="B">A typo raises NameError on every line; the wide except logs it</div>
+      <div class="opt" data-why="Blames the position of the try: inside the loop is right, which is why all 435 lines were reached" data-k="C">The try is inside the loop and should be around it</div>
+      <div class="opt" data-why="Blames the file's encoding: a decode error would stop the read before any line was handled" data-k="D">The file was opened with the wrong encoding</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> <code>except Exception</code> cannot tell a bad line from a bad program. With <code>except Rejected</code> the first line would have stopped the run with a NameError that names the typo.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. The empty detail and the invented reason UNKNOWN are the smell: a rejection nobody designed. This is the first-slide silent failure, produced by an error handler.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-3" data-auto="lab" data-lab="3.3" data-label="Lab 3.3" data-n="34" data-session="3">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.3 · 25 min</div><h2>Reject malformed lines with a reason</h2><p class="lead small">Reject malformed lines with a reason code so every input line is accounted for.</p><a class="nb" href="../labs/D3_3_reject_malformed_lines.html">D3_3_reject_malformed_lines.html</a></div><ul class="checklist"><li>Run the intake and read the first crash <span class="min">4 min</span></li><li>Add the six checks, each raising a reason <span class="min">10 min</span></li><li>Catch the rejection around one call per line <span class="min">4 min</span></li><li>Write the rejection log; run the lab check <span class="min">7 min</span></li><li class="stretch">✱ Stretch: Add a ninth reason, DUPLICATE_ID, for a ticket id that an earlier line already used</li></ul></div>
+  <aside class="notes"><p>AI tutor. Expected: 435 lines, 400 accepted, 35 rejected. The check compares the reason of every rejected line and refuses a bare except and except Exception. Typical problems: priority tested before the fields are known to exist; match in place of fullmatch; a hand-written date test. At the start the strict type check shows one error on the return of parse_ticket; it goes with the NOT_OBJECT check.</p></aside>
+</section>
+
+<!-- Session 4 -->
+
+<section class="slide section" id="s4" data-auto="section" data-session="4" data-n="35">
+  <div class="kicker">Session 4</div>
+  <h1>A debugging method</h1>
+  <ul class="bullets outcomes"><li>Read a traceback from its last line upward</li><li>Shrink a failing input to the smallest one that still fails</li><li>Write a regression test that fails on the defect and passes on the fix</li></ul>
+  <div class="sess-no">04</div>
+</section>
+
+<section class="slide" id="six-steps" data-lo="LO5" data-label="The method" data-n="36" data-session="4">
+  <div class="kicker">A method, not a talent</div>
+  <h2>Six steps turn "it gives wrong numbers" into a fix that stays fixed</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>1 · Reproduce</h4><p class="small mb0">One command that shows the wrong result, every time.</p></div>
+    <div class="card c-teal"><h4>2 · Shrink</h4><p class="small mb0">The smallest input that still shows it.</p></div>
+    <div class="card c-cyan"><h4>3 · Hypothesis</h4><p class="small mb0">One sentence: "I think … because …".</p></div>
+    <div class="card c-cyan"><h4>4 · Test it</h4><p class="small mb0">An observation that would prove you wrong.</p></div>
+    <div class="card c-coral"><h4>5 · Fix</h4><p class="small mb0">The smallest change, at the cause.</p></div>
+    <div class="card c-coral"><h4>6 · Regression check</h4><p class="small mb0">A test that fails without the fix.</p></div>
+  </div>
+  <aside class="notes"><p>Write the six words on the board and leave them there for the lab. The order matters most where people skip: changing code before step 3, and stopping after step 5. The debugging log of the lab has one heading per step.</p></aside>
+</section>
+
+<section class="slide" id="read-traceback-bottom-up" data-lo="LO5" data-label="Tracebacks" data-n="37" data-session="4">
+  <div class="kicker">When it crashes</div>
+  <h2>Read a traceback from its last line upward</h2>
+  <pre class="code s" data-file="the traceback of drill 3"><code class="language-text">Traceback (most recent call last):
+  File &quot;drill.py&quot;, line 22, in &lt;module&gt;
+    print(total(rows))
+  File &quot;drill.py&quot;, line 17, in total
+    result += to_number(row[&quot;consumption_m3&quot;])
+  File &quot;drill.py&quot;, line 11, in to_number
+    return float(text)
+ValueError: could not convert string to float: &#x27;N/A&#x27;</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-coral"><h4>Last line</h4><p class="small mb0"><b>What</b> went wrong, and with which value.</p></div>
+    <div class="card flat c-cyan"><h4>The frame above it</h4><p class="small mb0"><b>Where</b>: file, line, function.</p></div>
+    <div class="card flat c-teal"><h4>The frames further up</h4><p class="small mb0"><b>How we got there</b>: who called whom.</p></div>
+  </div>
+  <aside class="notes"><p>This is this morning's drill, with the marker lines under the code left out. The last line gives half the hypothesis for free: a row holds N/A. The frame above says where the conversion is; the frames above that say which loop fed it. Most beginners read from the top and stop at the first line they understand.</p></aside>
+</section>
+
+<section class="slide" id="quiet-wrong-answers" data-lo="LO5" data-label="No crash" data-n="38" data-session="4">
+  <div class="kicker">When it does not crash</div>
+  <h2>The harder defects raise nothing: they give a wrong answer politely</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>Report A</h4><p class="small mb0">The same file, read twice in one job. Run 1: 17,561 accepted. Run 2: 0 accepted.</p></div>
+    <div class="card c-purple"><h4>Report B</h4><p class="small mb0">The report gives a median of 0.653 for meter M-0012. Sorted by hand, it is 0.696.</p></div>
+  </div>
+  <ul class="bullets mt">
+    <li>No traceback to read. You start from a <b>difference</b>: what you got against what must be true</li>
+    <li>So step 1 is to make that difference appear on demand, with one command</li>
+    <li>And somebody has to know what "must be true" is: here, the operator and Salma</li>
+  </ul>
+  <aside class="notes"><p>These are the two reports of lab 3.4, as the participants will read them in symptoms.md; the causes are not on any slide. Both are real categories: state that survives between calls, and a calculation that is wrong for some orders of input.</p></aside>
+</section>
+
+<section class="slide" id="shrink-the-input" data-lo="LO5" data-label="Shrink" data-n="39" data-session="4">
+  <div class="kicker">Step 2</div>
+  <h2>Shrink until the failing case fits in your head</h2>
+  <div class="flow">
+    <div class="step c-coral"><b>17,690 rows</b>fails, and tells you nothing</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Half of them</b>still fails? Halve again</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>2 rows, or 3 values</b>fails, and you can check it by hand</div>
+  </div>
+  <ul class="bullets mt">
+    <li>Shrink the <b>data</b> (fewer rows, one meter), the <b>steps</b> (one function, not the whole tool) and the <b>calls</b> (does it need two?)</li>
+    <li>Each cut either keeps the failure, so you continue, or loses it, and then you have learnt what matters</li>
+    <li>The smallest failing case is the regression test, almost written</li>
+  </ul>
+  <aside class="notes"><p>The lab supplies data/tiny.csv, two rows, for exactly this. For report B the shrunk case needs no file at all. If shrinking loses the failure, that is information: the ingredient you just removed is part of the cause.</p></aside>
+</section>
+
+<section class="slide" id="hypothesis-then-test" data-lo="LO5" data-label="Hypothesis" data-n="40" data-session="4">
+  <div class="kicker">Steps 3 and 4</div>
+  <h2>Say what you think is wrong before you touch the code, then try to prove yourself wrong</h2>
+  <div class="cols cols-2">
+    <div class="stack">
+      <div class="card c-cyan"><h4>A hypothesis</h4><p class="small mb0">"I think the count is wrong because line 40 of report.py starts the total at 1." A file, a line, a reason.</p></div>
+      <div class="card c-teal"><h4>A test of it</h4><p class="small mb0">"If so, a file of one row gives 2." Run it. One row gives 1: the hypothesis is dead, in thirty seconds, with no code changed.</p></div>
+    </div>
+    <pre class="code" data-file="looking inside"><code class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;start:&quot;</span>, <span class="hljs-built_in">len</span>(seen))   <span class="hljs-comment"># the quick look</span>
+
+<span class="hljs-built_in">breakpoint</span>()                 <span class="hljs-comment"># or stop here, then:</span>
+<span class="hljs-comment"># p name    print a name</span>
+<span class="hljs-comment"># n         next line</span>
+<span class="hljs-comment"># s         step into a call</span>
+<span class="hljs-comment"># c         continue      q   quit</span></code></pre>
+  </div>
+  <aside class="notes"><p>The example hypothesis is invented and not one of the lab's defects. The discipline is to predict an observation before making it; changing lines until the output looks right is not debugging and leaves no understanding behind. The debugger commands are pdb's; an editor's debugger has the same five as buttons.</p></aside>
+</section>
+
+<section class="slide" id="regression-test" data-lo="LO5" data-label="Regression" data-n="41" data-session="4">
+  <div class="kicker">Step 6</div>
+  <h2>A regression test fails on the defect and passes on the fix. Then it stays.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="test_regression.py"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_total_of_one_row</span>():
+    rows = [{<span class="hljs-string">&quot;consumption_m3&quot;</span>: <span class="hljs-string">&quot;0.5&quot;</span>}]
+    <span class="hljs-keyword">assert</span> total(rows) == <span class="hljs-number">0.5</span></code></pre>
+    <ul class="bullets">
+      <li>Write it from the shrunk case, <b>before</b> or right after the fix</li>
+      <li>See it fail on the old code. A test you never saw fail may be testing nothing</li>
+      <li>See it pass on the new code</li>
+      <li>Keep it: it runs with every later change, for as long as the code lives</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>The lab's check does step 2 of that list for you.</b> It puts each defect back into a copy of the package and expects your test to fail there.</div>
+  <aside class="notes"><p>The example test belongs to the invented hypothesis of the slide before. pytest is introduced properly tomorrow; today a test is a function whose name starts with test_ and that asserts something. "Fixed" without a test means "fixed until someone tidies this function".</p></aside>
+</section>
+
+<section class="slide" id="why-ai-off-here" data-lo="LO5" data-label="AI off" data-n="42" data-session="4">
+  <div class="kicker">How we work</div>
+  <h2>The first attempt at a debugging lab is yours alone</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>An assistant will often find a seeded defect in seconds. Then the lab has taught you to ask</li>
+      <li>The skill is the six steps: you need them for the defect no assistant has seen</li>
+      <li>The supervised check has one debugging task, in a locked editor</li>
+    </ul>
+    <div class="card c-purple"><h4>After the attempt</h4><p class="small mb0">Still stuck? Tomorrow's last lab uses the course tutor for hints, which you turn into your own explanation.</p></div>
+  </div>
+  <div class="callout note mt"><b>The evidence comes tomorrow.</b> Day 4 looks at what a controlled study found when people learnt with and without an assistant.</div>
+  <aside class="notes"><p>Say it plainly and without moralising: this is practice for a skill that is assessed, and delegating the practice skips it. The catalog's policy for the course is AI-off for the first attempt at each debugging lab.</p></aside>
+</section>
+
+<section class="slide" id="check-debug-next-step" data-lo="LO5" data-label="Checkpoint" data-n="43" data-session="4">
+  <div class="kicker">Checkpoint</div>
+  <h2>What is the next step?</h2>
+  <div class="quiz" data-type="single" data-lo="LO5" data-id="check-debug-next-step-q1">
+    <p class="lead">The district report shows Al-Rabwa with twice the readings it should have. You can make it happen every time with one command on the month file. You have not opened the code yet.</p>
+    <div class="opts">
+      <div class="opt" data-ok data-k="A">Find the smallest input that still doubles: one district, a handful of rows</div>
+      <div class="opt" data-why="Skips shrinking and guessing: reading 300 lines without a question finds whatever looks odd, not the cause" data-k="B">Read the whole package from the top until something looks wrong</div>
+      <div class="opt" data-why="Fixes the symptom at the output: the count is still wrong inside, and wrong for every other use of it" data-k="C">Divide the count of that district by two in the report</div>
+      <div class="opt" data-why="Writes the test before knowing the case: on 17,690 rows it would be slow and would not say what is wrong" data-k="D">Write a regression test on the whole month file</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Reproduce is done. Shrink comes next: a case small enough to check by hand turns the search into a short one, and becomes the regression test.</div>
+  </div>
+  <aside class="notes"><p>Answer: the first. Each wrong option is a step taken out of order, or not a step at all. Ask what they would try first when shrinking: one district, then one meter, then a few rows.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-4" data-auto="lab" data-lab="3.4" data-label="Lab 3.4" data-n="44" data-session="4">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.4 · 25 min</div><h2>Find and fix two seeded defects</h2><p class="lead small">With AI off, find and fix two seeded defects and write a regression test for each.</p><a class="nb" href="../labs/D3_4_ai_off_find.html">D3_4_ai_off_find.html</a></div><ul class="checklist"><li>Reproduce both reports and write what you see <span class="min">5 min</span></li><li>Defect A: shrink, hypothesis, test, fix <span class="min">8 min</span></li><li>Defect B: shrink, hypothesis, test, fix <span class="min">7 min</span></li><li>Write a regression test for each; run the check <span class="min">5 min</span></li><li class="stretch">✱ Stretch: Step through defect A with the debugger: stop on the first line of the function in each call and print what it starts with</li></ul></div>
+  <aside class="notes"><p>AI off: no assistant, editors' completion assistants switched off. Give no hints about the causes for the first fifteen minutes; ask "which step are you on?" instead. Defect A: a mutable default argument in load_readings. Defect B: median does not sort. The check wants all six headings filled for both, the tests failing when each defect is put back, 17,561 rows on both runs and 18 anomalies. Typical problems: repairing the caller (passing seen=set()) and not the function; a test of median on an already sorted list. Anyone who finishes neither: they may continue at home and use the tutor's hints after tomorrow.</p></aside>
+</section>
+
+<section class="slide" id="wrap-up" data-n="45" data-session="4">
+  <div class="kicker">Day 3 · wrap-up</div>
+  <h2>Three things to keep</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>Name the encoding</h4><p class="small mb0">Bytes become text through a table you choose. Decode strictly, report what fails, never ignore.</p></div>
+    <div class="card c-coral"><h4>Every line is accounted for</h4><p class="small mb0">Reject with a code and a detail; catch only what you expect; accepted plus rejected equals the input.</p></div>
+    <div class="card c-purple"><h4>Six steps</h4><p class="small mb0">Reproduce, shrink, hypothesis, test, fix, regression check. The test is what makes the fix last.</p></div>
+  </div>
+  <aside class="notes"><p>Ask which of today's failures was loud and which was quiet, and which they would rather have in production.</p></aside>
+</section>
+
+<section class="slide dark" id="next" data-label="Next" data-n="46" data-session="4">
+  <div class="kicker">Next</div>
+  <h2>Day 4: From notebook to tool</h2>
+  <p class="lead">Tomorrow Salma's notebook becomes a command that anyone can rerun, with tests around its one rule. Lab 4.1 opens a notebook: have JupyterLab or an editor that opens notebooks ready.</p>
+  <aside class="notes"><p>The one thing to prepare: a way to open a notebook. In the workspace, "uv run --with jupyterlab jupyter lab" downloads and starts JupyterLab; VS Code or VSCodium with the Python and Jupyter extensions also works. Try it today, on the network of the room.</p></aside>
+</section>
+</div>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"deck":{"id":"day3","kind":"day","day":3,"label":"Day 3","title":"Files, text and failure","prev":"day2.html","next":"day4.html","md":"day3.md","alt":{}},"sessions":[{"n":1,"label":"Session 1","title":"CSV and JSON Lines","slide":"s1","outcomes":["Read a CSV file and a JSON Lines file with the encoding and newline handling named","Write JSON output that is the same on every run and keeps Arabic readable","Mask personal data before anything is written, printed or logged"],"minutes":50,"lab":{"id":"3.1","title":"Write a district summary with phones masked","minutes":25,"href":"../labs/D3_1_load_readings_tickets.html"}},{"n":2,"label":"Session 2","title":"Text, bytes and encodings","slide":"s2","outcomes":["Explain the difference between bytes and text, and what an encoding does","Read a UnicodeDecodeError: the codec, the byte and the position","Decode a file line by line and report the lines that fail instead of ignoring them"],"minutes":50,"lab":{"id":"3.2","title":"Decode a ticket file that fails","minutes":25,"href":"../labs/D3_2_open_ticket_file.html"}},{"n":3,"label":"Session 3","title":"Exceptions that explain","slide":"s3","outcomes":["Raise and catch specific exceptions, around the one call that can fail","Define an exception that carries a reason code and a detail","Write a loader in which accepted plus rejected equals the lines of the input"],"minutes":50,"lab":{"id":"3.3","title":"Reject malformed lines with a reason","minutes":25,"href":"../labs/D3_3_reject_malformed_lines.html"}},{"n":4,"label":"Session 4","title":"A debugging method","slide":"s4","outcomes":["Read a traceback from its last line upward","Shrink a failing input to the smallest one that still fails","Write a regression test that fails on the defect and passes on the fix"],"minutes":50,"lab":{"id":"3.4","title":"Find and fix two seeded defects","minutes":25,"href":"../labs/D3_4_ai_off_find.html"}}],"slides":[{"id":"title","n":1,"title":"Files, text and failure","kind":"title","session":0,"hash":"bfbb3d05","md":"#### [day3#title] Files, text and failure\n\n*SDAIA Academy · Python for Data and AI Work*\n\nDay 3: Reading and writing CSV and JSON Lines, bytes and encodings, exceptions that give a reason, and a method for debugging\n\nData & AI Foundations Track · 4 teaching days + capstone day · 4 sessions · 4 labs · FN-101","notes":"Day 3. Until now the files were clean and the code was sound. Today neither is: wrong encodings, broken lines, and two defects planted in the tool. The thread of the day is one sentence: nothing crashes the run, and nothing disappears without a reason.","minutes":null,"lo":[]},{"id":"drill-3","n":2,"title":"Read a traceback · 10 minutes","kind":"content","session":0,"hash":"355b3fa2","md":"#### [day3#drill-3] Read a traceback · 10 minutes\n\n*Drill 3 · AI off*\n\nOne program, the traceback it ended with, five questions: `labs/drills/day3.md`. On paper, no computer, no assistant.","notes":"Press T. The traceback has three frames and ends in a ValueError on the text N/A. Question 3 asks for the chain of calls read from the bottom up; session 4 returns to it. Answers: labs/solutions/drills.md.","minutes":10,"lo":["LO5"]},{"id":"review-day2","n":3,"title":"Which collection answers the question?","kind":"quiz","session":0,"hash":"3b01c521","md":"#### [day3#review-day2] Which collection answers the question?\n\n*Review of Day 2*\n\n**Question:** For each of 17,690 rows you must decide whether its meter id is one of the 600 registered ids. Which choice keeps the whole job to one pass with one step per row?\n\n- A. A list of the registered ids, tested with `in`\n- B. A sorted list of the registered ids, tested with `in`\n- C. A set of the registered ids, tested with `in`\n- D. A generator of the registered ids, tested with `in`","notes":"Answer: the set. The fourth option connects yesterday's two sessions: a generator is consumed by the first search.","minutes":null,"lo":["LO3"]},{"id":"agenda","n":4,"title":"Files, text and failure","kind":"content","session":0,"hash":"0c22e65a","md":"#### [day3#agenda] Files, text and failure\n\n*Today*\n\n- **Session 1 · CSV and JSON Lines**: Reading CSV and JSON Lines with the standard library, writing JSON that reruns the same, and keeping personal data out of every output\n- **Session 2 · Text, bytes and encodings**: Text is bytes plus an encoding: UTF-8, the default that open uses, decoding errors, and why ignoring them is not a repair\n- **Session 3 · Exceptions that explain**: Raising early with a specific exception, an exception of your own that carries a reason code, and a loop that accounts for every line\n- **Session 4 · A debugging method**: Six steps that turn a symptom into a fix that stays fixed: reproduce, shrink, hypothesis, test, fix, regression","notes":"","minutes":null,"lo":[]},{"id":"s1","n":5,"title":"CSV and JSON Lines","kind":"section","session":1,"hash":"0d3b2173","md":"#### [day3#s1] CSV and JSON Lines\n\n*Session 1*\n\n- Read a CSV file and a JSON Lines file with the encoding and newline handling named\n- Write JSON output that is the same on every run and keeps Arabic readable\n- Mask personal data before anything is written, printed or logged","notes":"","minutes":null,"lo":["LO3"]},{"id":"open-with-names","n":6,"title":"Three things to say every time you open a text file","kind":"content","session":1,"hash":"f3f1bf16","md":"#### [day3#open-with-names] Three things to say every time you open a text file\n\n*Opening a file*\n\n```python\n# file: load.py\nwith open(path, encoding=\"utf-8\",\n          newline=\"\") as file:\n    rows = list(csv.DictReader(file))\n```\n\n- `with`: the file is closed when the block ends, also when an error happens inside it\n- `encoding=\"utf-8\"`: you decide how bytes become text, not the machine you happen to be on\n- `newline=\"\"`: for CSV, let the csv module handle line ends, so that a line break inside a quoted cell survives\n\n> **What goes wrong.** Leave the encoding out and the same script reads Arabic on one laptop and crashes on the next. Session 2 shows it.","notes":"The forty-line script of Day 1 used open and close by hand. From today every open is a with. The newline argument is what the csv documentation asks for; say it once and move on.","minutes":null,"lo":["LO3"]},{"id":"csv-everything-is-text","n":7,"title":"A CSV reader hands you text for every cell. Numbers and dates are your job.","kind":"content","session":1,"hash":"96f217f1","md":"#### [day3#csv-everything-is-text] A CSV reader hands you text for every cell. Numbers and dates are your job.\n\n*CSV*\n\n```python\n# file: at a prompt\n>>> row = rows[0]\n>>> row\n{'meter_id': 'M-0001', 'date': '2026-09-01',\n 'consumption_m3': '5.399'}\n>>> row[\"consumption_m3\"] * 2\n'5.3995.399'\n```\n\n- `csv.DictReader` uses the header line as keys: one `dict[str, str]` per row\n- CSV has no types. `'5.399'` is five characters until you call `float`\n- Convert in one place, at the door, and reject there what will not convert","notes":"The doubled text is the classic first surprise; a type checker catches the next one, text plus number. The row is the first data row of the month file. \"At the door\" is Miqyas's parse_row: text in, a typed Reading or a rejection out.","minutes":null,"lo":["LO3"]},{"id":"csv-is-not-split","n":8,"title":"A comma inside a cell is why line.split(\",\") is not a CSV reader","kind":"content","session":1,"hash":"d275dad8","md":"#### [day3#csv-is-not-split] A comma inside a cell is why line.split(\",\") is not a CSV reader\n\n*Why a module, not split*\n\n```text\n# file: readings_2026_09.csv\nmeter_id,date,consumption_m3\nM-0001,2026-09-01,5.399\nM-0580,2026-09-01,\"0,361\"\n```\n\n|  | Third row gives |\n| --- | --- |\n| `line.split(\",\")` | four pieces: `\"0` and `361\"` apart |\n| `csv.DictReader` | three cells; the value is `0,361` |\n\n- A spreadsheet set to a comma as the decimal mark writes numbers this way, in quotes\n- The month file has 7 such cells. The reader gets them whole; `float` then refuses them, and they are rejected as NOT_A_NUMBER with the text in the detail","notes":"The two rows are lines 2 and 569 of the month file. The 7 cells are counted by the generator: 15 NOT_A_NUMBER rows, 8 with N/A and 7 with a decimal comma. Should the tool convert 0,361 to 0.361? Not silently: that is a decision for the metering team, and until they make it the row is reported.","minutes":null,"lo":["LO3"]},{"id":"json-lines","n":9,"title":"JSON Lines is one JSON value per line: a file you can read one record at a time","kind":"content","session":1,"hash":"f6d18bdc","md":"#### [day3#json-lines] JSON Lines is one JSON value per line: a file you can read one record at a time\n\n*JSON Lines*\n\n```python\n# file: load.py\nwith open(path, encoding=\"utf-8\") as file:\n    for line in file:\n        ticket = json.loads(line)\n```\n\n- Each line stands alone: a broken line spoils one record, not the file\n- Records can be appended, and streamed with a generator\n- Unlike CSV, a value has a type: text, number, true or false, null, list, object\n\n- **At Manahil.** Each of the 400 tickets is one line with ten fields. The free text is Arabic, English or both in one sentence.","notes":"JSON Lines is also the usual format for logs, for model inputs and outputs and for evaluation sets, which is why the tracks ahead use it everywhere. json.loads returns \"anything\": a dictionary if the line is an object, and a list or a number if it is not; session 3 checks for that.","minutes":null,"lo":["LO3"]},{"id":"write-reproducible","n":10,"title":"Write output that is the same bytes on every run, and that a person can read","kind":"content","session":1,"hash":"7ffa4b88","md":"#### [day3#write-reproducible] Write output that is the same bytes on every run, and that a person can read\n\n*Writing*\n\n```python\n# file: summary.py\nwith open(path, \"w\", encoding=\"utf-8\",\n          newline=\"\\n\") as file:\n    json.dump(summary, file,\n              ensure_ascii=False, indent=2)\n    file.write(\"\\n\")\n```\n\n- `ensure_ascii=False`: Arabic is written as Arabic, not as escapes such as `ا`\n- `indent=2`: one field per line, so that two versions can be compared\n- Keys in a fixed order: build the dictionary from `sorted` names\n- No clock time inside the file: put that in the log\n\n> **Same input, same bytes.** Then \"did anything change?\" is answered by comparing two files, and Day 4's tool can prove it reruns.","notes":"Reproducibility is one criterion of the capstone rubric. The enemies are all on this slide: unordered sets, the current time, platform line ends, platform encodings.","minutes":null,"lo":["LO3","LO6"]},{"id":"tickets-are-personal-data","n":11,"title":"A ticket is personal data in three places, and the third is easy to miss","kind":"content","session":1,"hash":"f3f72ad3","md":"#### [day3#tickets-are-personal-data] A ticket is personal data in three places, and the third is easy to miss\n\n*Responsible use*\n\n- **The phone field.** Every ticket has one. Callbacks need to recognise it, not to show it: the last two digits are enough.\n- **The identity field.** No report needs it. It is never copied out of the input.\n- **The free text.** \"Call me on 05…\": 14 of the 400 texts hold a phone number the customer typed in.\n\n> **Mask before anything is written, printed or logged.** A debug print of one ticket is a leak with a shorter name.","notes":"All data here is synthetic; the habit is what the course teaches. The count of 14 is from the generator and from the reference run of lab 3.1. The national reference is the Personal Data Protection Law with its implementing regulation, listed in the sources; the slide makes no claim about their text. Also say: do not paste ticket lines into an assistant.","minutes":null,"lo":["LO4"]},{"id":"mask-before-write","n":12,"title":"A pattern that looks right finds 9 of the 14 phone numbers","kind":"content","session":1,"hash":"a3d1a044","md":"#### [day3#mask-before-write] A pattern that looks right finds 9 of the 14 phone numbers\n\n*From the lab's run*\n\n| Pattern | Found |\n| --- | --- |\n| `\\+?[0-9]{9,}` | 9 of 14 |\n| `\\+?\\d{9,}` | 14 of 14 |\n\n- Five customers typed their number in Arabic-Indic digits: ٠٥٥…\n- In Python, `\\d` matches a digit of any script; `[0-9]` matches ten characters only\n- You find this by counting what the mask caught, not by reading the pattern\n\n> **Test a mask on the data it must protect.** Then have someone else search the output for what should not be there.","notes":"Counts from the ticket file of the labs: 14 texts with a number, 9 in Western digits, 5 in Arabic-Indic digits. It is the stretch of lab 3.1. Normalising Arabic text properly, digits and letter forms, is FN-104; here it is enough to know that the pattern must not assume one script.","minutes":null,"lo":["LO4"]},{"id":"check-mask-where","n":13,"title":"Where does the masking go?","kind":"quiz","session":1,"hash":"22c4acbf","md":"#### [day3#check-mask-where] Where does the masking go?\n\n*Checkpoint*\n\n**Question:** A script loads tickets, logs each ticket it processes \"for debugging\", builds a summary and writes it to a file. The phone numbers must not leave the program. Where is masking applied?\n\n- A. In the function that writes the summary file\n- B. Where each ticket line is first turned into a record\n- C. In a second script that cleans the summary file afterwards\n- D. Nowhere, if the file is only sent to colleagues","notes":"Answer: the second. It is yesterday's Ticket record without a phone field, generalised: what is never carried cannot be printed.","minutes":null,"lo":["LO4"]},{"id":"lab-3-1","n":14,"title":"Write a district summary with phones masked","kind":"lab","session":1,"hash":"92db1f54","md":"#### [day3#lab-3-1] Write a district summary with phones masked\n\nLab 3.1 · 25 min\n\nLoad readings and tickets and write a JSON summary per district, masking phone numbers before anything is written.\n\n[D3_1_load_readings_tickets.html](https://sdaiaacademy.github.io/fn-101/labs/D3_1_load_readings_tickets.html)\n\n- [ ] Load the two CSV files and the JSON Lines file (7 min)\n- [ ] Mask the phone field and the phone numbers in text (8 min)\n- [ ] Write the summary as JSON; read it as a reviewer (6 min)\n- [ ] Run the type checker and the lab check (4 min)\n- [ ] ✱ Stretch: Change the pattern to [0-9] and count the phone numbers that now slip through; say why","notes":"AI tutor, and no ticket lines pasted into an assistant. Expected: 246 open tickets (37, 39, 41, 34, 53, 42 by district), 25 callbacks. The check reads the output file and the screen for any run of nine digits, in any script. Typical problems: masking the field and not the text; a leftover debug print; no ensure_ascii=False; no encoding on the output file. In the review step, have neighbours search each other's file.","minutes":null,"lo":[]},{"id":"s2","n":15,"title":"Text, bytes and encodings","kind":"section","session":2,"hash":"2438bcfd","md":"#### [day3#s2] Text, bytes and encodings\n\n*Session 2*\n\n- Explain the difference between bytes and text, and what an encoding does\n- Read a UnicodeDecodeError: the codec, the byte and the position\n- Decode a file line by line and report the lines that fail instead of ignoring them","notes":"","minutes":null,"lo":["LO4"]},{"id":"bytes-and-text","n":16,"title":"A file holds bytes. Text appears only when an encoding is applied.","kind":"content","session":2,"hash":"b70ab101","md":"#### [day3#bytes-and-text] A file holds bytes. Text appears only when an encoding is applied.\n\n*Bytes and text*\n\n| The word عداد (meter) | Bytes |\n| --- | --- |\n| in UTF-8 | `d8 b9 d8 af d8 a7 d8 af` |\n| in Windows-1256 | `da cf c7 cf` |\n\n- **Text** (`str`) is a sequence of characters: 4 here\n- **Bytes** are numbers from 0 to 255: 8 here, or 4\n- An **encoding** is the table between the two. `encode` goes to bytes, `decode` comes back\n\n> **The bytes do not say which table wrote them.** Someone has to tell you, or you have to find out.","notes":"At a prompt: \"عداد\".encode(\"utf-8\").hex(\" \") and the same with \"cp1256\"; the outputs are the two rows of the table. len of the text is 4, of the UTF-8 bytes 8.","minutes":null,"lo":["LO4"]},{"id":"utf8-in-one-slide","n":17,"title":"UTF-8 covers every script and is the encoding to write, always","kind":"content","session":2,"hash":"85c973ae","md":"#### [day3#utf8-in-one-slide] UTF-8 covers every script and is the encoding to write, always\n\n*UTF-8*\n\n- **One byte.** English letters, digits, punctuation: the same bytes as ASCII. `M-0042` is six bytes.\n- **Two bytes.** Each Arabic letter. The letter ف is `d9 81`.\n- **Not every byte order is valid.** A decoder can tell when bytes are **not** UTF-8. That is a feature: wrong input fails loudly.\n\n- Older systems wrote one byte per Arabic letter (Windows-1256). Their files are still arriving\n- Read what you are given, with the encoding it was written in. Write UTF-8","notes":"Keep the history to one line. The practical point is the third card: UTF-8 detects a wrong file, the one-byte encodings mostly cannot, which the mojibake slide shows.","minutes":null,"lo":["LO4"]},{"id":"default-encoding-trap","n":18,"title":"open(path) without an encoding uses whatever the machine prefers","kind":"content","session":2,"hash":"8c7715d3","md":"#### [day3#default-encoding-trap] open(path) without an encoding uses whatever the machine prefers\n\n*The trap*\n\n```python\n# file: decode.py\nwith open(path) as file:        # which encoding?\n    return [json.loads(line) for line in file]\n```\n\n- On many Windows laptops the default is a one-byte Western table (cp1252)\n- On most servers and in notebooks in the cloud it is UTF-8\n- So the same script works in one place and fails in the other, on the same file\n\n> **This is changing.** PEP 686 makes UTF-8 the default from Python 3.15. Until every machine you meet runs it, and for every file that is not UTF-8, name the encoding.","notes":"The lab's first script names the laptop default explicitly, cp1252, so that every participant sees the same failure whatever their system. Sources: PEP 686, \"Make UTF-8 mode default\", which lists Python 3.15 as its version.","minutes":null,"lo":["LO4"]},{"id":"read-a-decode-error","n":19,"title":"A decode error names the codec, the byte and the position. Use all three.","kind":"content","session":2,"hash":"cdcdd202","md":"#### [day3#read-a-decode-error] A decode error names the codec, the byte and the position. Use all three.\n\n*Reading the error*\n\n```text\n# file: uv run python decode.py\nUnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 131:\n    character maps to \u003cundefined>\n```\n\n- **The codec.** \"charmap\": a one-byte table was decoding. Nobody chose it; it was the default.\n- **The byte.** `0x81` has no character in that table. In UTF-8 it is the second half of ف.\n- **The position.** Byte 131 of what was being decoded: where to look in the file.","notes":"The message of the first step of lab 3.2, copied from the run. The second step produces the other classic: 'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte. There the codec is right for most of the file and the byte is an Arabic letter in Windows-1256.","minutes":null,"lo":["LO4"]},{"id":"mojibake","n":20,"title":"The wrong one-byte table raises nothing and gives you the wrong text","kind":"content","session":2,"hash":"72cffce6","md":"#### [day3#mojibake] The wrong one-byte table raises nothing and gives you the wrong text\n\n*The quiet failure*\n\n| The UTF-8 bytes of عداد, decoded as | Result | Error? |\n| --- | --- | --- |\n| UTF-8 | عداد | no |\n| Windows-1256 | ط¹ط¯ط§ط¯ | no |\n| cp1252, errors replaced | Ø¹Ø¯Ø§Ø¯ | no |\n\n> **\"It opened without an error\" is not \"it was decoded correctly\".** Text like the second and third rows, in a report or a database, means a file was read with the wrong table somewhere upstream.","notes":"All three results are from a prompt: the eight UTF-8 bytes of the word decoded three ways. Once such text is saved, the damage travels; recognising the look of it is a real skill. In the lab the stretch decodes a good line as cp1256 to see exactly this.","minutes":null,"lo":["LO4"]},{"id":"never-ignore","n":21,"title":"errors=\"ignore\" makes the error go away by deleting the customer's words","kind":"content","session":2,"hash":"161e2333","md":"#### [day3#never-ignore] errors=\"ignore\" makes the error go away by deleting the customer's words\n\n*The tempting repair*\n\n| Line 12 of the branch file, decoded as UTF-8 with | The text of the ticket becomes |\n| --- | --- |\n| `errors=\"strict\"` (the default) | a `UnicodeDecodeError`: you are told |\n| `errors=\"ignore\"` | a few spaces, one stray letter and M-0365 |\n| `errors=\"replace\"` | rows of � marks and M-0365 |\n| the encoding it was written in (Windows-1256) | الفاتورة مرتفعة جدا هذا الشهر، أرجو مراجعة قراءة العداد M-0365 |\n\n> **Fail loudly, then report.** Decode strictly, catch the error per line, and list the lines that fail with the byte that stopped you. Then someone can decide.","notes":"From the reference data of lab 3.2: line 12 is one of the seven lines written by an old terminal. With \"ignore\" the complaint, a bill that is far too high, is gone and the line still parses as JSON: a ticket with an empty text and nobody the wiser. That is the worst outcome of the four.","minutes":null,"lo":["LO4"]},{"id":"line-by-line-report","n":22,"title":"Decode each line by itself, so that one bad line cannot hide the rest","kind":"content","session":2,"hash":"26a8eb2a","md":"#### [day3#line-by-line-report] Decode each line by itself, so that one bad line cannot hide the rest\n\n*The method*\n\n```python\n# file: decode.py\ndata = Path(path).read_bytes()\nfor line_no, raw in enumerate(\n        data.splitlines(), start=1):\n    try:\n        decoded.append(raw.decode(encoding))\n    except UnicodeDecodeError as problem:\n        failed.append(...)\n```\n\n**113 + 7** lines decoded and lines reported: all 120 accounted for\n\nLines 12, 22, 37, 55, 82, 84 and 94 fail, each at an Arabic letter written in Windows-1256.","notes":"Reading the whole file reports one error, at position 2184, and stops. Reading as bytes and decoding per line turns \"the file is broken\" into \"seven lines of 120, here they are\". The same shape, try around one record and collect the failures, is session 3. Do not leave the code on screen during the lab.","minutes":null,"lo":["LO4"]},{"id":"check-decode-choice","n":23,"title":"The export fails on a few lines. What do you do?","kind":"quiz","session":2,"hash":"384c276b","md":"#### [day3#check-decode-choice] The export fails on a few lines. What do you do?\n\n*Checkpoint*\n\n**Question:** A nightly file of 50,000 tickets is declared UTF-8. Tonight the load stops with a `UnicodeDecodeError` at one byte. Badr needs the queue in the morning.\n\n- A. Add `errors=\"ignore\"` so that the load finishes\n- B. Switch the whole file to Windows-1256, which never raises\n- C. Refuse the file until the sender fixes it\n- D. Load the lines that decode; report the rest by line and byte","notes":"Answer: the last. The third option is not absurd, some pipelines must be all or nothing, but then the refusal still needs the per-line report to be useful to the sender.","minutes":null,"lo":["LO4"]},{"id":"lab-3-2","n":24,"title":"Decode a ticket file that fails","kind":"lab","session":2,"hash":"9f153161","md":"#### [day3#lab-3-2] Decode a ticket file that fails\n\nLab 3.2 · 25 min\n\nOpen a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail.\n\n[D3_2_open_ticket_file.html](https://sdaiaacademy.github.io/fn-101/labs/D3_2_open_ticket_file.html)\n\n- [ ] Run the loader and read the error it raises (5 min)\n- [ ] Open the file with its declared encoding (5 min)\n- [ ] Decode line by line and collect each failure (9 min)\n- [ ] Write the report; run the lab check (6 min)\n- [ ] ✱ Stretch: Decode the failing lines as Windows-1256 and print the tickets they hold","notes":"AI tutor. Step 1 fails with the charmap error at position 131 on every machine, because the script names the laptop default. Step 2 fails with the utf-8 error at position 2184. Expected at the end: 113 decoded, 7 failed (12, 22, 37, 55, 82, 84, 94). The check refuses errors=\"ignore\" and \"replace\". Typical problems: looping over a file opened in text mode; lines counted from 0; position in the file, not in the line. A Windows console may refuse to print some characters of the stretch; set PYTHONUTF8=1 or write the result to a file.","minutes":null,"lo":[]},{"id":"s3","n":25,"title":"Exceptions that explain","kind":"section","session":3,"hash":"bcf2f055","md":"#### [day3#s3] Exceptions that explain\n\n*Session 3*\n\n- Raise and catch specific exceptions, around the one call that can fail\n- Define an exception that carries a reason code and a detail\n- Write a loader in which accepted plus rejected equals the lines of the input","notes":"","minutes":null,"lo":["LO4"]},{"id":"three-ways-to-meet-bad-data","n":26,"title":"A program can meet a bad record in three ways. Only one is acceptable.","kind":"content","session":3,"hash":"0bf2a732","md":"#### [day3#three-ways-to-meet-bad-data] A program can meet a bad record in three ways. Only one is acceptable.\n\n*Bad input*\n\n- **Crash.** Line 37 is broken, so nobody gets the other 434. And tomorrow, line 52.\n- **Pass silently.** Skip it, or fill in a default. The report looks complete and is wrong by an unknown amount.\n- **Reject with a reason.** The run finishes, the good records are used, and each bad one is listed with where and why.\n\n> **The rule of the house.** Accepted plus rejected equals the lines of the input. Always, and checked by the program itself.","notes":"Ask for an example of the middle card from the room's own experience: a total that was quietly missing a branch, a month. Silent loss is the expensive one because nobody goes looking.","minutes":null,"lo":["LO4"]},{"id":"exceptions-travel","n":27,"title":"An exception travels up the call stack until some caller catches it","kind":"content","session":3,"hash":"c9c0206d","md":"#### [day3#exceptions-travel] An exception travels up the call stack until some caller catches it\n\n*Exceptions*\n\n1. **parse_value(\"N/A\")** raises ValueError\n2. **parse_row(row)** no handler: passes it on\n3. **load_readings(path)** has try and except: handles it, goes on\n\n- `raise` stops the function at once; nothing is returned\n- Each caller in turn either handles it or is stopped too\n- If nobody handles it, the program ends and prints the stack: the traceback\n- So the place that **detects** a problem need not be the place that **decides** what to do","notes":"Day 1's call-stack picture, with an error moving through it. The last bullet is the design idea: parse_value knows the text is not a number; only the loop knows that the right response is to record the row and continue.","minutes":null,"lo":["LO4"]},{"id":"catch-specific","n":28,"title":"Catch the exception you expect, by name. A wide net catches your own mistakes too.","kind":"content","session":3,"hash":"3643d111","md":"#### [day3#catch-specific] Catch the exception you expect, by name. A wide net catches your own mistakes too.\n\n*Catching*\n\n```python\n# file: too wide\ntry:\n    value = flaot(text)\nexcept Exception:\n    skipped += 1\n```\n\n```python\n# file: specific\ntry:\n    value = float(text)\nexcept ValueError:\n    skipped += 1\n```\n\n- Left: the misspelt `flaot` raises a `NameError` on every row. The net catches it, and the script reports that all 17,690 rows were \"skipped\"\n- Right: only \"this text is not a number\" is handled. Anything else still stops the run and shows you where\n\n> **A bare `except:` is the widest net of all.** The labs' checks refuse it.","notes":"Let the room find the typo on the left before you say it. The lesson is not style: a wide except converts programming errors into wrong data, which is the silent failure of the first slide.","minutes":null,"lo":["LO4"]},{"id":"own-exception-with-reason","n":29,"title":"An exception of your own can carry what the handler needs: a code and a detail","kind":"content","session":3,"hash":"d53ee616","md":"#### [day3#own-exception-with-reason] An exception of your own can carry what the handler needs: a code and a detail\n\n*Your own exception*\n\n```python\n# file: intake.py\nclass Rejected(Exception):\n    def __init__(self, reason, detail):\n        super().__init__(f\"{reason}: {detail}\")\n        self.reason = reason\n        self.detail = detail\n\nraise Rejected(\"BAD_PRIORITY\",\n               f\"priority is {value!r}\")\n```\n\n- A **reason code** for programs: it can be counted, grouped and tested\n- A **detail** for people: the actual value, so that someone can repair the line\n- The handler catches `Rejected` and nothing else: every other exception is a bug to see","notes":"Six lines of class are all the object-oriented programming this session needs: a kind of exception with two extra fields. `!r` shows the value with its quotes, which makes an empty text or a stray space visible in the log.","minutes":null,"lo":["LO4"]},{"id":"raise-early-guards","n":30,"title":"Day 1's guard clauses, with raise in place of return","kind":"content","session":3,"hash":"06707274","md":"#### [day3#raise-early-guards] Day 1's guard clauses, with raise in place of return\n\n*Validation as guards*\n\n```python\n# file: intake.py\nif ticket[\"priority\"] not in PRIORITIES:\n    raise Rejected(\"BAD_PRIORITY\", ...)\ntry:\n    date.fromisoformat(ticket[\"opened\"])\nexcept ValueError:\n    raise Rejected(\"BAD_DATE\", ...) from None\nreturn ticket\n```\n\n- The function now returns **only** good tickets. A caller cannot forget to look at a reason\n- Let the library judge: `fromisoformat` knows that September has 30 days\n- Translate its `ValueError` into your own exception, with your own code\n- The first guard that fires wins: one reason per line","notes":"On Day 1 validate_reading returned a reason text and \"\" for a good row; every caller had to remember to test it. Raising makes the good path the only path. \"from None\" keeps the traceback short; mention it only if asked.","minutes":null,"lo":["LO4"]},{"id":"try-around-one-record","n":31,"title":"The try wraps one call for one line, and the loop goes on","kind":"content","session":3,"hash":"f88feeeb","md":"#### [day3#try-around-one-record] The try wraps one call for one line, and the loop goes on\n\n*The loop*\n\n```python\n# file: intake.py\nfor line_no, line in enumerate(file, start=1):\n    try:\n        accepted.append(parse_ticket(line))\n    except Rejected as problem:\n        rejected.append((line_no,\n                         problem.reason,\n                         problem.detail))\n```\n\n- Inside the loop: one bad line costs one line\n- A `try` around the **whole loop** would end at the first rejection and lose every line after it\n- The line number is counted here, where it is known, and stored with the reason\n\n> **You wrote this shape an hour ago.** Decode each line, catch the decode error, collect the failure: the same loop with another exception.","notes":"This is the reference loop of lab 3.3; hide it during the lab. Two outputs, two lists, one pass: also why this is a loop and not a comprehension, as yesterday's session 3 said.","minutes":null,"lo":["LO4"]},{"id":"account-for-every-line","n":32,"title":"435 lines in: 400 accepted, 35 rejected, 0 unaccounted for","kind":"content","session":3,"hash":"21b55103","md":"#### [day3#account-for-every-line] 435 lines in: 400 accepted, 35 rejected, 0 unaccounted for\n\n*From the lab's run*\n\n| Reason | Lines |\n| --- | --- |\n| MISSING_FIELD | 8 |\n| BAD_JSON | 6 |\n| BAD_PRIORITY | 5 |\n| BAD_DATE, BAD_METER_ID | 4 + 4 |\n| EMPTY_LINE, EMPTY_TEXT | 3 + 3 |\n| NOT_OBJECT | 2 |\n\n```python\n# file: intake.py\nassert len(accepted) + len(rejected) == lines\n```\n\n- The program checks its own accounting on every run\n- The table tells the sender what to fix first\n- The log, `rejections.csv`, says which line and what was in it","notes":"Counts from the reference run of lab 3.3. This is the evidence the fourth course outcome asks for: a rejection log that accounts for every input line. A bad priority written in Arabic, or in capitals with exclamation marks, is rejected on purpose: guessing what the sender meant is not validation.","minutes":null,"lo":["LO4"]},{"id":"check-except-scope","n":33,"title":"The log says 435 rejected and 0 accepted. Why?","kind":"quiz","session":3,"hash":"459f89d0","md":"#### [day3#check-except-scope] The log says 435 rejected and 0 accepted. Why?\n\n*Checkpoint*\n\n**Question:** A colleague's intake finishes without a crash. Every line is in the rejection log with the reason `UNKNOWN`. The loop reads: `try: accepted.append(parse_tiket(line))`, then `except Exception: rejected.append((line_no, \"UNKNOWN\", \"\"))`.\n\n- A. Every line of the file is malformed\n- B. A typo raises NameError on every line; the wide except logs it\n- C. The try is inside the loop and should be around it\n- D. The file was opened with the wrong encoding","notes":"Answer: the second. The empty detail and the invented reason UNKNOWN are the smell: a rejection nobody designed. This is the first-slide silent failure, produced by an error handler.","minutes":null,"lo":["LO4"]},{"id":"lab-3-3","n":34,"title":"Reject malformed lines with a reason","kind":"lab","session":3,"hash":"65599cf0","md":"#### [day3#lab-3-3] Reject malformed lines with a reason\n\nLab 3.3 · 25 min\n\nReject malformed lines with a reason code so every input line is accounted for.\n\n[D3_3_reject_malformed_lines.html](https://sdaiaacademy.github.io/fn-101/labs/D3_3_reject_malformed_lines.html)\n\n- [ ] Run the intake and read the first crash (4 min)\n- [ ] Add the six checks, each raising a reason (10 min)\n- [ ] Catch the rejection around one call per line (4 min)\n- [ ] Write the rejection log; run the lab check (7 min)\n- [ ] ✱ Stretch: Add a ninth reason, DUPLICATE_ID, for a ticket id that an earlier line already used","notes":"AI tutor. Expected: 435 lines, 400 accepted, 35 rejected. The check compares the reason of every rejected line and refuses a bare except and except Exception. Typical problems: priority tested before the fields are known to exist; match in place of fullmatch; a hand-written date test. At the start the strict type check shows one error on the return of parse_ticket; it goes with the NOT_OBJECT check.","minutes":null,"lo":[]},{"id":"s4","n":35,"title":"A debugging method","kind":"section","session":4,"hash":"796a2f57","md":"#### [day3#s4] A debugging method\n\n*Session 4*\n\n- Read a traceback from its last line upward\n- Shrink a failing input to the smallest one that still fails\n- Write a regression test that fails on the defect and passes on the fix","notes":"","minutes":null,"lo":["LO5"]},{"id":"six-steps","n":36,"title":"Six steps turn \"it gives wrong numbers\" into a fix that stays fixed","kind":"content","session":4,"hash":"37cc1a90","md":"#### [day3#six-steps] Six steps turn \"it gives wrong numbers\" into a fix that stays fixed\n\n*A method, not a talent*\n\n- **1 · Reproduce.** One command that shows the wrong result, every time.\n- **2 · Shrink.** The smallest input that still shows it.\n- **3 · Hypothesis.** One sentence: \"I think … because …\".\n- **4 · Test it.** An observation that would prove you wrong.\n- **5 · Fix.** The smallest change, at the cause.\n- **6 · Regression check.** A test that fails without the fix.","notes":"Write the six words on the board and leave them there for the lab. The order matters most where people skip: changing code before step 3, and stopping after step 5. The debugging log of the lab has one heading per step.","minutes":null,"lo":["LO5"]},{"id":"read-traceback-bottom-up","n":37,"title":"Read a traceback from its last line upward","kind":"content","session":4,"hash":"2e95a566","md":"#### [day3#read-traceback-bottom-up] Read a traceback from its last line upward\n\n*When it crashes*\n\n```text\n# file: the traceback of drill 3\nTraceback (most recent call last):\n  File \"drill.py\", line 22, in \u003cmodule>\n    print(total(rows))\n  File \"drill.py\", line 17, in total\n    result += to_number(row[\"consumption_m3\"])\n  File \"drill.py\", line 11, in to_number\n    return float(text)\nValueError: could not convert string to float: 'N/A'\n```\n\n- **Last line.** **What** went wrong, and with which value.\n- **The frame above it.** **Where**: file, line, function.\n- **The frames further up.** **How we got there**: who called whom.","notes":"This is this morning's drill, with the marker lines under the code left out. The last line gives half the hypothesis for free: a row holds N/A. The frame above says where the conversion is; the frames above that say which loop fed it. Most beginners read from the top and stop at the first line they understand.","minutes":null,"lo":["LO5"]},{"id":"quiet-wrong-answers","n":38,"title":"The harder defects raise nothing: they give a wrong answer politely","kind":"content","session":4,"hash":"dddea6a8","md":"#### [day3#quiet-wrong-answers] The harder defects raise nothing: they give a wrong answer politely\n\n*When it does not crash*\n\n- **Report A.** The same file, read twice in one job. Run 1: 17,561 accepted. Run 2: 0 accepted.\n- **Report B.** The report gives a median of 0.653 for meter M-0012. Sorted by hand, it is 0.696.\n\n- No traceback to read. You start from a **difference**: what you got against what must be true\n- So step 1 is to make that difference appear on demand, with one command\n- And somebody has to know what \"must be true\" is: here, the operator and Salma","notes":"These are the two reports of lab 3.4, as the participants will read them in symptoms.md; the causes are not on any slide. Both are real categories: state that survives between calls, and a calculation that is wrong for some orders of input.","minutes":null,"lo":["LO5"]},{"id":"shrink-the-input","n":39,"title":"Shrink until the failing case fits in your head","kind":"content","session":4,"hash":"c41f58a6","md":"#### [day3#shrink-the-input] Shrink until the failing case fits in your head\n\n*Step 2*\n\n1. **17,690 rows** fails, and tells you nothing\n2. **Half of them** still fails? Halve again\n3. **2 rows, or 3 values** fails, and you can check it by hand\n\n- Shrink the **data** (fewer rows, one meter), the **steps** (one function, not the whole tool) and the **calls** (does it need two?)\n- Each cut either keeps the failure, so you continue, or loses it, and then you have learnt what matters\n- The smallest failing case is the regression test, almost written","notes":"The lab supplies data/tiny.csv, two rows, for exactly this. For report B the shrunk case needs no file at all. If shrinking loses the failure, that is information: the ingredient you just removed is part of the cause.","minutes":null,"lo":["LO5"]},{"id":"hypothesis-then-test","n":40,"title":"Say what you think is wrong before you touch the code, then try to prove yourself wrong","kind":"content","session":4,"hash":"15fefaa2","md":"#### [day3#hypothesis-then-test] Say what you think is wrong before you touch the code, then try to prove yourself wrong\n\n*Steps 3 and 4*\n\n- **A hypothesis.** \"I think the count is wrong because line 40 of report.py starts the total at 1.\" A file, a line, a reason.\n- **A test of it.** \"If so, a file of one row gives 2.\" Run it. One row gives 1: the hypothesis is dead, in thirty seconds, with no code changed.\n\n```python\n# file: looking inside\nprint(\"start:\", len(seen))   # the quick look\n\nbreakpoint()                 # or stop here, then:\n# p name    print a name\n# n         next line\n# s         step into a call\n# c         continue      q   quit\n```","notes":"The example hypothesis is invented and not one of the lab's defects. The discipline is to predict an observation before making it; changing lines until the output looks right is not debugging and leaves no understanding behind. The debugger commands are pdb's; an editor's debugger has the same five as buttons.","minutes":null,"lo":["LO5"]},{"id":"regression-test","n":41,"title":"A regression test fails on the defect and passes on the fix. Then it stays.","kind":"content","session":4,"hash":"47d7fc25","md":"#### [day3#regression-test] A regression test fails on the defect and passes on the fix. Then it stays.\n\n*Step 6*\n\n```python\n# file: test_regression.py\ndef test_total_of_one_row():\n    rows = [{\"consumption_m3\": \"0.5\"}]\n    assert total(rows) == 0.5\n```\n\n- Write it from the shrunk case, **before** or right after the fix\n- See it fail on the old code. A test you never saw fail may be testing nothing\n- See it pass on the new code\n- Keep it: it runs with every later change, for as long as the code lives\n\n> **The lab's check does step 2 of that list for you.** It puts each defect back into a copy of the package and expects your test to fail there.","notes":"The example test belongs to the invented hypothesis of the slide before. pytest is introduced properly tomorrow; today a test is a function whose name starts with test_ and that asserts something. \"Fixed\" without a test means \"fixed until someone tidies this function\".","minutes":null,"lo":["LO5"]},{"id":"why-ai-off-here","n":42,"title":"The first attempt at a debugging lab is yours alone","kind":"content","session":4,"hash":"2dec053b","md":"#### [day3#why-ai-off-here] The first attempt at a debugging lab is yours alone\n\n*How we work*\n\n- An assistant will often find a seeded defect in seconds. Then the lab has taught you to ask\n- The skill is the six steps: you need them for the defect no assistant has seen\n- The supervised check has one debugging task, in a locked editor\n\n- **After the attempt.** Still stuck? Tomorrow's last lab uses the course tutor for hints, which you turn into your own explanation.\n\n> **The evidence comes tomorrow.** Day 4 looks at what a controlled study found when people learnt with and without an assistant.","notes":"Say it plainly and without moralising: this is practice for a skill that is assessed, and delegating the practice skips it. The catalog's policy for the course is AI-off for the first attempt at each debugging lab.","minutes":null,"lo":["LO5"]},{"id":"check-debug-next-step","n":43,"title":"What is the next step?","kind":"quiz","session":4,"hash":"df1ef4d4","md":"#### [day3#check-debug-next-step] What is the next step?\n\n*Checkpoint*\n\n**Question:** The district report shows Al-Rabwa with twice the readings it should have. You can make it happen every time with one command on the month file. You have not opened the code yet.\n\n- A. Find the smallest input that still doubles: one district, a handful of rows\n- B. Read the whole package from the top until something looks wrong\n- C. Divide the count of that district by two in the report\n- D. Write a regression test on the whole month file","notes":"Answer: the first. Each wrong option is a step taken out of order, or not a step at all. Ask what they would try first when shrinking: one district, then one meter, then a few rows.","minutes":null,"lo":["LO5"]},{"id":"lab-3-4","n":44,"title":"Find and fix two seeded defects","kind":"lab","session":4,"hash":"17335ade","md":"#### [day3#lab-3-4] Find and fix two seeded defects\n\nLab 3.4 · 25 min\n\nWith AI off, find and fix two seeded defects and write a regression test for each.\n\n[D3_4_ai_off_find.html](https://sdaiaacademy.github.io/fn-101/labs/D3_4_ai_off_find.html)\n\n- [ ] Reproduce both reports and write what you see (5 min)\n- [ ] Defect A: shrink, hypothesis, test, fix (8 min)\n- [ ] Defect B: shrink, hypothesis, test, fix (7 min)\n- [ ] Write a regression test for each; run the check (5 min)\n- [ ] ✱ Stretch: Step through defect A with the debugger: stop on the first line of the function in each call and print what it starts with","notes":"AI off: no assistant, editors' completion assistants switched off. Give no hints about the causes for the first fifteen minutes; ask \"which step are you on?\" instead. Defect A: a mutable default argument in load_readings. Defect B: median does not sort. The check wants all six headings filled for both, the tests failing when each defect is put back, 17,561 rows on both runs and 18 anomalies. Typical problems: repairing the caller (passing seen=set()) and not the function; a test of median on an already sorted list. Anyone who finishes neither: they may continue at home and use the tutor's hints after tomorrow.","minutes":null,"lo":[]},{"id":"wrap-up","n":45,"title":"Three things to keep","kind":"content","session":4,"hash":"5798fcb8","md":"#### [day3#wrap-up] Three things to keep\n\n*Day 3 · wrap-up*\n\n- **Name the encoding.** Bytes become text through a table you choose. Decode strictly, report what fails, never ignore.\n- **Every line is accounted for.** Reject with a code and a detail; catch only what you expect; accepted plus rejected equals the input.\n- **Six steps.** Reproduce, shrink, hypothesis, test, fix, regression check. The test is what makes the fix last.","notes":"Ask which of today's failures was loud and which was quiet, and which they would rather have in production.","minutes":null,"lo":[]},{"id":"next","n":46,"title":"Day 4: From notebook to tool","kind":"content","session":4,"hash":"9c61bd58","md":"#### [day3#next] Day 4: From notebook to tool\n\n*Next*\n\nTomorrow Salma's notebook becomes a command that anyone can rerun, with tests around its one rule. Lab 4.1 opens a notebook: have JupyterLab or an editor that opens notebooks ready.","notes":"The one thing to prepare: a way to open a notebook. In the workspace, \"uv run --with jupyterlab jupyter lab\" downloads and starts JupyterLab; VS Code or VSCodium with the Python and Jupyter extensions also works. Try it today, on the network of the room.","minutes":null,"lo":[]}],"activities":[{"id":"review-day2-q1","slide":"review-day2","type":"single","prompt":"For each of 17,690 rows you must decide whether its meter id is one of the 600 registered ids. Which choice keeps the whole job to one pass with one step per row?","options":[{"key":"A","text":"A list of the registered ids, tested with in"},{"key":"B","text":"A sorted list of the registered ids, tested with in"},{"key":"C","text":"A set of the registered ids, tested with in"},{"key":"D","text":"A generator of the registered ids, tested with in"}],"correct":[2],"explanation":"A set answers membership in one step whatever its size. This is the known argument of every validation function this week.","misconceptions":["Searches up to 600 ids for every row: the loop inside a loop of yesterday's timing","Sorting makes the list tidy, and in on a list still walks it item by item","","A generator can be walked once: the second row would find it empty"],"lo":["LO3"]},{"id":"check-mask-where-q1","slide":"check-mask-where","type":"single","prompt":"A script loads tickets, logs each ticket it processes \"for debugging\", builds a summary and writes it to a file. The phone numbers must not leave the program. Where is masking applied?","options":[{"key":"A","text":"In the function that writes the summary file"},{"key":"B","text":"Where each ticket line is first turned into a record"},{"key":"C","text":"In a second script that cleans the summary file afterwards"},{"key":"D","text":"Nowhere, if the file is only sent to colleagues"}],"correct":[1],"explanation":"Everything downstream, the log included, can only leak what it was given. Mask or drop at the door, and no later line can get it wrong.","misconceptions":["Protects one output and forgets the other: the log line has already carried the number out","","Repairs after the leak: the file existed with the numbers in it, on disk and perhaps in a backup","Relies on readers to behave: an output that holds the number has disclosed it, whoever opens it"],"lo":["LO4"]},{"id":"check-decode-choice-q1","slide":"check-decode-choice","type":"single","prompt":"A nightly file of 50,000 tickets is declared UTF-8. Tonight the load stops with a UnicodeDecodeError at one byte. Badr needs the queue in the morning.","options":[{"key":"A","text":"Add errors=\"ignore\" so that the load finishes"},{"key":"B","text":"Switch the whole file to Windows-1256, which never raises"},{"key":"C","text":"Refuse the file until the sender fixes it"},{"key":"D","text":"Load the lines that decode; report the rest by line and byte"}],"correct":[3],"explanation":"The good lines are good. The bad ones are few, and a report that says which and where lets someone repair them at the source. Nothing is lost and nothing is invented.","misconceptions":["Trades a loud failure for a silent one: the tickets load with parts of their text deleted and nobody is told","Guesses a table that raises nothing: the 50,000 good tickets would load as unreadable text","Stops everything for a few lines: thousands of good tickets wait for a problem that concerns a handful",""],"lo":["LO4"]},{"id":"check-except-scope-q1","slide":"check-except-scope","type":"single","prompt":"A colleague's intake finishes without a crash. Every line is in the rejection log with the reason UNKNOWN. The loop reads: try: accepted.append(parse_tiket(line)), then except Exception: rejected.append((line_no, \"UNKNOWN\", \"\")).","options":[{"key":"A","text":"Every line of the file is malformed"},{"key":"B","text":"A typo raises NameError on every line; the wide except logs it"},{"key":"C","text":"The try is inside the loop and should be around it"},{"key":"D","text":"The file was opened with the wrong encoding"}],"correct":[1],"explanation":"except Exception cannot tell a bad line from a bad program. With except Rejected the first line would have stopped the run with a NameError that names the typo.","misconceptions":["Blames the data: 400 of the lines are known to be good","","Blames the position of the try: inside the loop is right, which is why all 435 lines were reached","Blames the file's encoding: a decode error would stop the read before any line was handled"],"lo":["LO4"]},{"id":"check-debug-next-step-q1","slide":"check-debug-next-step","type":"single","prompt":"The district report shows Al-Rabwa with twice the readings it should have. You can make it happen every time with one command on the month file. You have not opened the code yet.","options":[{"key":"A","text":"Find the smallest input that still doubles: one district, a handful of rows"},{"key":"B","text":"Read the whole package from the top until something looks wrong"},{"key":"C","text":"Divide the count of that district by two in the report"},{"key":"D","text":"Write a regression test on the whole month file"}],"correct":[0],"explanation":"Reproduce is done. Shrink comes next: a case small enough to check by hand turns the search into a short one, and becomes the regression test.","misconceptions":["","Skips shrinking and guessing: reading 300 lines without a question finds whatever looks odd, not the cause","Fixes the symptom at the output: the count is still wrong inside, and wrong for every other use of it","Writes the test before knowing the case: on 17,690 rows it would be slow and would not say what is wrong"],"lo":["LO5"]}],"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":"day3.md","llms":"../llms.txt"},"tasks":[],"tools":[]},"bridge":{"allowedOrigins":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

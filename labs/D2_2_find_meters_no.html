@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 2.2 · Find silent meters and unknown ids · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D2_2_find_meters_no.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day2.html#lab-2-2">Back to the slides</a></nav></div>
+<span class="tag">Lab 2.2</span>
+<h1>Find silent meters and unknown ids</h1>
+<p>Find meters with no reading and readings with no known meter.</p>
+<div class="meta"><span>25 minutes</span><span>Day 2</span><span>Session 2: Sets and membership</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="2.2">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Compare the month's readings with the meter registry and answer three questions with sets: which meters sent nothing, which ids in the readings are unknown, and which meter and date pairs appear twice.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>2.2</code> of the workspace: <code>coverage_report.py</code>, and in <code>data/</code> the files <code>readings_2026_09.csv</code> (the month as it arrived, 17,690 rows) and <code>meters.csv</code></li>
+    <li>AI policy: tutor. Hints and explanations of messages, no code</li>
+  </ul>
+
+  <div class="step">
+    <h3>Build the two sets of meter ids <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../2.2
+uv run python coverage_report.py</code></pre>
+    <p>Two collections of ids matter: the meters in the registry and the meters that appear in the readings. Build each as a set with a comprehension. Try them at a Python prompt first and look at their sizes.</p>
+    <pre class="code" data-file="coverage_report.py"><code class="language-python">registered = {meter["meter_id"] for meter in meters}
+reporting = {reading["meter_id"] for reading in readings}</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Find the meters with no reading <span class="min">5 min</span></h3>
+    <p>Write <code>silent_meters</code>: the ids that are in the registry and not in the readings. One operator between the two sets gives the answer; return it as a sorted list, because a set has no order and a report needs one.</p>
+  </div>
+
+  <div class="step">
+    <h3>Find the readings with no known meter <span class="min">5 min</span></h3>
+    <p>Write <code>unknown_meters</code>: the same two sets, the other way round. Run the script and read both lists. Which of the two findings is a problem with the data file, and which is a question for the field team?</p>
+  </div>
+
+  <div class="step">
+    <h3>Find the repeated meter and date pairs <span class="min">6 min</span></h3>
+    <p>A meter should have one reading per date. Write <code>repeated_keys</code>: walk the readings once, keep a set of the <code>(meter_id, date)</code> pairs seen so far, and collect a pair when you meet it a second time. A tuple can be a member of a set; a list cannot.</p>
+    <pre class="code" data-file="coverage_report.py"><code class="language-python">key = (reading["meter_id"], reading["date"])
+if key in seen:
+    ...</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python coverage_report.py
+uv run mypy --strict coverage_report.py
+uv run ../lab.py check 2.2</code></pre>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>List the meters that have fewer than 30 different dates in the file, with the number of dates each has. You need a dictionary from meter id to a set of dates.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>Why does <code>silent_meters</code> return a sorted list and not the set itself?</li>
+    <li>What would <code>registered &amp; reporting</code> hold, and how many ids?</li>
+    <li>Why can <code>(meter_id, date)</code> go into a set while <code>[meter_id, date]</code> cannot?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Reference run: 12 meters sent nothing (M-0032, M-0040, M-0130, M-0187, M-0200, M-0307, M-0329, M-0355, M-0427, M-0495, M-0497, M-0559); 5 unknown ids (M-9001 to M-9005, 4 rows each); 30 pairs appear more than once. The registered set has 600 members, the reporting set 593, their intersection 588.</p>
+    <p>The check refuses a loop inside a loop. Common errors: <code>if meter_id not in list_of_ids</code> inside a loop (correct, slow, and the point of the session); returning the set unsorted, so that the order changes from run to run; collecting every occurrence of a repeated pair in a list, which counts triples twice. The unknown ids are a data problem (a registry that is behind, or a mistyped id); the silent meters are a field question (a dead meter, an empty house). Answers: a set has no order; the 588 meters that are registered and reporting; a tuple cannot change, so it can be hashed. Reference: <code>labs/solutions/2.2/coverage_report.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D2_1_count_readings_per.html" rel="prev">← Previous lab</a><a href="D2_3_stream_large_readings.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"2.2","title":"Find silent meters and unknown ids","summary":"Find meters with no reading and readings with no known meter.","minutes":25,"day":2,"unit":"Day 2","session":2,"deck":"../slides/day2.html#lab-2-2","prev":"D2_1_count_readings_per.html","next":"D2_3_stream_large_readings.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

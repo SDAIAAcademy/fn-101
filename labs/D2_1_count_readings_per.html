@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="lab" data-track="foundations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 2.1 · Count readings per meter and district · Python for Data and AI Work</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="D2_1_count_readings_per.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo"></div><nav><a href="../index.html">Course page</a><a href="../slides/day2.html#lab-2-1">Back to the slides</a></nav></div>
+<span class="tag">Lab 2.1</span>
+<h1>Count readings per meter and district</h1>
+<p>Count readings per meter and district, then time a nested-loop version on 100,000 rows.</p>
+<div class="meta"><span>25 minutes</span><span>Day 2</span><span>Session 1: Dictionaries for counting and grouping</span></div>
+</div>
+</header>
+<main class="wrap">
+<article class="lab" data-lab="2.1">
+  <div class="box goal">
+    <h3>Goal</h3>
+    <p>Count a month of readings per meter and per district with dictionaries, then measure what a loop inside a loop costs on 100,000 rows. You leave with two functions and two timings.</p>
+  </div>
+
+  <h2>What you need</h2>
+  <ul>
+    <li>The folder <code>2.1</code> of the workspace: <code>count.py</code>, <code>timing.py</code>, and in <code>data/</code> the files <code>readings_clean.csv</code> (17,561 rows), <code>meters.csv</code> (600 meters) and <code>readings_large.csv</code> (100,000 rows)</li>
+    <li>AI policy: tutor. Hints and explanations of messages, no code</li>
+  </ul>
+
+  <div class="step">
+    <h3>Count the readings of each meter in one pass <span class="min">7 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../2.1
+uv run python count.py</code></pre>
+    <p>It stops at <code>NotImplementedError</code>: that is your first function. Write <code>count_per_meter</code>: start with an empty dictionary, walk the readings once, and for each one add 1 to the count of its meter. <code>counts.get(key, 0)</code> answers 0 for a meter you have not seen yet.</p>
+    <pre class="code" data-file="count.py"><code class="language-python">counts: dict[str, int] = {}
+for reading in readings:
+    ...
+return counts</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Build an index of meters; count per district <span class="min">8 min</span></h3>
+    <p>Read <code>count_per_district_slow</code>: it is correct, and for every reading it searches the list of meters. In <code>count_per_district</code>, do the search once for all: build a dictionary from meter id to district, then count with one lookup per reading.</p>
+    <pre class="code" data-file="count.py"><code class="language-python">district_of = {meter["meter_id"]: meter["district"] for meter in meters}</code></pre>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python count.py</code></pre>
+    <p>The six counts add up to 17,561, the number of rows in the file. Check that they do.</p>
+  </div>
+
+  <div class="step">
+    <h3>Time both versions on 100,000 rows <span class="min">6 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python timing.py</code></pre>
+    <p>The script runs the slow version and yours on the large file, checks that they agree, and writes <code>timings.txt</code>. Before you look: with 600 meters, how many comparisons does the slow version make per reading, on average? Then read the ratio.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run mypy --strict count.py
+uv run ../lab.py check 2.1</code></pre>
+  </div>
+
+  <div class="step stretch">
+    <h3>✱ Stretch</h3>
+    <p>Group the readings by district into lists of values (<code>dict[str, list[float]]</code>) and print each district's highest reading. <code>groups.setdefault(district, []).append(value)</code> does the grouping in one line.</p>
+  </div>
+
+  <h2>Check yourself</h2>
+  <ol class="checks">
+    <li>Your function and the slow one give the same counts. What exactly did you move out of the loop?</li>
+    <li>The registry grows to 60,000 meters. What happens to each version's time?</li>
+    <li>What would <code>counts[meter_id] += 1</code> do for the first reading of a meter, without <code>get</code>?</li>
+  </ol>
+
+  <details class="instructor">
+    <summary>For the trainer</summary>
+    <p>Reference run: 588 meters have readings and M-0001 has 30; per district Al-Faisaliyah 2,871, Al-Khuzama 2,769, Al-Murooj 2,836, Al-Naseem 3,015, Al-Rabwa 3,290, Al-Yasmin 2,780, in total 17,561. On the build laptop the nested loop took 2.3 seconds and the dictionary version 0.024 seconds on 100,000 rows, a ratio near 100; the numbers vary by machine, the ratio stays in the hundreds because the slow version makes about 300 comparisons per reading.</p>
+    <p>The check accepts any correct function that handles 100,000 rows in under two seconds. Common errors: building the index inside the loop (correct and still slow); <code>counts[meter_id] += 1</code> on a missing key (KeyError); returning a <code>Counter</code> or <code>defaultdict</code>, which is fine. Answers: the search for the meter, now done once as a dictionary; the slow one grows a hundredfold, the index version barely changes; a KeyError. Reference: <code>labs/solutions/2.1/count.py</code>.</p>
+  </details>
+</article>
+<nav class="pager"><a href="D1_4_reorder_scrambled_lines.html" rel="prev">← Previous lab</a><a href="D2_2_find_meters_no.html" rel="next">Next lab →</a></nav>
+</main>
+<footer><div class="wrap">SDAIA Academy · Data &amp; AI Foundations Track · Python for Data and AI Work<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-15 · commit 4b268e2</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-15T04:58:14Z","version":"2027.1.0","commit":"4b268e2"},"course":{"id":"fn-101","code":"FN-101","title":"Python for Data and AI Work","track":"foundations","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/fn-101/","repo":"SDAIAAcademy/fn-101","home":"../index.html"},"lab":{"id":"2.1","title":"Count readings per meter and district","summary":"Count readings per meter and district, then time a nested-loop version on 100,000 rows.","minutes":25,"day":2,"unit":"Day 2","session":1,"deck":"../slides/day2.html#lab-2-1","prev":"D1_4_reorder_scrambled_lines.html","next":"D2_2_find_meters_no.html","alt":{}},"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":null,"llms":"../llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>
