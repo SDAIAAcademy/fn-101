@@ -70,10 +70,10 @@ Every lab is a page in `labs/`, opened from the course page and from the lab sli
 | 3.2 | Day 3 · Session 2 | Decode a ticket file that fails | [`D3_2_open_ticket_file.html`](labs/D3_2_open_ticket_file.html) |
 | 3.3 | Day 3 · Session 3 | Reject malformed lines with a reason | [`D3_3_reject_malformed_lines.html`](labs/D3_3_reject_malformed_lines.html) |
 | 3.4 | Day 3 · Session 4 | Find and fix two seeded defects | [`D3_4_ai_off_find.html`](labs/D3_4_ai_off_find.html) |
-| 4.1 | Day 4 · Session 1 | Run a notebook out of order, find the hidden-state bug, then restart and run all | [`D4_1_run_notebook_out.html`](labs/D4_1_run_notebook_out.html) |
-| 4.2 | Day 4 · Session 2 | Move the supplied notebook logic into a module with a command-line entry point | [`D4_2_move_supplied_notebook.html`](labs/D4_2_move_supplied_notebook.html) |
-| 4.3 | Day 4 · Session 3 | Write five tests for the anomaly rule, including empty and boundary inputs | [`D4_3_write_five_tests.html`](labs/D4_3_write_five_tests.html) |
-| 4.4 | Day 4 · Session 4 | Get hints from the course tutor on a new defect, then explain the fix in your own words | [`D4_4_get_hints_from.html`](labs/D4_4_get_hints_from.html) |
+| 4.1 | Day 4 · Session 1 | Find the notebook's hidden state | [`D4_1_run_notebook_out.html`](labs/D4_1_run_notebook_out.html) |
+| 4.2 | Day 4 · Session 2 | Give the notebook a command line | [`D4_2_move_supplied_notebook.html`](labs/D4_2_move_supplied_notebook.html) |
+| 4.3 | Day 4 · Session 3 | Pin the anomaly rule down with tests | [`D4_3_write_five_tests.html`](labs/D4_3_write_five_tests.html) |
+| 4.4 | Day 4 · Session 4 | Debug a third defect with the tutor | [`D4_4_get_hints_from.html`](labs/D4_4_get_hints_from.html) |
 <!-- /academy:labs -->
 
 ## Capstone

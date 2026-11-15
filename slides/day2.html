@@ -441,7 +441,7 @@ if ticket["opened"] &lt; "2026-09-01":
     ...</code></pre>
     <ul class="bullets">
       <li>Line 2 misspells the field and <b>adds a new key</b>. No error, ever</li>
-      <li>Line 3 compares dates as text. It works for this format, by luck</li>
+      <li>Line 3 compares dates as text. It works only while every file writes year-month-day</li>
       <li>Nothing says which fields a ticket has, or what type each is</li>
       <li>The checker sees <code>dict[str, str]</code> and can help with none of it</li>
     </ul>

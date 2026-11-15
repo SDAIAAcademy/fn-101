@@ -95,19 +95,19 @@
       "prompt": "A function average(values) ends with print(total / len(values)). A caller writes mean = average([2.0, 4.0]) and then mean * 2. What happens?",
       "options": [
         "The result is 6.0",
-        "3.0 is printed, then the multiplication fails because mean is None",
-        "Nothing is printed and the multiplication fails",
-        "3.0 is printed twice"
+        "3.0 is printed, then mean * 2 fails: mean is None",
+        "Nothing is printed, then mean * 2 fails",
+        "3.0 is printed, then mean * 2 gives 6.0"
       ],
       "correct": [
         1
       ],
       "explanation": "The function prints and returns nothing, so the call's value is None; None cannot be multiplied.",
       "misconceptions": [
-        "Treats printing a value as returning it",
+        "Treats the printed value as the returned one",
         "",
-        "Forgets that the print inside the function still runs",
-        "Thinks using the name runs the function again"
+        "Expects a function to print only when its result is used",
+        "Treats print as a return that also shows the value"
       ],
       "lo": [
         "LO3"
@@ -123,10 +123,10 @@
       "type": "single",
       "prompt": "A colleague runs the type checker on a new file of five functions without any hints. It reports no issues, and she concludes the file has no type errors. What is the sound conclusion?",
       "options": [
-        "She is right: the checker reads the code, hints or not",
-        "Nothing can be concluded: without hints, the checker had no promises to check the code against",
-        "The file must be wrong, since a real file always has some errors",
-        "The checker is broken and should be reinstalled"
+        "She is right: the checker reads all the code, hints or not",
+        "Nothing: without hints there were no promises to check",
+        "She is right, because strict mode is only for large projects",
+        "The checker failed silently and should be run again"
       ],
       "correct": [
         1
@@ -135,7 +135,7 @@
       "misconceptions": [
         "Believes the checker infers every promise by itself",
         "",
-        "Replaces evidence with a rule of thumb",
+        "Thinks strict mode is about project size, not about refusing unannotated functions",
         "Blames the tool for doing what its default says"
       ],
       "lo": [
@@ -182,9 +182,9 @@
       "prompt": "You rebuild a function from scrambled lines and the test stops with NameError: name 'value' is not defined, pointing at the line 'if value > 200:'. What does this tell you about your order?",
       "options": [
         "A line is at the wrong indentation depth",
-        "The line that binds value runs after the line that reads it, or not at all",
+        "value is read before a line has bound it",
         "One of the distractors is still in the function",
-        "The test file is wrong"
+        "The test passes the wrong argument"
       ],
       "correct": [
         1
@@ -194,7 +194,7 @@
         "Confuses a NameError with an IndentationError",
         "",
         "Guesses at the cause without using the message",
-        "Doubts the supplied contract before the code"
+        "Blames the caller: a wrong argument gives a wrong value, not an unbound name"
       ],
       "lo": [
         "LO1"
@@ -211,9 +211,9 @@
       "prompt": "A loop over ticket lines runs counts[district] += 1 on an empty dictionary named counts. What happens at the first ticket?",
       "options": [
         "The key is created with the value 1",
-        "A KeyError is raised, because the key has no value to add to yet",
-        "The line is skipped for new keys",
-        "counts becomes a list"
+        "A KeyError: the key has no value yet",
+        "The line is skipped for a key not yet seen",
+        "The key is created with the value 0"
       ],
       "correct": [
         1
@@ -223,7 +223,7 @@
         "Assumes a dictionary invents a starting value",
         "",
         "Assumes a missing key is ignored without a word",
-        "Confuses the dictionary with what it holds"
+        "Assumes += creates the key before adding to it"
       ],
       "lo": [
         "LO3"
@@ -268,10 +268,10 @@
       "type": "single",
       "prompt": "A function returns the set of silent meter ids and a script writes them to a report in the order of a for loop over that set. A colleague notices the report differs between two runs on the same files. Why?",
       "options": [
-        "A set has no promised order, so the loop may visit the ids differently on each run",
-        "Sets lose some members when they are large",
+        "A set promises no order to a loop over it",
+        "Sets drop some members when they are large",
         "The files were read in a different order",
-        "The for loop is not allowed over a set"
+        "The ids were added to the set in another order"
       ],
       "correct": [
         0
@@ -281,7 +281,7 @@
         "",
         "Confuses 'no order' with 'not reliable'",
         "Blames the input, which did not change",
-        "A loop over a set is allowed; only its order is not promised"
+        "Expects a set to keep the order of insertion, as a dictionary does"
       ],
       "lo": [
         "LO3"
@@ -356,9 +356,9 @@
       "prompt": "read_rows(path) is a generator function whose first line prints 'opening'. A script runs rows = read_rows('missing.csv') for a file that does not exist, and nothing else. What is printed?",
       "options": [
         "'opening', then a FileNotFoundError",
-        "Nothing: the body of a generator function does not start until a value is asked for",
-        "A FileNotFoundError only",
-        "'opening' only"
+        "Nothing: the body has not started yet",
+        "A FileNotFoundError, and nothing else",
+        "'opening', and nothing else"
       ],
       "correct": [
         1
@@ -413,10 +413,10 @@
       "type": "single",
       "prompt": "A script reads a readings file with csv.DictReader and computes total = total + row[\"consumption_m3\"], with total starting at 0.0. What happens on the first row?",
       "options": [
-        "A TypeError, because the cell is text and cannot be added to a number",
+        "A TypeError: the cell is text, not a number",
         "The number is added, since the cell holds digits",
         "The text is appended, so total becomes a string",
-        "The row is skipped"
+        "The row is skipped because it is not a number"
       ],
       "correct": [
         0
@@ -426,7 +426,7 @@
         "",
         "Assumes the reader converts cells that look like numbers",
         "Assumes Python turns the number into text to make the addition work",
-        "Assumes a mismatch is ignored without a word"
+        "Expects a failed addition to skip the row quietly instead of raising"
       ],
       "lo": [
         "LO3"
@@ -442,10 +442,10 @@
       "type": "single",
       "prompt": "A nightly script writes a JSON report that includes \"generated_at\" with the current time. A colleague compares the reports of two runs on the same input to check that nothing changed, and they always differ. What is the sound repair?",
       "options": [
-        "Compare the files by size instead of by content",
+        "Compare the two files by size, not content",
         "Run the script only once a day",
-        "Sort the keys of the JSON",
-        "Keep the time out of the report and put it in the log, so the same input gives the same bytes"
+        "Sort the keys of the JSON before writing",
+        "Move the time from the report to the log"
       ],
       "correct": [
         3
@@ -471,10 +471,10 @@
       "type": "single",
       "prompt": "A load stops with: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte. What does this tell you about the file?",
       "options": [
-        "The file is empty after 2,184 bytes",
-        "At byte 2,184 the content is not valid UTF-8; what comes before decoded as UTF-8",
-        "The file has 2,184 lines",
-        "The file is certainly not text at all"
+        "The file ends after 2,184 bytes",
+        "Byte 2,184 is not valid UTF-8",
+        "The file has 2,184 lines of text",
+        "The whole file is not UTF-8 at all"
       ],
       "correct": [
         1
@@ -500,10 +500,10 @@
       "type": "single",
       "prompt": "A ticket report shows customer texts such as 'ط¹ط¯ط§ط¯' where Arabic words are expected. No error was raised anywhere. What most likely happened?",
       "options": [
-        "The customers typed nonsense",
-        "The font of the screen lacks Arabic letters",
-        "UTF-8 bytes were decoded with a one-byte Arabic table, which raises nothing and gives wrong characters",
-        "The file was truncated"
+        "The customers typed these letters themselves",
+        "The screen font lacks some Arabic letters",
+        "UTF-8 bytes were read with a one-byte table",
+        "The file was cut short while it was copied"
       ],
       "correct": [
         2
@@ -530,9 +530,9 @@
       "prompt": "An intake of 5,000 ticket lines reports 4,950 accepted and 38 rejected, and exits normally. What should the next action be?",
       "options": [
         "Ship the 4,950: the numbers are close enough",
-        "Find the 12 lines that are neither accepted nor rejected, because the intake is losing lines silently",
-        "Add 12 to the rejected count so that the totals match",
-        "Rerun until the numbers add up"
+        "Find the 12 lines that went nowhere",
+        "Add 12 to the rejected count so the totals match",
+        "Rerun the intake until the numbers add up"
       ],
       "correct": [
         1
@@ -558,10 +558,10 @@
       "type": "single",
       "prompt": "A loader has one try around its whole for loop over 400 lines, with except Rejected adding the line to a log. Line 37 is malformed. How many lines end up accepted or logged?",
       "options": [
-        "37: the loop ends at the first rejection, and the lines after it are never read",
+        "37: the loop ends at the first rejection",
         "400: the except lets the loop continue",
-        "399: every line but the bad one",
-        "0: the try cancels the loop"
+        "399: every line except the bad one",
+        "36: the bad line is not logged either"
       ],
       "correct": [
         0
@@ -571,7 +571,7 @@
         "",
         "Assumes control returns into the loop after the except",
         "Counts the accepted lines of a correct loader, forgetting where the try is",
-        "Assumes the lines already handled are undone"
+        "Forgets that the except still runs and logs the line that raised"
       ],
       "lo": [
         "LO4"
@@ -587,10 +587,10 @@
       "type": "single",
       "prompt": "A traceback has three frames: the module calling report(), report() calling total(), and total() at the line 'result += to_number(cell)', followed by 'TypeError: unsupported operand type(s) for +=: float and NoneType'. Where do you look first?",
       "options": [
-        "At the module line, because it is first in the traceback",
-        "At to_number, to see when it returns None, since the failing line added its result",
-        "At report(), the function in the middle",
-        "At the Python installation"
+        "At the module line, the first in the traceback",
+        "At to_number: when does it return None?",
+        "At report(), the frame in the middle",
+        "At total(), to add a try around the line"
       ],
       "correct": [
         1
@@ -600,7 +600,7 @@
         "Reads the traceback from the top, where the oldest call is",
         "",
         "Picks a frame without using the message",
-        "Blames the tool before the code"
+        "Hides the symptom where it appears instead of finding where the None comes from"
       ],
       "lo": [
         "LO5"
@@ -616,10 +616,10 @@
       "type": "single",
       "prompt": "You fixed a defect and wrote a regression test, which passes. A reviewer asks how you know the test guards against the defect. What is the strongest answer?",
       "options": [
-        "The test has the word regression in its name",
-        "The test passes on the fixed code",
-        "The test covers the function that was changed",
-        "The test failed on the code before the fix and passes after it"
+        "Its name says it is a regression test",
+        "It passes on the fixed code",
+        "It covers the function that was changed",
+        "It failed before the fix and passes after"
       ],
       "correct": [
         3
@@ -645,10 +645,10 @@
       "type": "single",
       "prompt": "A colleague sends a saved notebook. Reading down the page, the numbers beside its five code cells are 1, 2, 6, 7 and 5. What does this tell you before you run anything?",
       "options": [
-        "The last cell was run before the two cells above it were run for the last time, and some runs are no longer visible",
+        "The last cell ran before the two above it last ran",
         "The notebook has seven cells and two are hidden",
-        "The third cell took the longest to run",
-        "The notebook was run top to bottom, and the numbers show how often each cell was run"
+        "The third cell took the longest of all to run",
+        "It was run top to bottom, and some cells twice"
       ],
       "correct": [
         0
@@ -658,7 +658,7 @@
         "",
         "Reads a gap in the counts as cells that exist and cannot be seen",
         "Reads the count as a duration",
-        "Reads the count as a number of runs per cell, and misses that the order on the page was not the order of running"
+        "Reads the counts as how often each cell ran, not as the order of the runs"
       ],
       "lo": [
         "LO2"
@@ -676,8 +676,8 @@
       "options": [
         "The colleague's Python is an older version",
         "The file was damaged when it was sent",
-        "A cell that defined limits was run once and later deleted; the analyst's kernel still remembered the name",
-        "The name limits is built into the analyst's installation"
+        "A deleted cell defined limits in her kernel",
+        "limits is a setting of the analyst's install"
       ],
       "correct": [
         2
@@ -732,10 +732,10 @@
       "type": "single",
       "prompt": "A scheduled job runs a reporting tool every night and mails the report if the tool succeeded. One night the input file was missing; the tool printed 'no such file', wrote nothing, and the job mailed last night's report again as if it were new. What was missing in the tool?",
       "options": [
-        "A longer error message",
+        "A clearer error message for the operator",
         "A try around the whole program",
-        "A non-zero exit code when the input is missing, so the job can tell that the run failed",
-        "A progress bar"
+        "A non-zero exit code on failure",
+        "A log file that records each run"
       ],
       "correct": [
         2
@@ -745,7 +745,7 @@
         "The message was already clear; the job does not read messages",
         "Catching everything would hide the failure even more thoroughly",
         "",
-        "Shows activity to a person, and nobody is watching a scheduled run"
+        "A log helps a person afterwards; the job still cannot tell that the run failed"
       ],
       "lo": [
         "LO6"
@@ -761,10 +761,10 @@
       "type": "single",
       "prompt": "A command-line tool builds a district report from a month of readings. Run twice on the same files, it writes two reports whose districts appear in a different order. The numbers are the same. Why does this still need repair, and how?",
       "options": [
-        "It needs no repair, since the numbers are equal",
-        "The reports should be compared by eye each month",
-        "The tool should be run once only, so the question does not arise",
-        "Two runs cannot be compared to detect a real change; write the districts in a fixed, sorted order"
+        "No repair: the numbers are the same",
+        "The reports should be compared by eye",
+        "Run the tool only once per month",
+        "Write the districts in sorted order"
       ],
       "correct": [
         3
@@ -790,10 +790,10 @@
       "type": "single",
       "prompt": "A tool writes its report to a file and also prints progress lines such as 'loading', 'validating' and each rejected customer's ticket text. It will soon run unattended, and its output will be kept. Which change is the sound one?",
       "options": [
-        "Replace the prints by log messages with levels, and log counts and file names, never the customers' text",
+        "Log with levels: counts and file names, no customer text",
         "Leave the prints, since nobody will read them",
-        "Remove every message so that the tool is silent in all cases",
-        "Print the messages into the report file, so that everything is in one place"
+        "Remove every message so the tool is always silent",
+        "Print the messages into the report file as well"
       ],
       "correct": [
         0
@@ -848,10 +848,10 @@
       "type": "single",
       "prompt": "A function has twelve tests, and all pass. A colleague concludes: 'The function is correct.' Which statement is the accurate one?",
       "options": [
-        "The function gives the expected answers on those twelve examples; inputs nobody wrote an example for are not covered",
-        "Correct, as long as there are more than ten tests",
-        "Nothing can be concluded from tests",
-        "Correct, provided a type checker also reports no errors"
+        "It is right on those twelve examples",
+        "Correct, since there are more than ten tests",
+        "Nothing at all can be concluded from tests",
+        "Correct, if the type checker is also clean"
       ],
       "correct": [
         0
@@ -877,10 +877,10 @@
       "type": "single",
       "prompt": "A trainee is learning to debug. A function returns a wrong total; the trainee has reproduced it with three numbers and suspects the loop. An AI assistant is available. Which request best keeps the skill being learnt with the trainee?",
       "options": [
-        "'Rewrite this function so that it is correct.'",
-        "'Which line is wrong?'",
-        "'I expected 6 and got 5 for 1, 2, 3. I think the loop skips an item. Without giving code, what could I print to check?'",
-        "'Write tests for this function.'"
+        "'Rewrite this function so that it gives the right total.'",
+        "'Which line of this function is wrong? I will fix it myself.'",
+        "'1, 2, 3 gives 5, not 6; I think the loop skips one. What could I print?'",
+        "'Write tests for this function so that I can find the bug.'"
       ],
       "correct": [
         2
@@ -906,10 +906,10 @@
       "type": "single",
       "prompt": "An analyst at a utility is debugging a script that crashes on one customer's ticket. To get help, the analyst is about to paste the script and the ticket, with the customer's name, phone number and complaint, into a public AI assistant. What is the sound way to get the same help?",
       "options": [
-        "Paste it, since it is only one customer",
-        "Paste it and ask the assistant to forget it afterwards",
+        "Paste it: it is only one customer",
+        "Paste it, then ask it to forget the ticket",
         "Paste it after removing the name only",
-        "Build a small invented input that crashes the script in the same way, and ask about that"
+        "Ask about a small invented input instead"
       ],
       "correct": [
         3
@@ -994,8 +994,8 @@
       "prompt": "A metering analyst receives a file format she has never seen and wants to find out, today, which of its forty columns are filled and what the values look like. She does not know yet whether she will ever do it again. Which home fits the task?",
       "options": [
         "A module with one function per column, and tests",
-        "A script with arguments for the file name and the columns",
-        "A notebook, because the work is looking, step by step, with results kept beside the code",
+        "A script with arguments for the file and the columns",
+        "A notebook: she is looking, one step at a time",
         "A package with a command-line entry point"
       ],
       "correct": [
@@ -1022,10 +1022,10 @@
       "type": "single",
       "prompt": "A team's weekly figures come from a notebook that one analyst runs by hand. Twice this quarter the figures were wrong because a cell had been skipped. The steps have not changed for months. What is the sound next move?",
       "options": [
-        "Add a note at the top of the notebook: run all cells in order",
-        "Have a second analyst run the same notebook and compare",
-        "Run the notebook more slowly",
-        "Move the steps into functions in a module and run them from a script with one command"
+        "Add a note at the top: run all cells in order",
+        "Have a second analyst run it and compare",
+        "Restart and run all before every weekly run",
+        "Move the steps into a module and a script"
       ],
       "correct": [
         3
@@ -1034,7 +1034,7 @@
       "misconceptions": [
         "Relies on the habit that already failed twice",
         "Doubles the manual work and keeps the cause",
-        "Speed was not the cause; the order and the state of the kernel were",
+        "Keeps the steps in a notebook run by hand, so a person still has to remember the habit",
         ""
       ],
       "lo": [

@@ -115,7 +115,7 @@ M-0580,2026-09-01,"0,361"</code></pre>
               ensure_ascii=False, indent=2)
     file.write("\n")</code></pre>
     <ul class="bullets">
-      <li><code>ensure_ascii=False</code>: Arabic is written as Arabic, not as <code>ا</code> escapes</li>
+      <li><code>ensure_ascii=False</code>: Arabic is written as Arabic, not as escapes such as <code>ا</code></li>
       <li><code>indent=2</code>: one field per line, so that two versions can be compared</li>
       <li>Keys in a fixed order: build the dictionary from <code>sorted</code> names</li>
       <li>No clock time inside the file: put that in the log</li>
@@ -163,7 +163,7 @@ M-0580,2026-09-01,"0,361"</code></pre>
     <p class="lead">A script loads tickets, logs each ticket it processes "for debugging", builds a summary and writes it to a file. The phone numbers must not leave the program. Where is masking applied?</p>
     <div class="opts">
       <div class="opt" data-why="Protects one output and forgets the other: the log line has already carried the number out">In the function that writes the summary file</div>
-      <div class="opt" data-ok>Where the ticket is turned into the record the rest of the program uses, before any log or output</div>
+      <div class="opt" data-ok>Where each ticket line is first turned into a record</div>
       <div class="opt" data-why="Repairs after the leak: the file existed with the numbers in it, on disk and perhaps in a backup">In a second script that cleans the summary file afterwards</div>
       <div class="opt" data-why="Relies on readers to behave: an output that holds the number has disclosed it, whoever opens it">Nowhere, if the file is only sent to colleagues</div>
     </div>
@@ -298,7 +298,7 @@ for line_no, raw in enumerate(
       <div class="opt" data-why="Trades a loud failure for a silent one: the tickets load with parts of their text deleted and nobody is told">Add <code>errors="ignore"</code> so that the load finishes</div>
       <div class="opt" data-why="Guesses a table that raises nothing: the 50,000 good tickets would load as unreadable text">Switch the whole file to Windows-1256, which never raises</div>
       <div class="opt" data-why="Stops everything for a few lines: thousands of good tickets wait for a problem that concerns a handful">Refuse the file until the sender fixes it</div>
-      <div class="opt" data-ok>Decode line by line, load the lines that decode, and report the others with line number and byte</div>
+      <div class="opt" data-ok>Load the lines that decode; report the rest by line and byte</div>
     </div>
     <div class="callout tip why"><b>Why.</b> The good lines are good. The bad ones are few, and a report that says which and where lets someone repair them at the source. Nothing is lost and nothing is invented.</div>
   </div>
@@ -462,7 +462,7 @@ return ticket</code></pre>
     <p class="lead">A colleague's intake finishes without a crash. Every line is in the rejection log with the reason <code>UNKNOWN</code>. The loop reads: <code>try: accepted.append(parse_tiket(line))</code>, then <code>except Exception: rejected.append((line_no, "UNKNOWN", ""))</code>.</p>
     <div class="opts">
       <div class="opt" data-why="Blames the data: 400 of the lines are known to be good">Every line of the file is malformed</div>
-      <div class="opt" data-ok>The misspelt function name raises a NameError on each line, and the wide except records it as a rejection</div>
+      <div class="opt" data-ok>A typo raises NameError on every line; the wide except logs it</div>
       <div class="opt" data-why="Blames the position of the try: inside the loop is right, which is why all 435 lines were reached">The try is inside the loop and should be around it</div>
       <div class="opt" data-why="Blames the file's encoding: a decode error would stop the read before any line was handled">The file was opened with the wrong encoding</div>
     </div>

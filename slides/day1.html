@@ -25,7 +25,7 @@
     <div class="card c-purple"><h4>AI full</h4><p class="small mb0">The capstone. You may delegate, and you then walk through the code and change it live, on request.</p></div>
   </div>
   <div class="callout note mt"><b>Why not full from the start.</b> Day 4 shows the evidence: people who delegate while learning finish, and then cannot debug what they finished.</div>
-  <aside class="notes"><p>The course repository carries the tutor rule in its agent instructions, so an assistant opened in the workspace is told to hint and not to write. The supervised check on the last teaching day is AI-off and needs 60% by itself: say it now, not on Day 4.</p></aside>
+  <aside class="notes"><p>The course repository carries the tutor rule in its agent instructions, so an assistant opened in the workspace is told to hint and not to write. The supervised check, the first hour of the capstone day, is AI-off and needs 60% by itself: say it now, not on Day 4.</p></aside>
 </section>
 
 <section class="slide" id="manahil-case" data-label="Case study">
@@ -226,7 +226,7 @@ print(day)</code></pre>
       <div class="opt" data-why="Treats assignment as a copy: before and rows were one list when remove ran">[0.7, -1.0]</div>
       <div class="opt" data-ok>[0.7]</div>
       <div class="opt" data-why="Treats rows + [0.5] as a change in place: it builds a new list and rebinds rows only">[0.7, 0.5]</div>
-      <div class="opt" data-why="Applies neither rule: the removal reached before, the addition did not">[0.7, -1.0, 0.5]</div>
+      <div class="opt" data-why="Swaps the two rules: treats remove as acting on a copy and rows + [0.5] as a change to the shared list">[0.7, -1.0, 0.5]</div>
     </div>
     <div class="callout tip why"><b>Why.</b> <code>remove</code> mutates the one shared list, so <code>before</code> loses the value too. <code>rows + [0.5]</code> makes a new list and ties only <code>rows</code> to it.</div>
   </div>
@@ -535,7 +535,7 @@ parser.py:45: error: Incompatible return value type (got "str", expected "float 
   <div class="quiz" data-type="single" data-lo="LO3">
     <p class="lead"><code>highest(lines)</code> is annotated <code>-> float | None</code>. A colleague writes <code>peak = highest(lines) * 1.1</code> and the checker reports that <code>None</code> does not support <code>*</code>.</p>
     <div class="opts">
-      <div class="opt" data-ok>Test <code>peak is None</code> first and decide what an empty file means; multiply only after that</div>
+      <div class="opt" data-ok>Keep the result in a name, test it <code>is None</code> first, then multiply</div>
       <div class="opt" data-why="Silences the report and keeps the crash: an empty file still multiplies None at run time">Add <code># type: ignore</code> to the line, since the files are never empty in practice</div>
       <div class="opt" data-why="Changes the promise to fit the caller: the function still returns None for an empty file, now without warning anyone">Change the hint of <code>highest</code> to <code>-> float</code></div>
       <div class="opt" data-why="Treats zero as missing: a month whose highest reading is 0.0 would be handled as if there were no readings">Write <code>if not highest(lines)</code> and return early</div>

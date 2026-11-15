@@ -91,6 +91,14 @@ README from the template that shows the one command and the report it writes, an
 the tool does not check. Commit as you go: the history is part of the evidence. Do not commit
 an environment, a cache or an output folder.
 
+Version control is taught in FN-102, not here. If you have not used git before, these commands
+are all the capstone needs: `git init` once in your project folder; after each piece of work,
+`git add .` and `git commit -m "Add the date rule"` (a short sentence saying what changed);
+then create an empty public repository on GitHub and run the two commands its page shows
+(`git remote add origin …` and `git push -u origin main`), and `git push` after later commits.
+A `.gitignore` with the lines `.venv/`, `__pycache__/` and `out/` keeps the environment, the
+cache and the outputs out.
+
 ## How it is scored
 
 | Criterion | Weight | What is looked at |

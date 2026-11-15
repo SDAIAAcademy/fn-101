@@ -586,8 +586,8 @@
           ],
           "lab": {
             "id": "4.1",
-            "title": "Run a notebook out of order, find the hidden-state bug, then restart and run all",
-            "summary": "Restart Salma's notebook, find the name only the kernel remembered and the stale count, repair both, and choose a home for four tasks.",
+            "title": "Find the notebook's hidden state",
+            "summary": "Run a notebook out of order, find the hidden-state bug, then restart and run all; then choose a home for four tasks.",
             "minutes": 25,
             "href": "D4_1_run_notebook_out.html",
             "steps": [
@@ -624,8 +624,8 @@
           ],
           "lab": {
             "id": "4.2",
-            "title": "Move the supplied notebook logic into a module with a command-line entry point",
-            "summary": "Finish the command line of Miqyas so that one command rebuilds the monthly report from the raw files, the same on every run.",
+            "title": "Give the notebook a command line",
+            "summary": "Move the supplied notebook logic into a module with a command-line entry point.",
             "minutes": 25,
             "href": "D4_2_move_supplied_notebook.html",
             "steps": [
@@ -662,8 +662,8 @@
           ],
           "lab": {
             "id": "4.3",
-            "title": "Write five tests for the anomaly rule, including empty and boundary inputs",
-            "summary": "Write five tests that pin the anomaly rule down, and see whether they catch four wrong versions of it.",
+            "title": "Pin the anomaly rule down with tests",
+            "summary": "Write five tests for the anomaly rule, including empty and boundary inputs.",
             "minutes": 25,
             "href": "D4_3_write_five_tests.html",
             "steps": [
@@ -700,8 +700,8 @@
           ],
           "lab": {
             "id": "4.4",
-            "title": "Get hints from the course tutor on a new defect, then explain the fix in your own words",
-            "summary": "Debug a third defect with hints from the tutor, write its regression test, and explain the fix with the tutor closed.",
+            "title": "Debug a third defect with the tutor",
+            "summary": "Get hints from the course tutor on a new defect, then explain the fix in your own words.",
             "minutes": 25,
             "href": "D4_4_get_hints_from.html",
             "steps": [
