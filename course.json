@@ -1,0 +1,453 @@
+{
+  "$schema": "https://sdaiaacademy.github.io/engine/schemas/course.schema.json",
+  "engine": "1",
+  "id": "fn-101",
+  "code": "FN-101",
+  "version": "2027.1.0",
+  "lang": "en",
+  "title": {
+    "en": "Python for Data and AI Work",
+    "ar": "بايثون لأعمال البيانات والذكاء الاصطناعي"
+  },
+  "tagline": "REPLACE: one line under the title: what participants can do after the course",
+  "description": "Participants write Python the way data and AI work needs it: small typed functions over collections and files, errors that fail loudly, and code moved out of notebooks into scripts that rerun. The case is a fictional regional water utility with synthetic meter readings in comma-separated values (CSV) files and bilingual service tickets in JavaScript Object Notation (JSON) Lines. Each day opens with an AI-off drill in reading, tracing or debugging code by hand, and the labs grow into a command-line tool that validates readings, flags anomalies and writes a summary report. Arabic text normalisation and SQL are left to FN-104, version control to FN-102.",
+  "track": "foundations",
+  "level": 100,
+  "badge": {
+    "name": "Foundations"
+  },
+  "audience": "Beginners. Graduates and career changers entering the AI Engineering or Data Science track; computing and data graduates who pass the placement test skip the courses it covers.",
+  "prerequisites": [
+    "Has written and run a short program in any language, or completed the guided pre-work on values, conditions and loops"
+  ],
+  "site": {
+    "url": "https://sdaiaacademy.github.io/fn-101/",
+    "repo": "SDAIAAcademy/fn-101"
+  },
+  "outcomes": [
+    {
+      "id": "LO1",
+      "text": "Explain what a short program prints, step by step, including name binding, shared mutable lists and dictionaries, and scope, given ten unseen snippets on paper, without a computer or assistant",
+      "level": "Awareness",
+      "evidence": "a trace sheet with at least eight of ten outputs correct"
+    },
+    {
+      "id": "LO2",
+      "text": "Distinguish when a notebook, a script or an importable module is the right home for a piece of code, given four tasks described by the utility's analysts",
+      "level": "Awareness",
+      "evidence": "a choice and a one-line reason per task, matching the reference on three of four"
+    },
+    {
+      "id": "LO3",
+      "text": "Implement typed functions that load, validate and aggregate records with lists, dictionaries, sets and comprehensions, given a month of meter readings with missing, duplicated and out-of-range values",
+      "level": "Applied",
+      "evidence": "a module that passes the provided tests and a type checker with no errors"
+    },
+    {
+      "id": "LO4",
+      "text": "Apply exception handling and input validation so that each bad record is reported with a reason instead of crashing or passing silently, given a ticket file with malformed lines, mixed Arabic and English text and a wrong encoding",
+      "level": "Applied",
+      "evidence": "a rejection log that accounts for every input line"
+    },
+    {
+      "id": "LO5",
+      "text": "Use a repeatable debugging method: reproduce, shrink the input, form a hypothesis, test it, fix, and add a regression check, given three seeded defects in the course codebase, with AI assistance off",
+      "level": "Applied",
+      "evidence": "a debugging log per defect and a passing regression test for each"
+    },
+    {
+      "id": "LO6",
+      "text": "Prepare a command-line tool from an exploratory notebook, with an entry point, arguments and a written report, given the utility's analysis notebook and raw files",
+      "level": "Applied",
+      "evidence": "a script that rebuilds the same report from raw files with one command on two runs"
+    }
+  ],
+  "case_study": {
+    "name": "REPLACE: the name of the fictional organisation every lab works on",
+    "summary": "REPLACE: two sentences on the case study and its synthetic data"
+  },
+  "format": "intensive",
+  "format_note": "Intensive: 4 teaching days of four sessions and a capstone day, with guided pre-work and a tracked follow-up task",
+  "hours": {
+    "instruction": 6,
+    "lab": 7,
+    "guided_self_study": 6,
+    "assessment": 1,
+    "capstone": 6
+  },
+  "unit": "day",
+  "days": [
+    {
+      "id": "day1",
+      "kind": "day",
+      "title": "Read before you write",
+      "deck": "slides/day1.html",
+      "sessions": [
+        {
+          "title": "Values, names and references",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO1"
+          ],
+          "lab": {
+            "id": "1.1",
+            "title": "Trace eight snippets on paper, then check each answer in a step visualiser",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_1_trace_eight_snippets.html"
+          }
+        },
+        {
+          "title": "Functions with clear contracts",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "1.2",
+            "title": "Split a 40-line script into four functions with stated inputs and outputs",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_2_split_40_line.html"
+          }
+        },
+        {
+          "title": "Type hints and a checker",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "1.3",
+            "title": "Annotate the supplied reading parser and fix every error the type checker reports",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_3_annotate_supplied_reading.html"
+          }
+        },
+        {
+          "title": "Parsons problems",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO1"
+          ],
+          "lab": {
+            "id": "1.4",
+            "title": "Reorder scrambled lines, with distractors, into a working validation function",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_4_reorder_scrambled_lines.html"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day2",
+      "kind": "day",
+      "title": "Collections for data work",
+      "deck": "slides/day2.html",
+      "sessions": [
+        {
+          "title": "Dictionaries for counting and grouping",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "2.1",
+            "title": "Count readings per meter and district, then time a nested-loop version on 100,000 rows",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_1_count_readings_per.html"
+          }
+        },
+        {
+          "title": "Sets and membership",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "2.2",
+            "title": "Find meters with no reading and readings with no known meter",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_2_find_meters_no.html"
+          }
+        },
+        {
+          "title": "Comprehensions and generators",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "2.3",
+            "title": "Stream a large readings file with a generator and compare peak memory with a list",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_3_stream_large_readings.html"
+          }
+        },
+        {
+          "title": "Records as data classes",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "2.4",
+            "title": "Model a ticket as a data class and sort tickets by priority and age",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_4_model_ticket_as.html"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day3",
+      "kind": "day",
+      "title": "Files, text and failure",
+      "deck": "slides/day3.html",
+      "sessions": [
+        {
+          "title": "CSV and JSON Lines",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "3.1",
+            "title": "Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_1_load_readings_tickets.html"
+          }
+        },
+        {
+          "title": "Text, bytes and encodings",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO4"
+          ],
+          "lab": {
+            "id": "3.2",
+            "title": "Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_2_open_ticket_file.html"
+          }
+        },
+        {
+          "title": "Exceptions that explain",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO4"
+          ],
+          "lab": {
+            "id": "3.3",
+            "title": "Reject malformed lines with a reason code so every input line is accounted for",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_3_reject_malformed_lines.html"
+          }
+        },
+        {
+          "title": "A debugging method",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO5"
+          ],
+          "lab": {
+            "id": "3.4",
+            "title": "With AI off, find and fix two seeded defects and write a regression test for each",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_4_ai_off_find.html"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day4",
+      "kind": "day",
+      "title": "From notebook to tool",
+      "deck": "slides/day4.html",
+      "sessions": [
+        {
+          "title": "What notebooks hide",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO2"
+          ],
+          "lab": {
+            "id": "4.1",
+            "title": "Run a notebook out of order, find the hidden-state bug, then restart and run all",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_1_run_notebook_out.html"
+          }
+        },
+        {
+          "title": "Scripts, modules and an entry point",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO6"
+          ],
+          "lab": {
+            "id": "4.2",
+            "title": "Move the supplied notebook logic into a module with a command-line entry point",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_2_move_supplied_notebook.html"
+          }
+        },
+        {
+          "title": "Tests as a safety net",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO5"
+          ],
+          "lab": {
+            "id": "4.3",
+            "title": "Write five tests for the anomaly rule, including empty and boundary inputs",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_3_write_five_tests.html"
+          }
+        },
+        {
+          "title": "Learning with an assistant without losing the skill",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO5"
+          ],
+          "lab": {
+            "id": "4.4",
+            "title": "Get hints from the course tutor on a new defect, then explain the fix in your own words",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_4_get_hints_from.html"
+          }
+        }
+      ]
+    },
+    {
+      "id": "capstone",
+      "kind": "capstone",
+      "title": "Capstone project presentations",
+      "deck": "slides/capstone.html",
+      "subtitle": "REPLACE: the catalog gives 10 minutes for each presentation and nothing about questions; decide whether the questions are inside those minutes, set capstone.talk_minutes and capstone.qa_minutes in course.json and the timers of the now-presenting slide, and remove this line"
+    }
+  ],
+  "capstone": {
+    "summary": "A command-line tool that loads, validates and reports on a new synthetic dataset, the utility's maintenance work orders, submitted as a public repository whose README shows the command and its report, then a ten-minute walkthrough with a change the assessor requests",
+    "submission": "REPLACE: what participants submit and how: a public repository link, or a shared folder for a course without code",
+    "talk_minutes": 10,
+    "rubric": [
+      {
+        "criterion": "Correctness on hidden tests",
+        "weight": 30
+      },
+      {
+        "criterion": "Validation and errors",
+        "weight": 20
+      },
+      {
+        "criterion": "Structure and types",
+        "weight": 20
+      },
+      {
+        "criterion": "Reproducibility",
+        "weight": 15
+      },
+      {
+        "criterion": "README",
+        "weight": 15
+      }
+    ]
+  },
+  "labs": {
+    "kind": "pages",
+    "base": "labs/"
+  },
+  "tools": [
+    {
+      "slot": "Python runtime and project manager",
+      "examples": [
+        "CPython with uv",
+        "CPython with pip and venv"
+      ]
+    },
+    {
+      "slot": "Editor and notebook",
+      "examples": [
+        "VSCodium or VS Code",
+        "JupyterLab",
+        "marimo"
+      ]
+    },
+    {
+      "slot": "Type checking and linting",
+      "examples": [
+        "mypy",
+        "Pyright",
+        "Ruff"
+      ]
+    },
+    {
+      "slot": "Test runner",
+      "examples": [
+        "pytest",
+        "unittest"
+      ]
+    },
+    {
+      "slot": "Tracing and step debugging",
+      "examples": [
+        "Python Tutor",
+        "pdb or the editor's debugger"
+      ]
+    },
+    {
+      "slot": "Hint-only tutor",
+      "examples": [
+        "an open-weight model behind a tutor instruction",
+        "an approved assistant with a tutor instruction"
+      ]
+    }
+  ]
+}
