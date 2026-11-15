@@ -416,68 +416,157 @@
         {
           "title": "CSV and JSON Lines",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Read a CSV file and a JSON Lines file with the encoding and newline handling named",
+            "Write JSON output that is the same on every run and keeps Arabic readable",
+            "Mask personal data before anything is written, printed or logged"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "3.1",
-            "title": "Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Write a district summary with phones masked",
+            "summary": "Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written.",
             "minutes": 25,
-            "href": "D3_1_load_readings_tickets.html"
-          }
+            "href": "D3_1_load_readings_tickets.html",
+            "steps": [
+              {
+                "text": "Load the two CSV files and the JSON Lines file",
+                "minutes": 7
+              },
+              {
+                "text": "Mask the phone field and the phone numbers in text",
+                "minutes": 8
+              },
+              {
+                "text": "Write the summary as JSON; read it as a reviewer",
+                "minutes": 6
+              },
+              {
+                "text": "Run the type checker and the lab check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Change the pattern to [0-9] and count the phone numbers that now slip through; say why"
+          },
+          "summary": "Reading CSV and JSON Lines with the standard library, writing JSON that reruns the same, and keeping personal data out of every output"
         },
         {
           "title": "Text, bytes and encodings",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Explain the difference between bytes and text, and what an encoding does",
+            "Read a UnicodeDecodeError: the codec, the byte and the position",
+            "Decode a file line by line and report the lines that fail instead of ignoring them"
           ],
           "lo": [
             "LO4"
           ],
           "lab": {
             "id": "3.2",
-            "title": "Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Decode a ticket file that fails",
+            "summary": "Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail.",
             "minutes": 25,
-            "href": "D3_2_open_ticket_file.html"
-          }
+            "href": "D3_2_open_ticket_file.html",
+            "steps": [
+              {
+                "text": "Run the loader and read the error it raises",
+                "minutes": 5
+              },
+              {
+                "text": "Open the file with its declared encoding",
+                "minutes": 5
+              },
+              {
+                "text": "Decode line by line and collect each failure",
+                "minutes": 9
+              },
+              {
+                "text": "Write the report; run the lab check",
+                "minutes": 6
+              }
+            ],
+            "stretch": "Decode the failing lines as Windows-1256 and print the tickets they hold"
+          },
+          "summary": "Text is bytes plus an encoding: UTF-8, the default that open uses, decoding errors, and why ignoring them is not a repair"
         },
         {
           "title": "Exceptions that explain",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Raise and catch specific exceptions, around the one call that can fail",
+            "Define an exception that carries a reason code and a detail",
+            "Write a loader in which accepted plus rejected equals the lines of the input"
           ],
           "lo": [
             "LO4"
           ],
           "lab": {
             "id": "3.3",
-            "title": "Reject malformed lines with a reason code so every input line is accounted for",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Reject malformed lines with a reason",
+            "summary": "Reject malformed lines with a reason code so every input line is accounted for.",
             "minutes": 25,
-            "href": "D3_3_reject_malformed_lines.html"
-          }
+            "href": "D3_3_reject_malformed_lines.html",
+            "steps": [
+              {
+                "text": "Run the intake and read the first crash",
+                "minutes": 4
+              },
+              {
+                "text": "Add the six checks, each raising a reason",
+                "minutes": 10
+              },
+              {
+                "text": "Catch the rejection around one call per line",
+                "minutes": 4
+              },
+              {
+                "text": "Write the rejection log; run the lab check",
+                "minutes": 7
+              }
+            ],
+            "stretch": "Add a ninth reason, DUPLICATE_ID, for a ticket id that an earlier line already used"
+          },
+          "summary": "Raising early with a specific exception, an exception of your own that carries a reason code, and a loop that accounts for every line"
         },
         {
           "title": "A debugging method",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Read a traceback from its last line upward",
+            "Shrink a failing input to the smallest one that still fails",
+            "Write a regression test that fails on the defect and passes on the fix"
           ],
           "lo": [
             "LO5"
           ],
           "lab": {
             "id": "3.4",
-            "title": "With AI off, find and fix two seeded defects and write a regression test for each",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Find and fix two seeded defects",
+            "summary": "With AI off, find and fix two seeded defects and write a regression test for each.",
             "minutes": 25,
-            "href": "D3_4_ai_off_find.html"
-          }
+            "href": "D3_4_ai_off_find.html",
+            "steps": [
+              {
+                "text": "Reproduce both reports and write what you see",
+                "minutes": 5
+              },
+              {
+                "text": "Defect A: shrink, hypothesis, test, fix",
+                "minutes": 8
+              },
+              {
+                "text": "Defect B: shrink, hypothesis, test, fix",
+                "minutes": 7
+              },
+              {
+                "text": "Write a regression test for each; run the check",
+                "minutes": 5
+              }
+            ],
+            "stretch": "Step through defect A with the debugger: stop on the first line of the function in each call and print what it starts with"
+          },
+          "summary": "Six steps that turn a symptom into a fix that stays fixed: reproduce, shrink, hypothesis, test, fix, regression"
         }
-      ]
+      ],
+      "subtitle": "Reading and writing CSV and JSON Lines, bytes and encodings, exceptions that give a reason, and a method for debugging"
     },
     {
       "id": "day4",

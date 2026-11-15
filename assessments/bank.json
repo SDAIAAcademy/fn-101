@@ -407,6 +407,238 @@
       "level": "apply",
       "pool": "practice",
       "weight": 1
+    },
+    {
+      "id": "q-d3-csv-text",
+      "type": "single",
+      "prompt": "A script reads a readings file with csv.DictReader and computes total = total + row[\"consumption_m3\"], with total starting at 0.0. What happens on the first row?",
+      "options": [
+        "A TypeError, because the cell is text and cannot be added to a number",
+        "The number is added, since the cell holds digits",
+        "The text is appended, so total becomes a string",
+        "The row is skipped"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "A CSV reader returns every cell as text; adding text to a float raises a TypeError until the cell is converted with float.",
+      "misconceptions": [
+        "",
+        "Assumes the reader converts cells that look like numbers",
+        "Assumes Python turns the number into text to make the addition work",
+        "Assumes a mismatch is ignored without a word"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-json-reproducible",
+      "type": "single",
+      "prompt": "A nightly script writes a JSON report that includes \"generated_at\" with the current time. A colleague compares the reports of two runs on the same input to check that nothing changed, and they always differ. What is the sound repair?",
+      "options": [
+        "Compare the files by size instead of by content",
+        "Run the script only once a day",
+        "Sort the keys of the JSON",
+        "Keep the time out of the report and put it in the log, so the same input gives the same bytes"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A report that holds the time of the run can never be equal on two runs; moving the time to the log makes 'same input, same bytes' checkable.",
+      "misconceptions": [
+        "Two different reports can have the same size",
+        "Avoids the comparison instead of making it possible",
+        "Fixes the order of keys, which was not what differed",
+        ""
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day3",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-decode-error-read",
+      "type": "single",
+      "prompt": "A load stops with: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte. What does this tell you about the file?",
+      "options": [
+        "The file is empty after 2,184 bytes",
+        "At byte 2,184 the content is not valid UTF-8; what comes before decoded as UTF-8",
+        "The file has 2,184 lines",
+        "The file is certainly not text at all"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The message names the codec in use, the byte it could not decode and where; everything before that position decoded, so most likely a part of the file was written in another encoding.",
+      "misconceptions": [
+        "Reads the position as an end, not as the place of one bad byte",
+        "",
+        "Confuses a byte position with a line count",
+        "Jumps from one undecodable byte to the whole file"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day3",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-mojibake",
+      "type": "single",
+      "prompt": "A ticket report shows customer texts such as 'ط¹ط¯ط§ط¯' where Arabic words are expected. No error was raised anywhere. What most likely happened?",
+      "options": [
+        "The customers typed nonsense",
+        "The font of the screen lacks Arabic letters",
+        "UTF-8 bytes were decoded with a one-byte Arabic table, which raises nothing and gives wrong characters",
+        "The file was truncated"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A one-byte table has a character for almost every byte, so decoding UTF-8 with it succeeds and produces two wrong characters for each Arabic letter.",
+      "misconceptions": [
+        "Blames the input for a pattern that is the signature of a wrong decoding",
+        "A missing font shows boxes, not a regular pattern of other letters",
+        "",
+        "Truncation shortens text; it does not change its letters"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day3",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-rejection-accounting",
+      "type": "single",
+      "prompt": "An intake of 5,000 ticket lines reports 4,950 accepted and 38 rejected, and exits normally. What should the next action be?",
+      "options": [
+        "Ship the 4,950: the numbers are close enough",
+        "Find the 12 lines that are neither accepted nor rejected, because the intake is losing lines silently",
+        "Add 12 to the rejected count so that the totals match",
+        "Rerun until the numbers add up"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "Accepted plus rejected must equal the input lines; a gap of 12 means some path drops lines without a reason, which is the failure the design exists to prevent.",
+      "misconceptions": [
+        "Accepts silent loss because it is small",
+        "",
+        "Makes the report agree without knowing what happened to the lines",
+        "The same code on the same input gives the same gap"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day3",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-try-placement",
+      "type": "single",
+      "prompt": "A loader has one try around its whole for loop over 400 lines, with except Rejected adding the line to a log. Line 37 is malformed. How many lines end up accepted or logged?",
+      "options": [
+        "37: the loop ends at the first rejection, and the lines after it are never read",
+        "400: the except lets the loop continue",
+        "399: every line but the bad one",
+        "0: the try cancels the loop"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "An exception leaves the try block; when the loop is inside that block the loop is left too. The try must wrap one line's work, inside the loop.",
+      "misconceptions": [
+        "",
+        "Assumes control returns into the loop after the except",
+        "Counts the accepted lines of a correct loader, forgetting where the try is",
+        "Assumes the lines already handled are undone"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day3",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-traceback-frame",
+      "type": "single",
+      "prompt": "A traceback has three frames: the module calling report(), report() calling total(), and total() at the line 'result += to_number(cell)', followed by 'TypeError: unsupported operand type(s) for +=: float and NoneType'. Where do you look first?",
+      "options": [
+        "At the module line, because it is first in the traceback",
+        "At to_number, to see when it returns None, since the failing line added its result",
+        "At report(), the function in the middle",
+        "At the Python installation"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The last line says a None was added; the last frame shows it came from to_number's result, so the question is which input makes to_number return None.",
+      "misconceptions": [
+        "Reads the traceback from the top, where the oldest call is",
+        "",
+        "Picks a frame without using the message",
+        "Blames the tool before the code"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day3",
+      "session": 4,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d3-regression-proof",
+      "type": "single",
+      "prompt": "You fixed a defect and wrote a regression test, which passes. A reviewer asks how you know the test guards against the defect. What is the strongest answer?",
+      "options": [
+        "The test has the word regression in its name",
+        "The test passes on the fixed code",
+        "The test covers the function that was changed",
+        "The test failed on the code before the fix and passes after it"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "Only a test that has been seen to fail on the defect is known to detect it; passing on the fixed code alone is also true of a test that checks nothing.",
+      "misconceptions": [
+        "A name proves nothing about behaviour",
+        "Also true of a test that never could fail",
+        "Running through a function is not the same as checking the case that was wrong",
+        ""
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day3",
+      "session": 4,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
     }
   ]
 }

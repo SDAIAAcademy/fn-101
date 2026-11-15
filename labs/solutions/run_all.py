@@ -60,6 +60,8 @@ def main() -> int:
         overlay = HERE / lab
         if overlay.is_dir():
             shutil.copytree(overlay, folder, dirs_exist_ok=True)
+        if lab in labtool.SEEDED:      # the fix of a seeded defect is the sound package
+            labtool.package(folder)
         print(f"--- lab {lab}")
         for command in RUNS.get(lab, []):
             status, output = sh(["uv", "run", *command], folder)

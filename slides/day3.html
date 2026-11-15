@@ -1,5 +1,29 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">REPLACE: welcome; introduce yourself; one question to the room that calibrates the pace; the rhythm of the day</aside>
+  <aside class="notes"><p>Day 3. Until now the files were clean and the code was sound. Today neither is: wrong encodings, broken lines, and two defects planted in the tool. The thread of the day is one sentence: nothing crashes the run, and nothing disappears without a reason.</p></aside>
+</section>
+
+<section class="slide dark" id="drill-3" data-label="Drill 3" data-lo="LO5" data-minutes="10">
+  <div class="kicker">Drill 3 · AI off</div>
+  <h1>Read a traceback · 10 minutes</h1>
+  <div class="timer" data-minutes="10"></div>
+  <p class="lead">One program, the traceback it ended with, five questions: <code>labs/drills/day3.md</code>. On paper, no computer, no assistant.</p>
+  <aside class="notes"><p>Press T. The traceback has three frames and ends in a ValueError on the text N/A. Question 3 asks for the chain of calls read from the bottom up; session 4 returns to it. Answers: labs/solutions/drills.md.</p></aside>
+</section>
+
+<section class="slide" id="review-day2" data-lo="LO3" data-label="Review">
+  <div class="kicker">Review of Day 2</div>
+  <h2>Which collection answers the question?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead">For each of 17,690 rows you must decide whether its meter id is one of the 600 registered ids. Which choice keeps the whole job to one pass with one step per row?</p>
+    <div class="opts">
+      <div class="opt" data-why="Searches up to 600 ids for every row: the loop inside a loop of yesterday's timing">A list of the registered ids, tested with <code>in</code></div>
+      <div class="opt" data-why="Sorting makes the list tidy, and in on a list still walks it item by item">A sorted list of the registered ids, tested with <code>in</code></div>
+      <div class="opt" data-ok>A set of the registered ids, tested with <code>in</code></div>
+      <div class="opt" data-why="A generator can be walked once: the second row would find it empty">A generator of the registered ids, tested with <code>in</code></div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A set answers membership in one step whatever its size. This is the <code>known</code> argument of every validation function this week.</div>
+  </div>
+  <aside class="notes"><p>Answer: the set. The fourth option connects yesterday's two sessions: a generator is consumed by the first search.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-auto="agenda"></section>
@@ -8,151 +32,605 @@
 
 <section class="slide section" id="s1" data-auto="section" data-session="1"></section>
 
-<section class="slide" id="s1-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="open-with-names" data-lo="LO3" data-label="Opening">
+  <div class="kicker">Opening a file</div>
+  <h2>Three things to say every time you open a text file</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="load.py"><code class="language-python">with open(path, encoding="utf-8",
+          newline="") as file:
+    rows = list(csv.DictReader(file))</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li><code>with</code>: the file is closed when the block ends, also when an error happens inside it</li>
+      <li><code>encoding="utf-8"</code>: you decide how bytes become text, not the machine you happen to be on</li>
+      <li><code>newline=""</code>: for CSV, let the csv module handle line ends, so that a line break inside a quoted cell survives</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout warn mt"><b>What goes wrong.</b> Leave the encoding out and the same script reads Arabic on one laptop and crashes on the next. Session 2 shows it.</div>
+  <aside class="notes"><p>The forty-line script of Day 1 used open and close by hand. From today every open is a with. The newline argument is what the csv documentation asks for; say it once and move on.</p></aside>
 </section>
 
-<section class="slide" id="s1-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="csv-everything-is-text" data-lo="LO3" data-label="CSV">
+  <div class="kicker">CSV</div>
+  <h2>A CSV reader hands you text for every cell. Numbers and dates are your job.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> row = rows[0]
+>>> row
+{'meter_id': 'M-0001', 'date': '2026-09-01',
+ 'consumption_m3': '5.399'}
+>>> row["consumption_m3"] * 2
+'5.3995.399'</code></pre>
+    <ul class="bullets">
+      <li><code>csv.DictReader</code> uses the header line as keys: one <code>dict[str, str]</code> per row</li>
+      <li>CSV has no types. <code>'5.399'</code> is five characters until you call <code>float</code></li>
+      <li>Convert in one place, at the door, and reject there what will not convert</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>The doubled text is the classic first surprise; a type checker catches the next one, text plus number. The row is the first data row of the month file. "At the door" is Miqyas's parse_row: text in, a typed Reading or a rejection out.</p></aside>
+</section>
+
+<section class="slide" id="csv-is-not-split" data-lo="LO3" data-label="Not split">
+  <div class="kicker">Why a module, not split</div>
+  <h2>A comma inside a cell is why <code>line.split(",")</code> is not a CSV reader</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="readings_2026_09.csv"><code class="language-text">meter_id,date,consumption_m3
+M-0001,2026-09-01,5.399
+M-0580,2026-09-01,"0,361"</code></pre>
+    <table class="t small">
+      <tr><th></th><th>Third row gives</th></tr>
+      <tr><td><code>line.split(",")</code></td><td>four pieces: <code>"0</code> and <code>361"</code> apart</td></tr>
+      <tr><td><code>csv.DictReader</code></td><td>three cells; the value is <code>0,361</code></td></tr>
+    </table>
+  </div>
+  <ul class="bullets mt">
+    <li>A spreadsheet set to a comma as the decimal mark writes numbers this way, in quotes</li>
+    <li>The month file has 7 such cells. The reader gets them whole; <code>float</code> then refuses them, and they are rejected as NOT_A_NUMBER with the text in the detail</li>
+  </ul>
+  <aside class="notes"><p>The two rows are lines 2 and 569 of the month file. The 7 cells are counted by the generator: 15 NOT_A_NUMBER rows, 8 with N/A and 7 with a decimal comma. Should the tool convert 0,361 to 0.361? Not silently: that is a decision for the metering team, and until they make it the row is reported.</p></aside>
+</section>
+
+<section class="slide" id="json-lines" data-lo="LO3" data-label="JSON Lines">
+  <div class="kicker">JSON Lines</div>
+  <h2>JSON Lines is one JSON value per line: a file you can read one record at a time</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="load.py"><code class="language-python">with open(path, encoding="utf-8") as file:
+    for line in file:
+        ticket = json.loads(line)</code></pre>
+    <ul class="bullets">
+      <li>Each line stands alone: a broken line spoils one record, not the file</li>
+      <li>Records can be appended, and streamed with a generator</li>
+      <li>Unlike CSV, a value has a type: text, number, true or false, null, list, object</li>
+    </ul>
+  </div>
+  <div class="card c-teal mt"><h4>At Manahil</h4><p class="small mb0">Each of the 400 tickets is one line with ten fields. The free text is Arabic, English or both in one sentence.</p></div>
+  <aside class="notes"><p>JSON Lines is also the usual format for logs, for model inputs and outputs and for evaluation sets, which is why the tracks ahead use it everywhere. json.loads returns "anything": a dictionary if the line is an object, and a list or a number if it is not; session 3 checks for that.</p></aside>
+</section>
+
+<section class="slide" id="write-reproducible" data-lo="LO3 LO6" data-label="Writing">
+  <div class="kicker">Writing</div>
+  <h2>Write output that is the same bytes on every run, and that a person can read</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="summary.py"><code class="language-python">with open(path, "w", encoding="utf-8",
+          newline="\n") as file:
+    json.dump(summary, file,
+              ensure_ascii=False, indent=2)
+    file.write("\n")</code></pre>
+    <ul class="bullets">
+      <li><code>ensure_ascii=False</code>: Arabic is written as Arabic, not as <code>ا</code> escapes</li>
+      <li><code>indent=2</code>: one field per line, so that two versions can be compared</li>
+      <li>Keys in a fixed order: build the dictionary from <code>sorted</code> names</li>
+      <li>No clock time inside the file: put that in the log</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Same input, same bytes.</b> Then "did anything change?" is answered by comparing two files, and Day 4's tool can prove it reruns.</div>
+  <aside class="notes"><p>Reproducibility is one criterion of the capstone rubric. The enemies are all on this slide: unordered sets, the current time, platform line ends, platform encodings.</p></aside>
+</section>
+
+<section class="slide" id="tickets-are-personal-data" data-lo="LO4" data-label="Personal data">
+  <div class="kicker">Responsible use</div>
+  <h2>A ticket is personal data in three places, and the third is easy to miss</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>The phone field</h4><p class="small mb0">Every ticket has one. Callbacks need to recognise it, not to show it: the last two digits are enough.</p></div>
+    <div class="card c-coral"><h4>The identity field</h4><p class="small mb0">No report needs it. It is never copied out of the input.</p></div>
+    <div class="card c-purple"><h4>The free text</h4><p class="small mb0">"Call me on 05…": 14 of the 400 texts hold a phone number the customer typed in.</p></div>
+  </div>
+  <div class="callout warn mt"><b>Mask before anything is written, printed or logged.</b> A debug print of one ticket is a leak with a shorter name.</div>
+  <aside class="notes"><p>All data here is synthetic; the habit is what the course teaches. The count of 14 is from the generator and from the reference run of lab 3.1. The national reference is the Personal Data Protection Law with its implementing regulation, listed in the sources; the slide makes no claim about their text. Also say: do not paste ticket lines into an assistant.</p></aside>
+</section>
+
+<section class="slide" id="mask-before-write" data-lo="LO4" data-label="Masking">
+  <div class="kicker">From the lab's run</div>
+  <h2>A pattern that looks right finds 9 of the 14 phone numbers</h2>
+  <div class="cols cols-2">
+    <table class="t">
+      <tr><th>Pattern</th><th class="num">Found</th></tr>
+      <tr><td><code>\+?[0-9]{9,}</code></td><td class="num">9 of 14</td></tr>
+      <tr class="hl"><td><code>\+?\d{9,}</code></td><td class="num">14 of 14</td></tr>
+    </table>
+    <ul class="bullets">
+      <li>Five customers typed their number in Arabic-Indic digits: <span class="ar">٠٥٥…</span></li>
+      <li>In Python, <code>\d</code> matches a digit of any script; <code>[0-9]</code> matches ten characters only</li>
+      <li>You find this by counting what the mask caught, not by reading the pattern</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Test a mask on the data it must protect.</b> Then have someone else search the output for what should not be there.</div>
+  <aside class="notes"><p>Counts from the ticket file of the labs: 14 texts with a number, 9 in Western digits, 5 in Arabic-Indic digits. It is the stretch of lab 3.1. Normalising Arabic text properly, digits and letter forms, is FN-104; here it is enough to know that the pattern must not assume one script.</p></aside>
+</section>
+
+<section class="slide" id="check-mask-where" data-lo="LO4" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Where does the masking go?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4">
+    <p class="lead">A script loads tickets, logs each ticket it processes "for debugging", builds a summary and writes it to a file. The phone numbers must not leave the program. Where is masking applied?</p>
+    <div class="opts">
+      <div class="opt" data-why="Protects one output and forgets the other: the log line has already carried the number out">In the function that writes the summary file</div>
+      <div class="opt" data-ok>Where the ticket is turned into the record the rest of the program uses, before any log or output</div>
+      <div class="opt" data-why="Repairs after the leak: the file existed with the numbers in it, on disk and perhaps in a backup">In a second script that cleans the summary file afterwards</div>
+      <div class="opt" data-why="Relies on readers to behave: an output that holds the number has disclosed it, whoever opens it">Nowhere, if the file is only sent to colleagues</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Everything downstream, the log included, can only leak what it was given. Mask or drop at the door, and no later line can get it wrong.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. It is yesterday's Ticket record without a phone field, generalised: what is never carried cannot be printed.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-3-1" data-auto="lab" data-lab="3.1">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor, and no ticket lines pasted into an assistant. Expected: 246 open tickets (37, 39, 41, 34, 53, 42 by district), 25 callbacks. The check reads the output file and the screen for any run of nine digits, in any script. Typical problems: masking the field and not the text; a leftover debug print; no ensure_ascii=False; no encoding on the output file. In the review step, have neighbours search each other's file.</p></aside>
 </section>
 
 <!-- Session 2 -->
 
 <section class="slide section" id="s2" data-auto="section" data-session="2"></section>
 
-<section class="slide" id="s2-idea" data-lo="LO4">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="bytes-and-text" data-lo="LO4" data-label="Bytes">
+  <div class="kicker">Bytes and text</div>
+  <h2>A file holds bytes. Text appears only when an encoding is applied.</h2>
   <div class="cols cols-2">
+    <table class="t">
+      <tr><th>The word <span class="ar">عداد</span> (meter)</th><th>Bytes</th></tr>
+      <tr><td>in UTF-8</td><td><code>d8 b9 d8 af d8 a7 d8 af</code></td></tr>
+      <tr><td>in Windows-1256</td><td><code>da cf c7 cf</code></td></tr>
+    </table>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li><b>Text</b> (<code>str</code>) is a sequence of characters: 4 here</li>
+      <li><b>Bytes</b> are numbers from 0 to 255: 8 here, or 4</li>
+      <li>An <b>encoding</b> is the table between the two. <code>encode</code> goes to bytes, <code>decode</code> comes back</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt"><b>The bytes do not say which table wrote them.</b> Someone has to tell you, or you have to find out.</div>
+  <aside class="notes"><p>At a prompt: "عداد".encode("utf-8").hex(" ") and the same with "cp1256"; the outputs are the two rows of the table. len of the text is 4, of the UTF-8 bytes 8.</p></aside>
 </section>
 
-<section class="slide" id="s2-steps" data-lo="LO4">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="utf8-in-one-slide" data-lo="LO4" data-label="UTF-8">
+  <div class="kicker">UTF-8</div>
+  <h2>UTF-8 covers every script and is the encoding to write, always</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>One byte</h4><p class="small mb0">English letters, digits, punctuation: the same bytes as ASCII. <code>M-0042</code> is six bytes.</p></div>
+    <div class="card c-cyan"><h4>Two bytes</h4><p class="small mb0">Each Arabic letter. The letter <span class="ar">ف</span> is <code>d9 81</code>.</p></div>
+    <div class="card c-purple"><h4>Not every byte order is valid</h4><p class="small mb0">A decoder can tell when bytes are <b>not</b> UTF-8. That is a feature: wrong input fails loudly.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <ul class="bullets mt">
+    <li>Older systems wrote one byte per Arabic letter (Windows-1256). Their files are still arriving</li>
+    <li>Read what you are given, with the encoding it was written in. Write UTF-8</li>
+  </ul>
+  <aside class="notes"><p>Keep the history to one line. The practical point is the third card: UTF-8 detects a wrong file, the one-byte encodings mostly cannot, which the mojibake slide shows.</p></aside>
+</section>
+
+<section class="slide" id="default-encoding-trap" data-lo="LO4" data-label="The default">
+  <div class="kicker">The trap</div>
+  <h2><code>open(path)</code> without an encoding uses whatever the machine prefers</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="decode.py"><code class="language-python">with open(path) as file:        # which encoding?
+    return [json.loads(line) for line in file]</code></pre>
+    <ul class="bullets">
+      <li>On many Windows laptops the default is a one-byte Western table (cp1252)</li>
+      <li>On most servers and in notebooks in the cloud it is UTF-8</li>
+      <li>So the same script works in one place and fails in the other, on the same file</li>
+    </ul>
+  </div>
+  <div class="callout note mt"><b>This is changing.</b> PEP 686 makes UTF-8 the default from Python 3.15. Until every machine you meet runs it, and for every file that is not UTF-8, name the encoding.</div>
+  <aside class="notes"><p>The lab's first script names the laptop default explicitly, cp1252, so that every participant sees the same failure whatever their system. Sources: PEP 686, "Make UTF-8 mode default", which lists Python 3.15 as its version.</p></aside>
+</section>
+
+<section class="slide" id="read-a-decode-error" data-lo="LO4" data-label="The error">
+  <div class="kicker">Reading the error</div>
+  <h2>A decode error names the codec, the byte and the position. Use all three.</h2>
+  <pre class="code s" data-file="uv run python decode.py"><code class="language-text">UnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 131:
+    character maps to &lt;undefined&gt;</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-teal"><h4>The codec</h4><p class="small mb0">"charmap": a one-byte table was decoding. Nobody chose it; it was the default.</p></div>
+    <div class="card flat c-coral"><h4>The byte</h4><p class="small mb0"><code>0x81</code> has no character in that table. In UTF-8 it is the second half of <span class="ar">ف</span>.</p></div>
+    <div class="card flat c-purple"><h4>The position</h4><p class="small mb0">Byte 131 of what was being decoded: where to look in the file.</p></div>
+  </div>
+  <aside class="notes"><p>The message of the first step of lab 3.2, copied from the run. The second step produces the other classic: 'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte. There the codec is right for most of the file and the byte is an Arabic letter in Windows-1256.</p></aside>
+</section>
+
+<section class="slide" id="mojibake" data-lo="LO4" data-label="Mojibake">
+  <div class="kicker">The quiet failure</div>
+  <h2>The wrong one-byte table raises nothing and gives you the wrong text</h2>
+  <table class="t">
+    <tr><th>The UTF-8 bytes of <span class="ar">عداد</span>, decoded as</th><th>Result</th><th>Error?</th></tr>
+    <tr class="hl"><td>UTF-8</td><td class="ar">عداد</td><td>no</td></tr>
+    <tr><td>Windows-1256</td><td class="ar">ط¹ط¯ط§ط¯</td><td>no</td></tr>
+    <tr><td>cp1252, errors replaced</td><td><span class="ltr">Ø¹Ø¯Ø§Ø¯</span></td><td>no</td></tr>
+  </table>
+  <div class="callout warn mt"><b>"It opened without an error" is not "it was decoded correctly".</b> Text like the second and third rows, in a report or a database, means a file was read with the wrong table somewhere upstream.</div>
+  <aside class="notes"><p>All three results are from a prompt: the eight UTF-8 bytes of the word decoded three ways. Once such text is saved, the damage travels; recognising the look of it is a real skill. In the lab the stretch decodes a good line as cp1256 to see exactly this.</p></aside>
+</section>
+
+<section class="slide" id="never-ignore" data-lo="LO4" data-label="errors=">
+  <div class="kicker">The tempting repair</div>
+  <h2><code>errors="ignore"</code> makes the error go away by deleting the customer's words</h2>
+  <table class="t small">
+    <tr><th>Line 12 of the branch file, decoded as UTF-8 with</th><th>The text of the ticket becomes</th></tr>
+    <tr><td><code>errors="strict"</code> (the default)</td><td>a <code>UnicodeDecodeError</code>: you are told</td></tr>
+    <tr><td><code>errors="ignore"</code></td><td>a few spaces, one stray letter and <span class="ltr">M-0365</span></td></tr>
+    <tr><td><code>errors="replace"</code></td><td>rows of <span class="ltr">�</span> marks and <span class="ltr">M-0365</span></td></tr>
+    <tr class="hl"><td>the encoding it was written in (Windows-1256)</td><td class="ar">الفاتورة مرتفعة جدا هذا الشهر، أرجو مراجعة قراءة العداد <span class="ltr">M-0365</span></td></tr>
+  </table>
+  <div class="callout tip mt"><b>Fail loudly, then report.</b> Decode strictly, catch the error per line, and list the lines that fail with the byte that stopped you. Then someone can decide.</div>
+  <aside class="notes"><p>From the reference data of lab 3.2: line 12 is one of the seven lines written by an old terminal. With "ignore" the complaint, a bill that is far too high, is gone and the line still parses as JSON: a ticket with an empty text and nobody the wiser. That is the worst outcome of the four.</p></aside>
+</section>
+
+<section class="slide" id="line-by-line-report" data-lo="LO4" data-label="Line by line">
+  <div class="kicker">The method</div>
+  <h2>Decode each line by itself, so that one bad line cannot hide the rest</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="decode.py"><code class="language-python">data = Path(path).read_bytes()
+for line_no, raw in enumerate(
+        data.splitlines(), start=1):
+    try:
+        decoded.append(raw.decode(encoding))
+    except UnicodeDecodeError as problem:
+        failed.append(...)</code></pre>
+    <div class="stack">
+      <div class="stat center"><div class="big">113 + 7</div><div class="lbl">lines decoded and lines reported: all 120 accounted for</div></div>
+      <p class="small">Lines 12, 22, 37, 55, 82, 84 and 94 fail, each at an Arabic letter written in Windows-1256.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Reading the whole file reports one error, at position 2184, and stops. Reading as bytes and decoding per line turns "the file is broken" into "seven lines of 120, here they are". The same shape, try around one record and collect the failures, is session 3. Do not leave the code on screen during the lab.</p></aside>
+</section>
+
+<section class="slide" id="check-decode-choice" data-lo="LO4" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>The export fails on a few lines. What do you do?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4">
+    <p class="lead">A nightly file of 50,000 tickets is declared UTF-8. Tonight the load stops with a <code>UnicodeDecodeError</code> at one byte. Badr needs the queue in the morning.</p>
+    <div class="opts">
+      <div class="opt" data-why="Trades a loud failure for a silent one: the tickets load with parts of their text deleted and nobody is told">Add <code>errors="ignore"</code> so that the load finishes</div>
+      <div class="opt" data-why="Guesses a table that raises nothing: the 50,000 good tickets would load as unreadable text">Switch the whole file to Windows-1256, which never raises</div>
+      <div class="opt" data-why="Stops everything for a few lines: thousands of good tickets wait for a problem that concerns a handful">Refuse the file until the sender fixes it</div>
+      <div class="opt" data-ok>Decode line by line, load the lines that decode, and report the others with line number and byte</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The good lines are good. The bad ones are few, and a report that says which and where lets someone repair them at the source. Nothing is lost and nothing is invented.</div>
+  </div>
+  <aside class="notes"><p>Answer: the last. The third option is not absurd, some pipelines must be all or nothing, but then the refusal still needs the per-line report to be useful to the sender.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-3-2" data-auto="lab" data-lab="3.2">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. Step 1 fails with the charmap error at position 131 on every machine, because the script names the laptop default. Step 2 fails with the utf-8 error at position 2184. Expected at the end: 113 decoded, 7 failed (12, 22, 37, 55, 82, 84, 94). The check refuses errors="ignore" and "replace". Typical problems: looping over a file opened in text mode; lines counted from 0; position in the file, not in the line. A Windows console may refuse to print some characters of the stretch; set PYTHONUTF8=1 or write the result to a file.</p></aside>
 </section>
 
 <!-- Session 3 -->
 
 <section class="slide section" id="s3" data-auto="section" data-session="3"></section>
 
-<section class="slide" id="s3-idea" data-lo="LO4">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="three-ways-to-meet-bad-data" data-lo="LO4" data-label="Three ways">
+  <div class="kicker">Bad input</div>
+  <h2>A program can meet a bad record in three ways. Only one is acceptable.</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>Crash</h4><p class="small mb0">Line 37 is broken, so nobody gets the other 434. And tomorrow, line 52.</p></div>
+    <div class="card c-coral"><h4>Pass silently</h4><p class="small mb0">Skip it, or fill in a default. The report looks complete and is wrong by an unknown amount.</p></div>
+    <div class="card c-teal"><h4>Reject with a reason</h4><p class="small mb0">The run finishes, the good records are used, and each bad one is listed with where and why.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt"><b>The rule of the house.</b> Accepted plus rejected equals the lines of the input. Always, and checked by the program itself.</div>
+  <aside class="notes"><p>Ask for an example of the middle card from the room's own experience: a total that was quietly missing a branch, a month. Silent loss is the expensive one because nobody goes looking.</p></aside>
 </section>
 
-<section class="slide" id="s3-steps" data-lo="LO4">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="exceptions-travel" data-lo="LO4" data-label="Travel">
+  <div class="kicker">Exceptions</div>
+  <h2>An exception travels up the call stack until some caller catches it</h2>
+  <div class="cols cols-2">
+    <div class="flow v">
+      <div class="step c-coral"><b>parse_value("N/A")</b>raises ValueError</div>
+      <div class="arrow">↓</div>
+      <div class="step c-cyan"><b>parse_row(row)</b>no handler: passes it on</div>
+      <div class="arrow">↓</div>
+      <div class="step c-teal"><b>load_readings(path)</b>has try and except: handles it, goes on</div>
+    </div>
+    <ul class="bullets">
+      <li><code>raise</code> stops the function at once; nothing is returned</li>
+      <li>Each caller in turn either handles it or is stopped too</li>
+      <li>If nobody handles it, the program ends and prints the stack: the traceback</li>
+      <li>So the place that <b>detects</b> a problem need not be the place that <b>decides</b> what to do</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>Day 1's call-stack picture, with an error moving through it. The last bullet is the design idea: parse_value knows the text is not a number; only the loop knows that the right response is to record the row and continue.</p></aside>
+</section>
+
+<section class="slide" id="catch-specific" data-lo="LO4" data-label="Specific">
+  <div class="kicker">Catching</div>
+  <h2>Catch the exception you expect, by name. A wide net catches your own mistakes too.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="too wide"><code class="language-python">try:
+    value = flaot(text)
+except Exception:
+    skipped += 1</code></pre>
+    <pre class="code" data-file="specific"><code class="language-python">try:
+    value = float(text)
+except ValueError:
+    skipped += 1</code></pre>
+  </div>
+  <ul class="bullets mt">
+    <li>Left: the misspelt <code>flaot</code> raises a <code>NameError</code> on every row. The net catches it, and the script reports that all 17,690 rows were "skipped"</li>
+    <li>Right: only "this text is not a number" is handled. Anything else still stops the run and shows you where</li>
+  </ul>
+  <div class="callout warn mt"><b>A bare <code>except:</code> is the widest net of all.</b> The labs' checks refuse it.</div>
+  <aside class="notes"><p>Let the room find the typo on the left before you say it. The lesson is not style: a wide except converts programming errors into wrong data, which is the silent failure of the first slide.</p></aside>
+</section>
+
+<section class="slide" id="own-exception-with-reason" data-lo="LO4" data-label="A reason">
+  <div class="kicker">Your own exception</div>
+  <h2>An exception of your own can carry what the handler needs: a code and a detail</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="intake.py"><code class="language-python">class Rejected(Exception):
+    def __init__(self, reason, detail):
+        super().__init__(f"{reason}: {detail}")
+        self.reason = reason
+        self.detail = detail
+
+raise Rejected("BAD_PRIORITY",
+               f"priority is {value!r}")</code></pre>
+    <ul class="bullets">
+      <li>A <b>reason code</b> for programs: it can be counted, grouped and tested</li>
+      <li>A <b>detail</b> for people: the actual value, so that someone can repair the line</li>
+      <li>The handler catches <code>Rejected</code> and nothing else: every other exception is a bug to see</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Six lines of class are all the object-oriented programming this session needs: a kind of exception with two extra fields. <code>!r</code> shows the value with its quotes, which makes an empty text or a stray space visible in the log.</p></aside>
+</section>
+
+<section class="slide" id="raise-early-guards" data-lo="LO4" data-label="Guards">
+  <div class="kicker">Validation as guards</div>
+  <h2>Day 1's guard clauses, with <code>raise</code> in place of <code>return</code></h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="intake.py"><code class="language-python">if ticket["priority"] not in PRIORITIES:
+    raise Rejected("BAD_PRIORITY", ...)
+try:
+    date.fromisoformat(ticket["opened"])
+except ValueError:
+    raise Rejected("BAD_DATE", ...) from None
+return ticket</code></pre>
+    <ul class="bullets">
+      <li>The function now returns <b>only</b> good tickets. A caller cannot forget to look at a reason</li>
+      <li>Let the library judge: <code>fromisoformat</code> knows that September has 30 days</li>
+      <li>Translate its <code>ValueError</code> into your own exception, with your own code</li>
+      <li>The first guard that fires wins: one reason per line</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>On Day 1 validate_reading returned a reason text and "" for a good row; every caller had to remember to test it. Raising makes the good path the only path. "from None" keeps the traceback short; mention it only if asked.</p></aside>
+</section>
+
+<section class="slide" id="try-around-one-record" data-lo="LO4" data-label="The loop">
+  <div class="kicker">The loop</div>
+  <h2>The <code>try</code> wraps one call for one line, and the loop goes on</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="intake.py"><code class="language-python">for line_no, line in enumerate(file, start=1):
+    try:
+        accepted.append(parse_ticket(line))
+    except Rejected as problem:
+        rejected.append((line_no,
+                         problem.reason,
+                         problem.detail))</code></pre>
+    <ul class="bullets">
+      <li>Inside the loop: one bad line costs one line</li>
+      <li>A <code>try</code> around the <b>whole loop</b> would end at the first rejection and lose every line after it</li>
+      <li>The line number is counted here, where it is known, and stored with the reason</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>You wrote this shape an hour ago.</b> Decode each line, catch the decode error, collect the failure: the same loop with another exception.</div>
+  <aside class="notes"><p>This is the reference loop of lab 3.3; hide it during the lab. Two outputs, two lists, one pass: also why this is a loop and not a comprehension, as yesterday's session 3 said.</p></aside>
+</section>
+
+<section class="slide" id="account-for-every-line" data-lo="LO4" data-label="Accounting">
+  <div class="kicker">From the lab's run</div>
+  <h2>435 lines in: 400 accepted, 35 rejected, 0 unaccounted for</h2>
+  <div class="cols cols-2">
+    <table class="t small">
+      <tr><th>Reason</th><th class="num">Lines</th></tr>
+      <tr><td>MISSING_FIELD</td><td class="num">8</td></tr>
+      <tr><td>BAD_JSON</td><td class="num">6</td></tr>
+      <tr><td>BAD_PRIORITY</td><td class="num">5</td></tr>
+      <tr><td>BAD_DATE, BAD_METER_ID</td><td class="num">4 + 4</td></tr>
+      <tr><td>EMPTY_LINE, EMPTY_TEXT</td><td class="num">3 + 3</td></tr>
+      <tr><td>NOT_OBJECT</td><td class="num">2</td></tr>
+    </table>
+    <div class="stack">
+      <pre class="code s" data-file="intake.py"><code class="language-python">assert len(accepted) + len(rejected) == lines</code></pre>
+      <ul class="bullets">
+        <li>The program checks its own accounting on every run</li>
+        <li>The table tells the sender what to fix first</li>
+        <li>The log, <code>rejections.csv</code>, says which line and what was in it</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>Counts from the reference run of lab 3.3. This is the evidence the fourth course outcome asks for: a rejection log that accounts for every input line. A bad priority written in Arabic, or in capitals with exclamation marks, is rejected on purpose: guessing what the sender meant is not validation.</p></aside>
+</section>
+
+<section class="slide" id="check-except-scope" data-lo="LO4" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>The log says 435 rejected and 0 accepted. Why?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4">
+    <p class="lead">A colleague's intake finishes without a crash. Every line is in the rejection log with the reason <code>UNKNOWN</code>. The loop reads: <code>try: accepted.append(parse_tiket(line))</code>, then <code>except Exception: rejected.append((line_no, "UNKNOWN", ""))</code>.</p>
+    <div class="opts">
+      <div class="opt" data-why="Blames the data: 400 of the lines are known to be good">Every line of the file is malformed</div>
+      <div class="opt" data-ok>The misspelt function name raises a NameError on each line, and the wide except records it as a rejection</div>
+      <div class="opt" data-why="Blames the position of the try: inside the loop is right, which is why all 435 lines were reached">The try is inside the loop and should be around it</div>
+      <div class="opt" data-why="Blames the file's encoding: a decode error would stop the read before any line was handled">The file was opened with the wrong encoding</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> <code>except Exception</code> cannot tell a bad line from a bad program. With <code>except Rejected</code> the first line would have stopped the run with a NameError that names the typo.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. The empty detail and the invented reason UNKNOWN are the smell: a rejection nobody designed. This is the first-slide silent failure, produced by an error handler.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-3-3" data-auto="lab" data-lab="3.3">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. Expected: 435 lines, 400 accepted, 35 rejected. The check compares the reason of every rejected line and refuses a bare except and except Exception. Typical problems: priority tested before the fields are known to exist; match in place of fullmatch; a hand-written date test. At the start the strict type check shows one error on the return of parse_ticket; it goes with the NOT_OBJECT check.</p></aside>
 </section>
 
 <!-- Session 4 -->
 
 <section class="slide section" id="s4" data-auto="section" data-session="4"></section>
 
-<section class="slide" id="s4-idea" data-lo="LO5">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="six-steps" data-lo="LO5" data-label="The method">
+  <div class="kicker">A method, not a talent</div>
+  <h2>Six steps turn "it gives wrong numbers" into a fix that stays fixed</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>1 · Reproduce</h4><p class="small mb0">One command that shows the wrong result, every time.</p></div>
+    <div class="card c-teal"><h4>2 · Shrink</h4><p class="small mb0">The smallest input that still shows it.</p></div>
+    <div class="card c-cyan"><h4>3 · Hypothesis</h4><p class="small mb0">One sentence: "I think … because …".</p></div>
+    <div class="card c-cyan"><h4>4 · Test it</h4><p class="small mb0">An observation that would prove you wrong.</p></div>
+    <div class="card c-coral"><h4>5 · Fix</h4><p class="small mb0">The smallest change, at the cause.</p></div>
+    <div class="card c-coral"><h4>6 · Regression check</h4><p class="small mb0">A test that fails without the fix.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>Write the six words on the board and leave them there for the lab. The order matters most where people skip: changing code before step 3, and stopping after step 5. The debugging log of the lab has one heading per step.</p></aside>
 </section>
 
-<section class="slide" id="s4-steps" data-lo="LO5">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="read-traceback-bottom-up" data-lo="LO5" data-label="Tracebacks">
+  <div class="kicker">When it crashes</div>
+  <h2>Read a traceback from its last line upward</h2>
+  <pre class="code s" data-file="the traceback of drill 3"><code class="language-text">Traceback (most recent call last):
+  File "drill.py", line 22, in &lt;module&gt;
+    print(total(rows))
+  File "drill.py", line 17, in total
+    result += to_number(row["consumption_m3"])
+  File "drill.py", line 11, in to_number
+    return float(text)
+ValueError: could not convert string to float: 'N/A'</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-coral"><h4>Last line</h4><p class="small mb0"><b>What</b> went wrong, and with which value.</p></div>
+    <div class="card flat c-cyan"><h4>The frame above it</h4><p class="small mb0"><b>Where</b>: file, line, function.</p></div>
+    <div class="card flat c-teal"><h4>The frames further up</h4><p class="small mb0"><b>How we got there</b>: who called whom.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>This is this morning's drill, with the marker lines under the code left out. The last line gives half the hypothesis for free: a row holds N/A. The frame above says where the conversion is; the frames above that say which loop fed it. Most beginners read from the top and stop at the first line they understand.</p></aside>
+</section>
+
+<section class="slide" id="quiet-wrong-answers" data-lo="LO5" data-label="No crash">
+  <div class="kicker">When it does not crash</div>
+  <h2>The harder defects raise nothing: they give a wrong answer politely</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>Report A</h4><p class="small mb0">The same file, read twice in one job. Run 1: 17,561 accepted. Run 2: 0 accepted.</p></div>
+    <div class="card c-purple"><h4>Report B</h4><p class="small mb0">The report gives a median of 0.653 for meter M-0012. Sorted by hand, it is 0.696.</p></div>
+  </div>
+  <ul class="bullets mt">
+    <li>No traceback to read. You start from a <b>difference</b>: what you got against what must be true</li>
+    <li>So step 1 is to make that difference appear on demand, with one command</li>
+    <li>And somebody has to know what "must be true" is: here, the operator and Salma</li>
+  </ul>
+  <aside class="notes"><p>These are the two reports of lab 3.4, as the participants will read them in symptoms.md; the causes are not on any slide. Both are real categories: state that survives between calls, and a calculation that is wrong for some orders of input.</p></aside>
+</section>
+
+<section class="slide" id="shrink-the-input" data-lo="LO5" data-label="Shrink">
+  <div class="kicker">Step 2</div>
+  <h2>Shrink until the failing case fits in your head</h2>
+  <div class="flow">
+    <div class="step c-coral"><b>17,690 rows</b>fails, and tells you nothing</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Half of them</b>still fails? Halve again</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>2 rows, or 3 values</b>fails, and you can check it by hand</div>
+  </div>
+  <ul class="bullets mt">
+    <li>Shrink the <b>data</b> (fewer rows, one meter), the <b>steps</b> (one function, not the whole tool) and the <b>calls</b> (does it need two?)</li>
+    <li>Each cut either keeps the failure, so you continue, or loses it, and then you have learnt what matters</li>
+    <li>The smallest failing case is the regression test, almost written</li>
+  </ul>
+  <aside class="notes"><p>The lab supplies data/tiny.csv, two rows, for exactly this. For report B the shrunk case needs no file at all. If shrinking loses the failure, that is information: the ingredient you just removed is part of the cause.</p></aside>
+</section>
+
+<section class="slide" id="hypothesis-then-test" data-lo="LO5" data-label="Hypothesis">
+  <div class="kicker">Steps 3 and 4</div>
+  <h2>Say what you think is wrong before you touch the code, then try to prove yourself wrong</h2>
+  <div class="cols cols-2">
+    <div class="stack">
+      <div class="card c-cyan"><h4>A hypothesis</h4><p class="small mb0">"I think the count is wrong because line 40 of report.py starts the total at 1." A file, a line, a reason.</p></div>
+      <div class="card c-teal"><h4>A test of it</h4><p class="small mb0">"If so, a file of one row gives 2." Run it. One row gives 1: the hypothesis is dead, in thirty seconds, with no code changed.</p></div>
+    </div>
+    <pre class="code" data-file="looking inside"><code class="language-python">print("start:", len(seen))   # the quick look
+
+breakpoint()                 # or stop here, then:
+# p name    print a name
+# n         next line
+# s         step into a call
+# c         continue      q   quit</code></pre>
+  </div>
+  <aside class="notes"><p>The example hypothesis is invented and not one of the lab's defects. The discipline is to predict an observation before making it; changing lines until the output looks right is not debugging and leaves no understanding behind. The debugger commands are pdb's; an editor's debugger has the same five as buttons.</p></aside>
+</section>
+
+<section class="slide" id="regression-test" data-lo="LO5" data-label="Regression">
+  <div class="kicker">Step 6</div>
+  <h2>A regression test fails on the defect and passes on the fix. Then it stays.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="test_regression.py"><code class="language-python">def test_total_of_one_row():
+    rows = [{"consumption_m3": "0.5"}]
+    assert total(rows) == 0.5</code></pre>
+    <ul class="bullets">
+      <li>Write it from the shrunk case, <b>before</b> or right after the fix</li>
+      <li>See it fail on the old code. A test you never saw fail may be testing nothing</li>
+      <li>See it pass on the new code</li>
+      <li>Keep it: it runs with every later change, for as long as the code lives</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>The lab's check does step 2 of that list for you.</b> It puts each defect back into a copy of the package and expects your test to fail there.</div>
+  <aside class="notes"><p>The example test belongs to the invented hypothesis of the slide before. pytest is introduced properly tomorrow; today a test is a function whose name starts with test_ and that asserts something. "Fixed" without a test means "fixed until someone tidies this function".</p></aside>
+</section>
+
+<section class="slide" id="why-ai-off-here" data-lo="LO5" data-label="AI off">
+  <div class="kicker">How we work</div>
+  <h2>The first attempt at a debugging lab is yours alone</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>An assistant will often find a seeded defect in seconds. Then the lab has taught you to ask</li>
+      <li>The skill is the six steps: you need them for the defect no assistant has seen</li>
+      <li>The supervised check has one debugging task, in a locked editor</li>
+    </ul>
+    <div class="card c-purple"><h4>After the attempt</h4><p class="small mb0">Still stuck? Tomorrow's last lab uses the course tutor for hints, which you turn into your own explanation.</p></div>
+  </div>
+  <div class="callout note mt"><b>The evidence comes tomorrow.</b> Day 4 looks at what a controlled study found when people learnt with and without an assistant.</div>
+  <aside class="notes"><p>Say it plainly and without moralising: this is practice for a skill that is assessed, and delegating the practice skips it. The catalog's policy for the course is AI-off for the first attempt at each debugging lab.</p></aside>
+</section>
+
+<section class="slide" id="check-debug-next-step" data-lo="LO5" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>What is the next step?</h2>
+  <div class="quiz" data-type="single" data-lo="LO5">
+    <p class="lead">The district report shows Al-Rabwa with twice the readings it should have. You can make it happen every time with one command on the month file. You have not opened the code yet.</p>
+    <div class="opts">
+      <div class="opt" data-ok>Find the smallest input that still doubles: one district, a handful of rows</div>
+      <div class="opt" data-why="Skips shrinking and guessing: reading 300 lines without a question finds whatever looks odd, not the cause">Read the whole package from the top until something looks wrong</div>
+      <div class="opt" data-why="Fixes the symptom at the output: the count is still wrong inside, and wrong for every other use of it">Divide the count of that district by two in the report</div>
+      <div class="opt" data-why="Writes the test before knowing the case: on 17,690 rows it would be slow and would not say what is wrong">Write a regression test on the whole month file</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Reproduce is done. Shrink comes next: a case small enough to check by hand turns the search into a short one, and becomes the regression test.</div>
+  </div>
+  <aside class="notes"><p>Answer: the first. Each wrong option is a step taken out of order, or not a step at all. Ask what they would try first when shrinking: one district, then one meter, then a few rows.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-3-4" data-auto="lab" data-lab="3.4">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI off: no assistant, editors' completion assistants switched off. Give no hints about the causes for the first fifteen minutes; ask "which step are you on?" instead. Defect A: a mutable default argument in load_readings. Defect B: median does not sort. The check wants all six headings filled for both, the tests failing when each defect is put back, 17,561 rows on both runs and 18 anomalies. Typical problems: repairing the caller (passing seen=set()) and not the function; a test of median on an already sorted list. Anyone who finishes neither: they may continue at home and use the tutor's hints after tomorrow.</p></aside>
 </section>
 
 <section class="slide" id="wrap-up">
   <div class="kicker">Day 3 · wrap-up</div>
   <h2>Three things to keep</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-coral"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-purple"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
+    <div class="card c-teal"><h4>Name the encoding</h4><p class="small mb0">Bytes become text through a table you choose. Decode strictly, report what fails, never ignore.</p></div>
+    <div class="card c-coral"><h4>Every line is accounted for</h4><p class="small mb0">Reject with a code and a detail; catch only what you expect; accepted plus rejected equals the input.</p></div>
+    <div class="card c-purple"><h4>Six steps</h4><p class="small mb0">Reproduce, shrink, hypothesis, test, fix, regression check. The test is what makes the fix last.</p></div>
   </div>
+  <aside class="notes"><p>Ask which of today's failures was loud and which was quiet, and which they would rather have in production.</p></aside>
 </section>
 
 <section class="slide dark" id="next" data-label="Next">
   <div class="kicker">Next</div>
   <h2>Day 4: From notebook to tool</h2>
-  <p class="lead">REPLACE: what participants prepare before then; unfinished labs can be finished at home</p>
-  <aside class="notes">REPLACE: accounts, installs or reading participants need before the next unit</aside>
+  <p class="lead">Tomorrow Salma's notebook becomes a command that anyone can rerun, with tests around its one rule. Lab 4.1 opens a notebook: have JupyterLab or an editor that opens notebooks ready.</p>
+  <aside class="notes"><p>The one thing to prepare: a way to open a notebook. In the workspace, "uv run --with jupyterlab jupyter lab" downloads and starts JupyterLab; VS Code or VSCodium with the Python and Jupyter extensions also works. Try it today, on the network of the room.</p></aside>
 </section>

@@ -1,37 +1,64 @@
 <article class="lab" data-lab="3.2">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>A ticket file refuses to open. Read the error, open the file with the encoding its export declares, and then list exactly which lines still fail and at which byte, without ignoring or replacing anything.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>3.2</code> of the workspace: <code>decode.py</code>, <code>data/tickets_branch.jsonl</code> (120 lines) and <code>data/tickets_branch.meta.json</code>, the note the export wrote about itself</li>
+    <li>AI policy: tutor. An assistant may explain an error message; you write the loop</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Run the loader and read the error it raises <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../3.2
+uv run python decode.py</code></pre>
+    <p>The run ends in a <code>UnicodeDecodeError</code>. Read its last line and write down three things: which codec was decoding, which byte it could not decode, and at which position. Now look at <code>load</code> in <code>decode.py</code>: where did that codec come from?</p>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Open the file with its declared encoding <span class="min">5 min</span></h3>
+    <p>Open <code>data/tickets_branch.meta.json</code>: the export says which encoding it wrote. At a prompt, read the whole file with that encoding.</p>
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> text = open("data/tickets_branch.jsonl", encoding="utf-8").read()</code></pre>
+    <p>A new error, with another codec, another byte and a position far into the file. Most of the file is what it claims to be; something in it is not. A position in the whole file does not tell you which line: the next step does.</p>
+  </div>
+
+  <div class="step">
+    <h3>Decode line by line and collect each failure <span class="min">9 min</span></h3>
+    <p>Write <code>decode_lines</code>. Read the file as bytes, split it into lines, and decode each line by itself inside a <code>try</code>. A line that decodes joins the first list. For a line that does not, the exception tells you where: <code>problem.start</code> is the position of the offending byte within the line.</p>
+    <pre class="code" data-file="decode.py"><code class="language-python">data = Path(path).read_bytes()
+for line_no, raw in enumerate(data.splitlines(), start=1):
+    try:
+        ...
+    except UnicodeDecodeError as problem:
+        failed.append(Failure(line_no, problem.start, hex(raw[problem.start])))</code></pre>
+    <p>Do not reach for <code>errors="ignore"</code> or <code>errors="replace"</code>: both make the error go away by damaging the text of a customer's ticket without telling anyone.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write the report; run the lab check <span class="min">6 min</span></h3>
+    <p>Finish <code>main</code> as its comment says: read the encoding from the meta file, call <code>decode_lines</code>, print the failures, and write <code>out/decode_report.json</code>. <code>dataclasses.asdict</code> turns a <code>Failure</code> into a dictionary. The function <code>load</code> and <code>LAPTOP_DEFAULT</code> can go.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python decode.py
+uv run mypy --strict decode.py
+uv run ../lab.py check 3.2</code></pre>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>The failing lines came from an old branch terminal that writes Windows-1256 (<code>cp1256</code>). Decode those lines with that encoding and print the tickets they hold. Then decode a good line with <code>cp1256</code> and look at what you get: no error, and no ticket either.</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>The first error named a codec that appears nowhere in the export's note. Where did it come from?</li>
+    <li>Why does decoding line by line find seven failures, when reading the whole file reports one?</li>
+    <li>A good line decoded as <code>cp1256</code> raises no error. Is it decoded correctly?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Reference run: the supplied loader stops with "'charmap' codec can't decode byte 0x81 in position 131: character maps to &lt;undefined&gt;" (the laptop default, cp1252, has no character for that byte, which is half of an Arabic letter in UTF-8). Reading the whole file as UTF-8 stops with "'utf-8' codec can't decode byte 0xc7 in position 2184: invalid continuation byte". Line by line: 113 lines decode, 7 fail: lines 12, 22, 37, 55, 82, 84 and 94, each at a byte between positions 103 and 106 of its line (0xc7, 0xca, 0xd6 or 0xd8: Arabic letters in Windows-1256).</p>
+    <p>The check calls <code>decode_lines</code> itself, compares the line numbers, positions and bytes, reads the report and refuses <code>errors="ignore"</code> and <code>"replace"</code>. Common errors: opening in text mode and looping over the file, which stops at the first bad line; counting lines from 0; reporting the position in the file rather than in the line; decoding with cp1256 from the start, which raises nothing and turns the 113 good lines into mojibake. Answers: from the laptop, because <code>open</code> without an encoding uses the platform's default; one bad line ends the whole read, so the others are never reached; no, the bytes were UTF-8, and the text is wrong without any error. Reference: <code>labs/solutions/3.2/decode.py</code>.</p>
   </details>
 </article>

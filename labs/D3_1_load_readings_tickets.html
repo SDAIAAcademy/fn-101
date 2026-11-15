@@ -1,37 +1,63 @@
 <article class="lab" data-lab="3.1">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Read two CSV files and a JSON Lines file, and write one JSON summary per district that a colleague can open. The tickets are personal data: no phone number and no identity number may reach the file or the screen.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>3.1</code> of the workspace: <code>summary.py</code>, and in <code>data/</code> the files <code>readings_clean.csv</code>, <code>meters.csv</code> and <code>tickets.jsonl</code></li>
+    <li>AI policy: tutor. Do not paste ticket lines into an assistant: in real work they would be customers' data</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Load the two CSV files and the JSON Lines file <span class="min">7 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../3.1
+uv run python summary.py</code></pre>
+    <p>Write <code>load_csv</code> and <code>load_jsonl</code>. Name the encoding in both; for CSV also pass <code>newline=""</code>, so that the csv module handles line ends itself. A JSON Lines file is one JSON value per line: one <code>json.loads</code> per line.</p>
+    <pre class="code" data-file="summary.py"><code class="language-python">with open(path, encoding="utf-8", newline="") as file:
+    return list(csv.DictReader(file))</code></pre>
+    <p>Look at the first line of <code>data/tickets.jsonl</code> in your editor. Which of its ten fields would you not want in an email?</p>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Mask the phone field and the phone numbers in text <span class="min">8 min</span></h3>
+    <p>Write <code>mask_phone</code>: every digit except the last two becomes a star, other characters stay. Then <code>mask_text</code>: people type callback numbers into the free text, so every match of the supplied pattern <code>PHONE</code> is replaced by <code>[phone]</code>.</p>
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> mask_phone("+966555010042")
+'+**********42'
+>>> mask_text("call me on 0555012345")
+'call me on [phone]'</code></pre>
+    <p>The supplied function <code>summarise</code> calls both for the open urgent tickets of each district. It never copies the identity number.</p>
+  </div>
+
+  <div class="step">
+    <h3>Write the summary as JSON; read it as a reviewer <span class="min">6 min</span></h3>
+    <p>Write <code>write_json</code> with <code>json.dump</code>: <code>indent=2</code> so that a person can read it, <code>ensure_ascii=False</code> so that Arabic stays Arabic, the encoding named.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python summary.py</code></pre>
+    <p>Open <code>out/summary.json</code> and read it as Abdulaziz, the data protection officer, would: search it for <code>055</code>, for <code>966</code> and for <code>national</code>. Then read two Arabic callback texts to the end.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run mypy --strict summary.py
+uv run ../lab.py check 3.1</code></pre>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>Change <code>\d</code> in the pattern to <code>[0-9]</code>, run again and count the phone numbers that now slip through. Find one of them in the tickets file and say what is different about its digits. Put <code>\d</code> back.</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>The summary never contains the identity number. Which line of the program made sure of that?</li>
+    <li>Why is masking done before <code>json.dump</code> and not by editing the file afterwards?</li>
+    <li>What does the file look like with <code>ensure_ascii</code> left at its default?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Reference run: open tickets per district Al-Faisaliyah 37, Al-Khuzama 39, Al-Murooj 41, Al-Naseem 34, Al-Rabwa 53, Al-Yasmin 42 (246 in all); 25 callbacks, two of which had a phone number in the text (T-20066 and T-20124). In the whole ticket file 14 texts hold a phone number; 5 of them are written in Arabic-Indic digits, which <code>\d</code> matches and <code>[0-9]</code> does not, so the stretch finds 9 of 14.</p>
+    <p>The check calls both mask functions with its own examples, including Arabic-Indic digits, and searches the output file and everything the script prints for a run of nine or more digits. Common errors: masking only the field and not the text; printing a ticket while debugging (the check reads the screen too); <code>json.dumps</code> without <code>ensure_ascii=False</code>, which writes every Arabic letter as an escape; opening the output without an encoding. Answers: no line copies it, the callback entry is built from four named fields; a file that was written once with the number has already leaked it, to the disk, to a backup, to a log; every Arabic letter becomes six characters such as ا. Reference: <code>labs/solutions/3.1/summary.py</code>.</p>
   </details>
 </article>

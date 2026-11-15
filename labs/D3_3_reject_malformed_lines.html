@@ -1,37 +1,67 @@
 <article class="lab" data-lab="3.3">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Take in a raw ticket file in which some lines are broken in eight different ways. Accept the good lines, reject each bad one with a reason code and a detail, and prove that every line of the input is accounted for.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>3.3</code> of the workspace: <code>intake.py</code> and <code>data/tickets_raw.jsonl</code> (435 lines)</li>
+    <li>AI policy: tutor. Hints and explanations of messages, no code</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Run the intake and read the first crash <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../3.3
+uv run python intake.py</code></pre>
+    <p>Read the docstring at the top of <code>intake.py</code>: eight reason codes, in the order in which they are checked. Two are already written in <code>parse_ticket</code>. Read how they raise <code>Rejected</code>: a code for the machine, a detail for a person.</p>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Add the six checks, each raising a reason <span class="min">10 min</span></h3>
+    <p>Add the six remaining checks to <code>parse_ticket</code>, in order. Each is a guard that raises; the ticket is returned only when none did.</p>
+    <pre class="code" data-file="intake.py"><code class="language-python">if not isinstance(ticket, dict):
+    raise Rejected("NOT_OBJECT", f"the line holds a {type(ticket).__name__}, not an object")
+for field in REQUIRED:
+    if field not in ticket:
+        raise Rejected("MISSING_FIELD", f"{field} is absent")</code></pre>
+    <p>For the date, let Python decide: <code>date.fromisoformat</code> raises <code>ValueError</code> for anything that is not a real date, and you turn that into a <code>Rejected</code>. For the meter id use <code>METER_ID.fullmatch</code>. Try your function at a prompt on a line you typed.</p>
+  </div>
+
+  <div class="step">
+    <h3>Catch the rejection around one call per line <span class="min">4 min</span></h3>
+    <p>Write the loop of <code>intake</code>. Number the lines from 1. The <code>try</code> holds one call; the <code>except</code> names <code>Rejected</code> and nothing wider, so that a mistake in your own code still shows itself.</p>
+    <pre class="code" data-file="intake.py"><code class="language-python">for line_no, line in enumerate(file, start=1):
+    try:
+        accepted.append(parse_ticket(line))
+    except Rejected as problem:
+        rejected.append((line_no, problem.reason, problem.detail))</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Write the rejection log; run the lab check <span class="min">7 min</span></h3>
+    <p>Write <code>write_rejections</code> with <code>csv.writer</code>: a header row, then one row per rejection. Run the intake. Its last lines count the reasons, and an <code>assert</code> in <code>main</code> stops the run if accepted plus rejected is not the number of lines.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python intake.py
+uv run mypy --strict intake.py
+uv run ../lab.py check 3.3</code></pre>
+    <p>Open <code>out/rejections.csv</code>. Pick one line number, find that line in the input, and decide whether the detail would let Badr's team repair it.</p>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>Add a ninth reason, <code>DUPLICATE_ID</code>, for a ticket id that an earlier line already used. Where does the set of seen ids live, and why not in a default argument?</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>A line has no <code>priority</code> field and a bad date. Which reason does it get, and why only one?</li>
+    <li>What would <code>except Exception:</code> have hidden while you were writing the checks?</li>
+    <li>The log has 35 rows. Which single number proves that no line was lost?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Reference run: 435 lines, 400 accepted, 35 rejected: BAD_DATE 4, BAD_JSON 6, BAD_METER_ID 4, BAD_PRIORITY 5, EMPTY_LINE 3, EMPTY_TEXT 3, MISSING_FIELD 8, NOT_OBJECT 2. The first rejected lines are 9, 18 and 27 (empty). At the start the script stops at the NotImplementedError of <code>write_rejections</code>, with nothing rejected but the two supplied reasons; the strict type check reports one error on the return of <code>parse_ticket</code>, which goes away with the NOT_OBJECT check.</p>
+    <p>The check compares the reason of every rejected line with the planted one and refuses a bare <code>except</code> and <code>except Exception</code>. Common errors: checking the priority before the fields exist (a KeyError, which the narrow except rightly lets through); <code>match</code> in place of <code>fullmatch</code>, which accepts a longer id; a date test written by hand that accepts 31 September; the bad priority written in Arabic or in capitals is rejected on purpose, since guessing what the sender meant is not validation. Answers: MISSING_FIELD, the first that applies, because the line must be repaired and sent again anyway; a NameError or KeyError of your own would have become a silent rejection; 400 + 35 = 435. Reference: <code>labs/solutions/3.3/intake.py</code>.</p>
   </details>
 </article>

@@ -320,3 +320,6 @@ def run(lab: str, folder: Path) -> int:
         return 1
     print(f"PASS lab {lab}")
     return 0
+
+
+import checks3  # noqa: E402,F401  (registers the checks of Day 3)
