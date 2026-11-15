@@ -1,5 +1,29 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">REPLACE: welcome; introduce yourself; one question to the room that calibrates the pace; the rhythm of the day</aside>
+  <aside class="notes"><p>Day 2. Yesterday was reading; today participants write, always against a supplied state and a check. All four labs use the same month of readings and the ticket file. Start with the drill, then the review question.</p></aside>
+</section>
+
+<section class="slide dark" id="drill-2" data-label="Drill 2" data-lo="LO1" data-minutes="10">
+  <div class="kicker">Drill 2 · AI off</div>
+  <h1>Lists and dictionaries that share · 10 minutes</h1>
+  <div class="timer" data-minutes="10"></div>
+  <p class="lead">Five snippets on paper: <code>labs/drills/day2.md</code>. No computer, no assistant. Write what each prints.</p>
+  <aside class="notes"><p>Press T. Snippets 2 and 5 are yesterday's aliasing inside a collection; snippet 3 is the counting pattern of session 1 and snippet 4 the two ways of sorting, which session 4 needs. Answers: labs/solutions/drills.md.</p></aside>
+</section>
+
+<section class="slide" id="review-day1" data-lo="LO1" data-label="Review">
+  <div class="kicker">Review of Day 1</div>
+  <h2>One list or two?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1">
+    <p class="lead">A function <code>clean(rows)</code> runs <code>rows.sort()</code> and returns <code>rows[:10]</code>. A caller writes <code>top = clean(month)</code>. Afterwards, what is true of <code>month</code>?</p>
+    <div class="opts">
+      <div class="opt" data-why="Believes a call copies its argument: the parameter and month name one list">It is unchanged: the function worked on its own copy</div>
+      <div class="opt" data-ok>It is sorted, and still has all its rows</div>
+      <div class="opt" data-why="Treats the slice as a change in place: a slice builds a new list and leaves the original whole">It is sorted and cut to ten rows</div>
+      <div class="opt" data-why="Treats the returned slice as the same object as the argument: top is a new list">It is the same object as <code>top</code></div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> <code>sort()</code> mutates the caller's list; the slice makes a new one. A function that returns a result and also changes its argument surprises every caller.</div>
+  </div>
+  <aside class="notes"><p>Answer: sorted, all rows. Use it to restate the rule for today: functions over collections return new collections and leave their arguments alone, unless the name says otherwise. <code>sorted(rows)[:10]</code> would have been the polite version.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-auto="agenda"></section>
@@ -8,151 +32,565 @@
 
 <section class="slide section" id="s1" data-auto="section" data-session="1"></section>
 
-<section class="slide" id="s1-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="dict-is-an-index" data-lo="LO3" data-label="Index">
+  <div class="kicker">Dictionaries</div>
+  <h2>A dictionary answers "what belongs to this key?" in one step</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="index.py"><code class="language-python">district_of = {
+    "M-0001": "Al-Rabwa",
+    "M-0002": "Al-Yasmin",
+}
+print(district_of["M-0002"])
+print("M-9001" in district_of)</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>Each <b>key</b> appears once and leads to one <b>value</b></li>
+      <li>Looking up a key does not search: it goes straight there</li>
+      <li><code>in</code> asks whether a key exists, without raising an error</li>
+      <li>Keys keep the order in which they were added</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt"><b>Think "index", like the back of a book.</b> You do not read the book to find a word; you look the word up.</div>
+  <aside class="notes"><p>The two prints: Al-Yasmin and False. Everything in this session is one of three uses of this structure: an index (key to record), a counter (key to number), a grouping (key to list).</p></aside>
 </section>
 
-<section class="slide" id="s1-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="counting-pattern" data-lo="LO3" data-label="Counting">
+  <div class="kicker">Pattern 1</div>
+  <h2>Counting: one pass, one dictionary, <code>get</code> with a default</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="count.py"><code class="language-python">counts: dict[str, int] = {}
+for reading in readings:
+    meter_id = reading["meter_id"]
+    counts[meter_id] = counts.get(meter_id, 0) + 1</code></pre>
+    <ul class="bullets">
+      <li><code>counts.get(key, 0)</code>: the count so far, or 0 for a key not seen yet</li>
+      <li><code>counts[key] += 1</code> alone raises <code>KeyError</code> on the first reading of a meter</li>
+      <li><code>collections.Counter(…)</code> is this loop, ready made</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="card c-teal mt"><h4>On the month</h4><p class="small mb0">588 meters have readings in the clean file; M-0001 has 30, one per day of September (lab 2.1).</p></div>
+  <aside class="notes"><p>Write the loop by hand first; show Counter second, as a name for something they now understand. The hint <code>dict[str, int]</code> is yesterday's: text keys, whole-number values.</p></aside>
+</section>
+
+<section class="slide" id="grouping-pattern" data-lo="LO3" data-label="Grouping">
+  <div class="kicker">Pattern 2</div>
+  <h2>Grouping: the value is a list, and each record joins the list of its key</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="group.py"><code class="language-python">by_meter: dict[str, list[float]] = {}
+for reading in readings:
+    value = float(reading["consumption_m3"])
+    meter_id = reading["meter_id"]
+    by_meter.setdefault(meter_id, []).append(value)</code></pre>
+    <ul class="bullets">
+      <li><code>setdefault(key, [])</code> returns the list of the key, creating an empty one the first time</li>
+      <li>After the loop, <code>by_meter["M-0042"]</code> is that meter's whole month</li>
+      <li>This is how Miqyas finds each meter's median before it looks for anomalies</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>What goes wrong.</b> <code>dict.fromkeys(ids, [])</code> gives every key the <b>same</b> list. Yesterday's aliasing, in a dictionary.</div>
+  <aside class="notes"><p>The warning is a seeded defect of a later lab; plant the idea and move on. Counting and grouping are the two halves of every "per something" question a manager asks.</p></aside>
+</section>
+
+<section class="slide" id="index-then-lookup" data-lo="LO3" data-label="Join">
+  <div class="kicker">Pattern 3</div>
+  <h2>To combine two files, index one of them and look up from the other</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>1 · Index</b>meters.csv becomes meter id → district, once</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>2 · Walk</b>each reading, one after another</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>3 · Look up</b>the district of its meter, in one step</div>
+  </div>
+  <pre class="code mt" data-file="count.py"><code class="language-python">district_of = {m["meter_id"]: m["district"] for m in meters}
+for reading in readings:
+    district = district_of[reading["meter_id"]]</code></pre>
+  <aside class="notes"><p>The readings file has no district column; the registry has. This is a join, done by hand. The first line is a dictionary comprehension; session 3 explains the form, here it is enough to read it as "for each meter, id leads to district".</p></aside>
+</section>
+
+<section class="slide" id="nested-loop-cost" data-lo="LO3" data-label="The cost">
+  <div class="kicker">From the lab's run</div>
+  <h2>The same counts, a hundred times slower: a loop inside a loop</h2>
+  <div class="cols cols-3">
+    <div class="stat center"><div class="big">2.3 s</div><div class="lbl">nested loop: for each of 100,000 readings, search 600 meters</div></div>
+    <div class="stat center"><div class="big">0.024 s</div><div class="lbl">dictionary: index 600 meters once, then one lookup per reading</div></div>
+    <div class="stat center"><div class="big">300</div><div class="lbl">comparisons per reading, on average, in the nested version</div></div>
+  </div>
+  <div class="callout warn mt"><b>It gets worse with size.</b> Ten times the meters makes the nested version ten times slower again. The dictionary version hardly notices.</div>
+  <aside class="notes"><p>Timings from the reference run of lab 2.1 on the build laptop; every machine differs, the ratio stays near 100 because the search stops on average halfway through 600 meters. Ask for the arithmetic: 100,000 times 300 is 30 million comparisons against 100,000 lookups.</p></aside>
+</section>
+
+<section class="slide" id="why-lookup-is-fast" data-lo="LO3" data-label="Hashing">
+  <div class="kicker">Why one step</div>
+  <h2>The key itself says where its value is stored</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Python turns the key into a number, its <b>hash</b>, and uses it as an address</li>
+      <li>So finding a key costs about the same in 600 entries as in 600,000</li>
+      <li>The price: a key must never change. Text, numbers and tuples can be keys; lists and dictionaries cannot</li>
+    </ul>
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> {["M-0001", "2026-09-01"]: 0.7}
+TypeError: unhashable type: 'list'
+>>> {("M-0001", "2026-09-01"): 0.7}
+{('M-0001', '2026-09-01'): 0.7}</code></pre>
+  </div>
+  <aside class="notes"><p>One idea only: the address comes from the key, so the key must be immutable. No hash tables on the board. The tuple key returns in session 2 for repeated readings and in the stretch of lab 2.4.</p></aside>
+</section>
+
+<section class="slide" id="missing-keys" data-lo="LO3" data-label="Missing keys">
+  <div class="kicker">When the key is not there</div>
+  <h2>Three ways to ask for a key, and they fail differently on purpose</h2>
+  <table class="t">
+    <tr><th>You write</th><th>Key missing</th><th>Use it when</th></tr>
+    <tr><td><code>district_of[meter_id]</code></td><td>raises <code>KeyError</code></td><td>a missing key is a fault you want to hear about</td></tr>
+    <tr><td><code>district_of.get(meter_id)</code></td><td>gives <code>None</code></td><td>missing is normal and you handle <code>None</code> next</td></tr>
+    <tr><td><code>meter_id in district_of</code></td><td>gives <code>False</code></td><td>you only need to know</td></tr>
+  </table>
+  <div class="callout tip mt"><b>At Manahil.</b> Twenty rows of the month carry a meter id that is not in the registry. A loud <code>KeyError</code> finds them; a quiet <code>get</code> with a default district would hide them in a total.</div>
+  <aside class="notes"><p>The twenty rows are four rows each of M-9001 to M-9005; lab 2.2 finds them with sets. Lab 2.1 uses the clean file, where every meter is known, so the plain lookup is right there.</p></aside>
+</section>
+
+<section class="slide" id="check-index-outside-loop" data-lo="LO3" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Why is this version still slow?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead">A colleague replaces the nested loop. Inside <code>for reading in readings:</code> the first line is now <code>district_of = {m["meter_id"]: m["district"] for m in meters}</code>, then a lookup. The counts are right; 100,000 rows still take seconds.</p>
+    <div class="opts">
+      <div class="opt" data-ok>The index is rebuilt for every reading, which walks all the meters each time</div>
+      <div class="opt" data-why="Blames the fast part: a lookup costs the same whatever the size of the dictionary">Dictionary lookups are slow when the dictionary has 600 keys</div>
+      <div class="opt" data-why="Blames the syntax: a comprehension does the same work as the loop it replaces">Comprehensions are slower than loops</div>
+      <div class="opt" data-why="Blames the data: the readings are walked once in both versions, and that part is cheap">100,000 rows are too many for a Python loop</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Building the index walks 600 meters. Inside the loop that happens 100,000 times: the loop inside a loop is back, hidden in one line. Build it once, before the loop.</div>
+  </div>
+  <aside class="notes"><p>Answer: the first. It is the most common way lab 2.1 goes wrong, and the lab's check catches it by time. Ask where the line must move.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-1" data-auto="lab" data-lab="2.1">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. The script stops at NotImplementedError until each function is written. Expected: 588 meters, M-0001 has 30; districts add up to 17,561. The timing script refuses to finish if the two versions disagree. Typical problems: KeyError from += on a missing key; the index built inside the loop. The check wants under two seconds on 100,000 rows and a clean strict type check.</p></aside>
 </section>
 
 <!-- Session 2 -->
 
 <section class="slide section" id="s2" data-auto="section" data-session="2"></section>
 
-<section class="slide" id="s2-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="set-is-membership" data-lo="LO3" data-label="Membership">
+  <div class="kicker">Sets</div>
+  <h2>A set holds each value once and answers "is it in there?" in one step</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="known.py"><code class="language-python">known = {m["meter_id"] for m in meters}
+print(len(known))             # 600
+print("M-0042" in known)      # True
+print("M-9001" in known)      # False</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>A set is a dictionary with keys and no values</li>
+      <li><code>x in a_list</code> walks the list; <code>x in a_set</code> goes straight to the answer</li>
+      <li>No order, no positions, no repeats: only membership</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt"><b>You have used one already.</b> Yesterday's <code>validate_reading(row, known)</code> took the registry as a set, for exactly this question.</div>
+  <aside class="notes"><p>Tie back to lab 1.4: <code>if row["meter_id"] not in known</code>. With a list of 600 ids that line would be the nested loop of session 1 in disguise.</p></aside>
 </section>
 
-<section class="slide" id="s2-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="set-algebra" data-lo="LO3" data-label="Operators">
+  <div class="kicker">Comparing two collections</div>
+  <h2>Three operators answer what is missing, what is extra and what is shared</h2>
+  <table class="t">
+    <tr><th>Expression</th><th>Reads as</th><th class="num">At Manahil</th></tr>
+    <tr><td><code>registered</code></td><td>ids in the registry</td><td class="num">600</td></tr>
+    <tr><td><code>reporting</code></td><td>ids that appear in the month's readings</td><td class="num">593</td></tr>
+    <tr><td><code>registered - reporting</code></td><td>registered and silent</td><td class="num">12</td></tr>
+    <tr><td><code>reporting - registered</code></td><td>reporting and unknown</td><td class="num">5</td></tr>
+    <tr><td><code>registered &amp; reporting</code></td><td>in both</td><td class="num">588</td></tr>
+    <tr><td><code>registered | reporting</code></td><td>in either</td><td class="num">605</td></tr>
+  </table>
+  <aside class="notes"><p>Numbers from the reference run of lab 2.2. Check the arithmetic with the room: 588 plus 12 is 600; 588 plus 5 is 593; 600 plus 5 is 605. Each line would be a loop with a search if written with lists.</p></aside>
+</section>
+
+<section class="slide" id="two-findings-two-owners" data-lo="LO3" data-label="Meaning">
+  <div class="kicker">What the two differences mean</div>
+  <h2>The same operator, two different problems, two different owners</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>12 meters sent nothing</h4><p class="small mb0">Registered, and not one row in September. A dead meter, an empty house, a reader that never synchronised. A question for <b>the field team</b>.</p></div>
+    <div class="card c-purple"><h4>5 ids are unknown</h4><p class="small mb0">M-9001 to M-9005, four rows each. A registry that is behind, or a mistyped id. A problem in <b>the data</b>, and those 20 rows cannot be billed to anyone.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="callout tip mt"><b>A check that finds something must say who acts on it.</b> Miqyas rejects the 20 rows with the reason UNKNOWN_METER; the silent meters go into a list for the field team.</div>
+  <aside class="notes"><p>Keep the analyst's question in front of the code: what do I tell Salma? The silent meters are not bad rows, there are no rows; no row-by-row validation can find them. Only comparing the two sets does.</p></aside>
+</section>
+
+<section class="slide" id="dedup-and-order" data-lo="LO3" data-label="No order">
+  <div class="kicker">What a set gives up</div>
+  <h2>A set drops repeats and forgets order: sort before you show it</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> ids = ["M-0002", "M-0001", "M-0002"]
+>>> set(ids)
+{'M-0002', 'M-0001'}
+>>> sorted(set(ids))
+['M-0001', 'M-0002']</code></pre>
+    <ul class="bullets">
+      <li><code>set(a_list)</code> is the shortest way to drop repeats</li>
+      <li>The order you see printed is not promised, and can differ between runs</li>
+      <li><code>sorted(…)</code> turns any collection into a list in a fixed order</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>A report must be the same on two runs.</b> Anything that leaves your function for a file or a screen goes through <code>sorted</code> first.</div>
+  <aside class="notes"><p>The order of text in a set changes between runs of Python on purpose. This is the first appearance of the week's reproducibility rule: same input, same bytes out. Lab 2.2's functions return sorted lists for this reason.</p></aside>
+</section>
+
+<section class="slide" id="seen-set-pattern" data-lo="LO3" data-label="Repeats">
+  <div class="kicker">Pattern</div>
+  <h2>Finding repeats: remember what you have seen, as a set of tuples</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="coverage_report.py"><code class="language-python">seen: set[tuple[str, str]] = set()
+repeated: set[tuple[str, str]] = set()
+for reading in readings:
+    key = (reading["meter_id"], reading["date"])
+    if key in seen:
+        repeated.add(key)
+    seen.add(key)</code></pre>
+    <ul class="bullets">
+      <li>The identity of a reading is the <b>pair</b>: this meter, this date</li>
+      <li>A tuple cannot change, so it can be a member of a set</li>
+      <li><code>set()</code> makes an empty set; <code>{}</code> is an empty dictionary</li>
+    </ul>
+  </div>
+  <div class="card c-teal mt"><h4>On the month</h4><p class="small mb0">30 pairs appear more than once. Miqyas keeps the first row of each and rejects the repeat as DUPLICATE.</p></div>
+  <aside class="notes"><p>One pass, no nested loop, and the first occurrence is kept: the order of the file decides which row is "the" reading. Ask what would be wrong with comparing every row with every other row: 17,690 squared is 313 million comparisons.</p></aside>
+</section>
+
+<section class="slide" id="choosing-a-collection" data-lo="LO3" data-label="Choosing">
+  <div class="kicker">Four collections</div>
+  <h2>Choose the collection by the question you will ask of it</h2>
+  <table class="t">
+    <tr><th>You will ask</th><th>Use</th><th>Example</th></tr>
+    <tr><td>what is at position 3? what comes next?</td><td><code>list</code></td><td>the rows of a file, in file order</td></tr>
+    <tr><td>what belongs to this key?</td><td><code>dict</code></td><td>meter id → district; district → count</td></tr>
+    <tr><td>is it in there? what differs?</td><td><code>set</code></td><td>the known meter ids</td></tr>
+    <tr><td>a few values that travel together and never change</td><td><code>tuple</code></td><td>(meter id, date)</td></tr>
+  </table>
+  <div class="callout note mt"><b>Changing your mind is cheap.</b> <code>set(a_list)</code>, <code>sorted(a_set)</code>, <code>list(a_dict)</code>, <code>dict(pairs)</code> convert in one call.</div>
+  <aside class="notes"><p>The summary table of sessions 1 and 2. The supervised check asks for exactly this choice in words, so have each table say one more example of their own per row.</p></aside>
+</section>
+
+<section class="slide" id="check-set-difference" data-lo="LO3" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which expression finds them?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead">Badr has the set <code>ticketed</code> (meter ids named in open tickets) and Salma the set <code>flagged</code> (meter ids with an anomaly). They want the meters that have an anomaly and <b>no</b> open ticket, to call those customers first.</p>
+    <div class="opts">
+      <div class="opt" data-why="Takes the shared part: these meters have an anomaly and a ticket already">ticketed &amp; flagged</div>
+      <div class="opt" data-why="Subtracts the wrong way round: these have a ticket and no anomaly">ticketed - flagged</div>
+      <div class="opt" data-why="Joins everything: this is every meter that has either">ticketed | flagged</div>
+      <div class="opt" data-ok>flagged - ticketed</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Start from what you want to keep (flagged) and take away what disqualifies (ticketed). Difference is not symmetric: the order says which side survives.</div>
+  </div>
+  <aside class="notes"><p>Answer: flagged minus ticketed. If the room hesitates between the two differences, read them aloud as "flagged, without the ticketed".</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-2" data-auto="lab" data-lab="2.2">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. Expected: 12 silent meters, 5 unknown ids, 30 repeated pairs. The check refuses a loop inside a loop in the file. Typical problems: returning a set where a sorted list is asked; searching a list of ids inside a loop; collecting repeats in a list. In the last minutes ask who owns each finding: the field team or the data.</p></aside>
 </section>
 
 <!-- Session 3 -->
 
 <section class="slide section" id="s3" data-auto="section" data-session="3"></section>
 
-<section class="slide" id="s3-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="comprehension-forms" data-lo="LO3" data-label="Comprehensions">
+  <div class="kicker">Comprehensions</div>
+  <h2>A comprehension builds a collection in one expression: what, from where, which</h2>
+  <pre class="code" data-file="forms.py"><code class="language-python">values = [float(r["consumption_m3"]) for r in rows]                 # a list
+high = [v for v in values if v > 5.0]                               # with a filter
+known = {m["meter_id"] for m in meters}                             # a set
+district_of = {m["meter_id"]: m["district"] for m in meters}        # a dictionary</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-teal"><h4>What</h4><p class="small mb0">The expression at the front: one item of the result.</p></div>
+    <div class="card flat c-cyan"><h4>From where</h4><p class="small mb0"><code>for … in …</code>: the same line as in a loop.</p></div>
+    <div class="card flat c-coral"><h4>Which</h4><p class="small mb0">An optional <code>if</code> at the end keeps only some.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>They have read three of these already today. Read each aloud in the order "for each r in rows, give me float of…". The brackets decide the type of the result.</p></aside>
 </section>
 
-<section class="slide" id="s3-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="when-a-loop-reads-better" data-lo="LO3" data-label="Or a loop">
+  <div class="kicker">Judgement</div>
+  <h2>One expression and one condition fit a comprehension; anything more wants a loop</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Comprehension</h4><p class="small mb0">Transform each item, or keep some. The reader sees the whole idea on one line.</p></div>
+    <div class="card c-coral"><h4>Loop</h4><p class="small mb0">Counting and grouping, a <code>try</code> around each item, two results at once, an early exit, or a line that no longer fits on the screen.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <pre class="code mt" data-file="too much"><code class="language-python">ok = [float(r["consumption_m3"]) for r in rows if r["consumption_m3"].strip() != ""
+      and r["meter_id"] in known and 0 &lt;= float(r["consumption_m3"]) &lt;= 200]</code></pre>
+  <div class="callout warn mt"><b>What goes wrong.</b> The line above converts twice, crashes on <code>N/A</code>, and cannot say why a row was left out.</div>
+  <aside class="notes"><p>The rule of thumb is not about style: validation needs a reason per rejected row, and a comprehension has no place to put one. That is why yesterday's validation function was a function.</p></aside>
+</section>
+
+<section class="slide" id="generator-function" data-lo="LO3" data-label="yield">
+  <div class="kicker">Generators</div>
+  <h2>A function with <code>yield</code> hands over one value, then waits to be asked again</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="stream.py"><code class="language-python">def read_values(path):
+    with open(path, encoding="utf-8",
+              newline="") as file:
+        for row in csv.DictReader(file):
+            yield float(row["consumption_m3"])</code></pre>
+    <ul class="bullets">
+      <li><code>return</code> ends a function; <code>yield</code> <b>pauses</b> it, with all its names kept</li>
+      <li>The next request resumes it on the line after the <code>yield</code></li>
+      <li>At any moment, one row exists. The file stays open until the loop is done</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Yesterday's call-stack picture helps: the frame of read_values is not thrown away at yield, it is set aside and brought back. This is the reference solution of lab 2.3; do not leave it on screen during the lab.</p></aside>
+</section>
+
+<section class="slide" id="lazy-nothing-runs" data-lo="LO3" data-label="Lazy">
+  <div class="kicker">Laziness</div>
+  <h2>Calling a generator function runs nothing: the work happens when values are asked for</h2>
+  <div class="trace">
+    <div class="ev call"><b>call</b><code>values = read_values("data/readings_large.csv")</code> no file is opened yet</div>
+    <div class="ev result"><b>next(values)</b>opens the file, reads one row, gives <code>0.606</code> and pauses</div>
+    <div class="ev result"><b>next(values)</b>reads one more row, gives <code>0.544</code> and pauses</div>
+    <div class="ev final"><b>sum(values)</b>asks again and again until the file ends: the total of everything <b>left</b></div>
+  </div>
+  <div class="callout tip mt"><b><code>for</code> and <code>sum</code> ask for you.</b> You rarely write <code>next</code>; every loop over a generator is this conversation.</div>
+  <aside class="notes"><p>Demonstration at a prompt in the folder of lab 2.3 after the lab, or with a three-line generator before it: call it, show that nothing printed, then call next twice. The two values are the first two rows of the large file.</p></aside>
+</section>
+
+<section class="slide" id="memory-list-vs-stream" data-lo="LO3" data-label="Memory">
+  <div class="kicker">From the lab's run</div>
+  <h2>The same total of 100,000 rows, with two hundred times less memory</h2>
+  <div class="bars">
+    <div class="row"><span>List of all rows</span><div class="bar c-coral" style="--w:100%"></div><span class="val">35,900 KiB</span></div>
+    <div class="row"><span>Stream, one row at a time</span><div class="bar c-teal" style="--w:1%"></div><span class="val">160 KiB</span></div>
+  </div>
+  <ul class="bullets mt">
+    <li>Both give <b>137,769.165</b> cubic metres</li>
+    <li>A file ten times as long: the list needs ten times the memory, the stream the same 160 KiB</li>
+    <li>A year of every meter's hourly readings does not fit in a list on a laptop. It does fit in a stream</li>
+  </ul>
+  <aside class="notes"><p>Peaks measured with tracemalloc in the reference run of lab 2.3 (Python 3.14, Windows): about 35,900 KiB against about 160 KiB, a ratio above 200. Numbers vary a little by version; the shape does not.</p></aside>
+</section>
+
+<section class="slide" id="one-pass-only" data-lo="LO3" data-label="One pass">
+  <div class="kicker">The price</div>
+  <h2>A generator can be walked once. Then it is empty.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> values = read_values(path)
+>>> sum(values)
+137769.165
+>>> sum(values)
+0
+>>> len(values)
+TypeError: object of type 'generator' has no len()</code></pre>
+    <ul class="bullets">
+      <li>No length, no positions, no second pass</li>
+      <li>Need two results? Compute both in <b>one</b> loop, or call the function again for a fresh generator</li>
+      <li>Need to sort, or to find a median? You need all the values: use a list</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>The silent zero.</b> A second pass does not raise an error. It quietly gives the result for no data.</div>
+  <aside class="notes"><p>The stretch of the lab. The silent zero is a real source of wrong reports: a total of 0 looks like a quiet month. Anomaly detection needs each meter's median, hence all its values: Miqyas loads the month into a list, on purpose.</p></aside>
+</section>
+
+<section class="slide" id="generator-expression" data-lo="LO3" data-label="In one line">
+  <div class="kicker">The short form</div>
+  <h2>Round brackets make a comprehension lazy</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="two ways"><code class="language-python">total = sum([float(r["consumption_m3"])
+             for r in rows])
+
+total = sum(float(r["consumption_m3"])
+            for r in rows)</code></pre>
+    <ul class="bullets">
+      <li>First: build a list of 100,000 numbers, add them, throw the list away</li>
+      <li>Second: hand each number to <code>sum</code> as it is made</li>
+      <li>Works with <code>sum</code>, <code>max</code>, <code>min</code>, <code>any</code>, <code>all</code>, <code>sorted</code>, <code>set</code></li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The only difference is the square brackets. Good default: when the collection is consumed at once by a function, leave the square brackets out.</p></aside>
+</section>
+
+<section class="slide" id="check-generator-twice" data-lo="LO3" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>What does the report show?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead">A script does <code>values = read_values(path)</code>, then <code>highest = max(values)</code>, then <code>total = sum(values)</code>, and prints both. The file holds 100,000 good readings.</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats the generator as a list that can be walked again">The right highest value and the right total</div>
+      <div class="opt" data-why="Expects an error where Python gives a quiet result for no data">The right highest value, then an error on the second line</div>
+      <div class="opt" data-ok>The right highest value and a total of 0</div>
+      <div class="opt" data-why="Believes the first call consumed nothing because it only looked for one value">A highest value of 0 and the right total</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> <code>max</code> walks the generator to its end. <code>sum</code> then receives nothing and returns 0, without any error.</div>
+  </div>
+  <aside class="notes"><p>Answer: the third. Two repairs: one loop that tracks both, or <code>values = list(read_values(path))</code> when the data fits in memory. Ask which they would choose for a year of hourly readings.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-3" data-auto="lab" data-lab="2.3">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. Expected: both totals 137,769.165; peaks near 35,900 KiB and 160 KiB. The check wants a real generator function and a stream peak at least twenty times below the list's. Typical problems: building a list and returning it; yield outside the loop; list(read_values(path)) inside total_stream. The measuring script takes a few seconds because tracemalloc slows the run.</p></aside>
 </section>
 
 <!-- Session 4 -->
 
 <section class="slide section" id="s4" data-auto="section" data-session="4"></section>
 
-<section class="slide" id="s4-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="dict-records-fail-late" data-lo="LO3" data-label="Records">
+  <div class="kicker">Records</div>
+  <h2>A dictionary as a record accepts any mistake until the line that uses it</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="queue.py"><code class="language-python">ticket = json.loads(line)
+ticket["priorty"] = "urgent"
+if ticket["opened"] &lt; "2026-09-01":
+    ...</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>Line 2 misspells the field and <b>adds a new key</b>. No error, ever</li>
+      <li>Line 3 compares dates as text. It works for this format, by luck</li>
+      <li>Nothing says which fields a ticket has, or what type each is</li>
+      <li>The checker sees <code>dict[str, str]</code> and can help with none of it</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>Dictionaries are right for "key to value" questions, which was this morning. A ticket is something else: a fixed set of named fields. That is a record, and Python has a tool for it.</p></aside>
 </section>
 
-<section class="slide" id="s4-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="dataclass-basics" data-lo="LO3" data-label="Data class">
+  <div class="kicker">Data classes</div>
+  <h2>A data class is a record with named, typed fields, written in six lines</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="tickets.py"><code class="language-python">@dataclass(frozen=True)
+class Ticket:
+    ticket_id: str
+    opened: date
+    district: str
+    priority: str
+    status: str
+    text: str</code></pre>
+    <ul class="bullets">
+      <li>The decorator writes the constructor, a readable printout and <code>==</code> for you</li>
+      <li><code>Ticket(ticket_id="T-20001", opened=…)</code> builds one; <code>t.priority</code> reads a field</li>
+      <li>A misspelt field is an <code>AttributeError</code> at run time and an error from the checker before</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>The fields are the hints of Day 1, now attached to a name. Show at a prompt how a Ticket prints: all fields, by name. The class has no phone field on purpose; the slide after next says why.</p></aside>
+</section>
+
+<section class="slide" id="frozen-records" data-lo="LO1 LO3" data-label="Frozen">
+  <div class="kicker">Frozen</div>
+  <h2><code>frozen=True</code> makes a record that nobody can change behind your back</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="at a prompt"><code class="language-python">>>> t.priority = "low"
+dataclasses.FrozenInstanceError:
+    cannot assign to field 'priority'
+>>> urgent = replace(t, priority="urgent")</code></pre>
+    <ul class="bullets">
+      <li>Yesterday: a shared mutable object changes for every name that holds it</li>
+      <li>A frozen record can be shared freely: there is nothing to mutate</li>
+      <li>A "change" makes a new record with <code>dataclasses.replace</code>, like <code>upper()</code> on a string</li>
+      <li>Frozen records can be keys of a dictionary and members of a set</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The whole of Day 1's aliasing problem disappears for records that cannot change. Miqyas's Reading, Meter, Rejection and Anomaly are all frozen data classes.</p></aside>
+</section>
+
+<section class="slide" id="methods-on-records" data-lo="LO3" data-label="Methods">
+  <div class="kicker">Behaviour that belongs to the record</div>
+  <h2>A method is a function that lives with the data it needs</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="tickets.py"><code class="language-python">    def age_days(self, today: date) -> int:
+        """Whole days from the day the
+        ticket was opened to today."""
+        return (today - self.opened).days</code></pre>
+    <ul class="bullets">
+      <li><code>self</code> is the record the method was called on: <code>t.age_days(today)</code></li>
+      <li><code>today</code> comes in as a parameter. A method that asked the clock would give a different answer tomorrow, and could not be tested</li>
+      <li><code>opened</code> is a <code>date</code>, so subtraction gives days. As text it would give an error</li>
+    </ul>
+  </div>
+  <div class="card c-teal mt"><h4>On the queue</h4><p class="small mb0">The oldest open urgent ticket, T-20087, is 41 days old on the course's "today", 1 October 2026 (lab 2.4).</p></div>
+  <aside class="notes"><p>Passing "today" in is the contract idea of Day 1 again: everything in through parameters. It is also why the labs' numbers are the same in every cohort.</p></aside>
+</section>
+
+<section class="slide" id="sort-with-key" data-lo="LO3" data-label="Sorting">
+  <div class="kicker">Sorting</div>
+  <h2><code>sorted</code> needs to know what to compare: give it a key function</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="sorting.py"><code class="language-python">RANK = {"urgent": 0, "high": 1,
+        "normal": 2, "low": 3}
+
+by_text = sorted(tickets,
+                 key=lambda t: t.priority)
+by_rank = sorted(tickets,
+                 key=lambda t: RANK[t.priority])</code></pre>
+    <ul class="bullets">
+      <li>The key function is called once per item; items are ordered by what it returns</li>
+      <li>By text: high, low, normal, urgent. Alphabetical, and useless</li>
+      <li>By rank: urgent first, because 0 is the smallest</li>
+      <li><code>lambda t: …</code> is a function small enough to write in place</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The rank dictionary is this morning's index pattern. sorted returns a new list and leaves tickets alone; drill 2 had the difference between sorted and sort.</p></aside>
+</section>
+
+<section class="slide" id="tuple-keys-multi-sort" data-lo="LO3" data-label="Several fields">
+  <div class="kicker">Sorting by several fields</div>
+  <h2>A key that returns a tuple sorts by the first item, then the second, then the third</h2>
+  <pre class="code" data-file="tickets.py"><code class="language-python">sorted(waiting, key=lambda t: (PRIORITY_RANK[t.priority], t.opened, t.ticket_id))</code></pre>
+  <table class="t small mt">
+    <tr><th>Ticket</th><th>Rank</th><th>Opened</th><th class="num">Age in days</th><th>District</th></tr>
+    <tr><td>T-20087</td><td>0 urgent</td><td>2026-08-21</td><td class="num">41</td><td>Al-Yasmin</td></tr>
+    <tr><td>T-20274</td><td>0 urgent</td><td>2026-08-24</td><td class="num">38</td><td>Al-Naseem</td></tr>
+    <tr><td>T-20066</td><td>0 urgent</td><td>2026-08-25</td><td class="num">37</td><td>Al-Khuzama</td></tr>
+    <tr><td>T-20196</td><td>0 urgent</td><td>2026-08-26</td><td class="num">36</td><td>Al-Naseem</td></tr>
+  </table>
+  <div class="callout tip mt"><b>The last item breaks ties.</b> Two urgent tickets of the same day would otherwise come out in file order; the ticket id makes the queue the same on every run.</div>
+  <aside class="notes"><p>The first four of the 246 open tickets, from the reference run of lab 2.4. Tuples compare item by item, like words in a dictionary. reverse=True would flip all three fields at once, newest first too: a common wrong turn in the lab.</p></aside>
+</section>
+
+<section class="slide" id="carry-only-what-you-need" data-lo="LO3 LO4" data-label="Personal data">
+  <div class="kicker">Responsible use</div>
+  <h2>A record carries only the fields the task needs</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>In the file</h4><p class="small mb0">Ten fields per ticket, among them a phone number and an identity number: personal data.</p></div>
+    <div class="card c-teal"><h4>In <code>Ticket</code></h4><p class="small mb0">Six fields. The queue is ordered by priority and age; it needs to call nobody and identify nobody.</p></div>
+  </div>
+  <ul class="bullets mt">
+    <li>What is never copied into the record cannot be printed, logged or written by mistake</li>
+    <li>The free <b>text</b> of a ticket can hold a phone number too. Tomorrow's first lab masks it before anything is written</li>
+  </ul>
+  <div class="callout note mt"><b>The data here is synthetic.</b> The habit is real: Abdulaziz, the data protection officer, reads your output files, not your intentions.</div>
+  <aside class="notes"><p>The tickets are treated as personal data throughout the course. Keep the claim practical: leaving a field out is the cheapest protection there is. The national reference is the Personal Data Protection Law and its implementing regulation, listed with the course's sources; the slide does not restate them.</p></aside>
+</section>
+
+<section class="slide" id="check-sort-key" data-lo="LO3" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which key puts the queue in working order?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead">Customer care works the most urgent tickets first and, within a priority, the oldest first. <code>RANK</code> gives urgent 0 and low 3. Which call is right?</p>
+    <div class="opts">
+      <div class="opt" data-why="Sorts by the text of the priority: alphabetical order puts high before urgent">sorted(waiting, key=lambda t: (t.priority, t.opened))</div>
+      <div class="opt" data-ok>sorted(waiting, key=lambda t: (RANK[t.priority], t.opened))</div>
+      <div class="opt" data-why="Reverses both fields at once: low priority first and, within it, the newest first">sorted(waiting, key=lambda t: (RANK[t.priority], t.opened), reverse=True)</div>
+      <div class="opt" data-why="Puts age before priority: a low ticket from August would come before an urgent one from September">sorted(waiting, key=lambda t: (t.opened, RANK[t.priority]))</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The tuple is compared item by item: rank decides, and the date decides only between tickets of the same rank. Smaller comes first, so 0 and the earliest date lead.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. Each wrong option is a mistake seen in the lab. For the fourth, ask for a concrete pair of tickets that it orders wrongly.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-4" data-auto="lab" data-lab="2.4">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. Expected: 246 open tickets of 400; the queue starts T-20087, T-20274, T-20066, T-20196, T-20166. The check wants a frozen data class with no phone or identity field, opened as a date, and the exact order. Typical problems: sorting by the text of the priority; no status filter; reverse=True; opened kept as text. Arabic text prints correctly in most terminals; a Windows console that shows boxes is a font matter, the data is fine, and tomorrow's second session explains it.</p></aside>
 </section>
 
 <section class="slide" id="wrap-up">
   <div class="kicker">Day 2 · wrap-up</div>
   <h2>Three things to keep</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-coral"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-purple"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
+    <div class="card c-teal"><h4>Choose by the question</h4><p class="small mb0">A dictionary for "what belongs to this key", a set for "is it in there", a list for order. One lookup replaces a loop.</p></div>
+    <div class="card c-coral"><h4>Stream what you use once</h4><p class="small mb0">A generator keeps memory flat and can be walked once. Sort, median and second passes need a list.</p></div>
+    <div class="card c-purple"><h4>Records have names and types</h4><p class="small mb0">A frozen data class with only the fields the task needs; a tuple key puts them in order.</p></div>
   </div>
+  <aside class="notes"><p>Ask which of today's four labs would break first if the file were a hundred times larger, and why (2.1 with the nested loop; then anything that loads all rows).</p></aside>
 </section>
 
 <section class="slide dark" id="next" data-label="Next">
   <div class="kicker">Next</div>
   <h2>Day 3: Files, text and failure</h2>
-  <p class="lead">REPLACE: what participants prepare before then; unfinished labs can be finished at home</p>
-  <aside class="notes">REPLACE: accounts, installs or reading participants need before the next unit</aside>
+  <p class="lead">Tomorrow the files stop being clean: wrong encodings, broken lines, and two defects planted in the code. Drill 3 is a traceback to read on paper.</p>
+  <aside class="notes"><p>Nothing to prepare. Tell the room that tomorrow's last lab is AI-off for the first attempt, and that it is the closest thing in the course to the supervised debugging task.</p></aside>
 </section>

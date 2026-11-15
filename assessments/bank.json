@@ -204,6 +204,209 @@
       "level": "apply",
       "pool": "practice",
       "weight": 1
+    },
+    {
+      "id": "q-d2-count-keyerror",
+      "type": "single",
+      "prompt": "A loop over ticket lines runs counts[district] += 1 on an empty dictionary named counts. What happens at the first ticket?",
+      "options": [
+        "The key is created with the value 1",
+        "A KeyError is raised, because the key has no value to add to yet",
+        "The line is skipped for new keys",
+        "counts becomes a list"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "+= reads the old value first; for a key that is not there the read fails. counts.get(district, 0) + 1 supplies the 0.",
+      "misconceptions": [
+        "Assumes a dictionary invents a starting value",
+        "",
+        "Assumes a missing key is ignored without a word",
+        "Confuses the dictionary with what it holds"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d2-join-choice",
+      "type": "single",
+      "prompt": "You must add the district to each of 2 million readings; the district is in a registry of 60,000 meters. Which plan finishes in seconds rather than hours?",
+      "options": [
+        "For each reading, loop over the registry until the meter is found",
+        "Sort the readings by meter id first, then loop over the registry for each reading",
+        "Turn the readings into a set, then loop over the registry",
+        "Build one dictionary from meter id to district, then do one lookup per reading"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "The index is built once from 60,000 meters; each of the 2 million readings then costs one lookup instead of a search through the registry.",
+      "misconceptions": [
+        "Repeats a search of up to 60,000 steps 2 million times",
+        "Sorting the readings does not remove the search inside the loop",
+        "A set of readings answers no question about districts",
+        ""
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d2-set-order",
+      "type": "single",
+      "prompt": "A function returns the set of silent meter ids and a script writes them to a report in the order of a for loop over that set. A colleague notices the report differs between two runs on the same files. Why?",
+      "options": [
+        "A set has no promised order, so the loop may visit the ids differently on each run",
+        "Sets lose some members when they are large",
+        "The files were read in a different order",
+        "The for loop is not allowed over a set"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "A set promises membership, not order; sorting it before writing gives the same report every time.",
+      "misconceptions": [
+        "",
+        "Confuses 'no order' with 'not reliable'",
+        "Blames the input, which did not change",
+        "A loop over a set is allowed; only its order is not promised"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d2-tuple-key",
+      "type": "single",
+      "prompt": "To find repeated readings you want to remember each (meter, date) you have seen. A colleague writes seen.add([meter_id, date]) and gets TypeError: unhashable type: 'list'. What is the repair?",
+      "options": [
+        "Use seen.append in place of seen.add",
+        "Convert the set to a list so that it accepts lists",
+        "Add the tuple (meter_id, date) in place of the list",
+        "Add the two values separately, first the meter id and then the date"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A member of a set must never change, so it must be immutable: a tuple of the two values is, a list is not.",
+      "misconceptions": [
+        "A set has no append, and the problem is the member, not the method",
+        "A list of seen pairs brings back the slow search",
+        "",
+        "Loses the pairing: the set would then say that the meter and the date were each seen, not together"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d2-generator-or-list",
+      "type": "single",
+      "prompt": "Which of these tasks on a readings file of 50 million rows needs the values in a list, not in a generator?",
+      "options": [
+        "The total consumption",
+        "The number of rows above 5 cubic metres",
+        "The highest single reading",
+        "The median reading"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A median needs the values in order, so all of them must be held and sorted; the other three can be kept as one running number while the rows pass.",
+      "misconceptions": [
+        "A total needs one running sum",
+        "A count needs one running number",
+        "A maximum needs one running best value",
+        ""
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d2-lazy-call",
+      "type": "single",
+      "prompt": "read_rows(path) is a generator function whose first line prints 'opening'. A script runs rows = read_rows('missing.csv') for a file that does not exist, and nothing else. What is printed?",
+      "options": [
+        "'opening', then a FileNotFoundError",
+        "Nothing: the body of a generator function does not start until a value is asked for",
+        "A FileNotFoundError only",
+        "'opening' only"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "Calling a generator function only creates the generator; its body, including the print and the open, runs at the first request for a value.",
+      "misconceptions": [
+        "Treats the call as running the function",
+        "",
+        "Expects the open to be tried at the call",
+        "Expects the first line to run at the call"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d2-frozen",
+      "type": "single",
+      "prompt": "Ticket is a data class with frozen=True. A step of the pipeline runs ticket.status = 'closed' on a ticket it received. What happens, and what should the step do?",
+      "options": [
+        "The status changes for every holder of the ticket; nothing else is needed",
+        "The line is ignored without a message; the step should check the status afterwards",
+        "A FrozenInstanceError is raised; the step should build a new record with the changed field",
+        "A new ticket is created automatically and the old one is deleted"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A frozen record refuses assignment; dataclasses.replace(ticket, status='closed') returns a new record and leaves the shared one as it was.",
+      "misconceptions": [
+        "Describes a mutable record, which frozen=True prevents",
+        "Assumes a refused change is silent",
+        "",
+        "Assumes the language replaces records by itself"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day2",
+      "session": 4,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
     }
   ]
 }

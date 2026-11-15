@@ -62,10 +62,10 @@ Every lab is a page in `labs/`, opened from the course page and from the lab sli
 | 1.2 | Day 1 · Session 2 | Split a script into four functions | [`D1_2_split_40_line.html`](labs/D1_2_split_40_line.html) |
 | 1.3 | Day 1 · Session 3 | Annotate the reading parser | [`D1_3_annotate_supplied_reading.html`](labs/D1_3_annotate_supplied_reading.html) |
 | 1.4 | Day 1 · Session 4 | Rebuild a validation function | [`D1_4_reorder_scrambled_lines.html`](labs/D1_4_reorder_scrambled_lines.html) |
-| 2.1 | Day 2 · Session 1 | Count readings per meter and district, then time a nested-loop version on 100,000 rows | [`D2_1_count_readings_per.html`](labs/D2_1_count_readings_per.html) |
-| 2.2 | Day 2 · Session 2 | Find meters with no reading and readings with no known meter | [`D2_2_find_meters_no.html`](labs/D2_2_find_meters_no.html) |
-| 2.3 | Day 2 · Session 3 | Stream a large readings file with a generator and compare peak memory with a list | [`D2_3_stream_large_readings.html`](labs/D2_3_stream_large_readings.html) |
-| 2.4 | Day 2 · Session 4 | Model a ticket as a data class and sort tickets by priority and age | [`D2_4_model_ticket_as.html`](labs/D2_4_model_ticket_as.html) |
+| 2.1 | Day 2 · Session 1 | Count readings per meter and district | [`D2_1_count_readings_per.html`](labs/D2_1_count_readings_per.html) |
+| 2.2 | Day 2 · Session 2 | Find silent meters and unknown ids | [`D2_2_find_meters_no.html`](labs/D2_2_find_meters_no.html) |
+| 2.3 | Day 2 · Session 3 | Stream a large readings file | [`D2_3_stream_large_readings.html`](labs/D2_3_stream_large_readings.html) |
+| 2.4 | Day 2 · Session 4 | Model and sort the ticket queue | [`D2_4_model_ticket_as.html`](labs/D2_4_model_ticket_as.html) |
 | 3.1 | Day 3 · Session 1 | Load readings and tickets and write a JSON summary per district, masking phone numbers before anything is written | [`D3_1_load_readings_tickets.html`](labs/D3_1_load_readings_tickets.html) |
 | 3.2 | Day 3 · Session 2 | Open a ticket file that fails to decode, read it with the declared encoding and list the lines that still fail | [`D3_2_open_ticket_file.html`](labs/D3_2_open_ticket_file.html) |
 | 3.3 | Day 3 · Session 3 | Reject malformed lines with a reason code so every input line is accounted for | [`D3_3_reject_malformed_lines.html`](labs/D3_3_reject_malformed_lines.html) |

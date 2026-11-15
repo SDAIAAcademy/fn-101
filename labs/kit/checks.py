@@ -79,6 +79,12 @@ def tests(r: Report, folder: Path, what: str, label: str = "") -> bool:
                   f"{label or what}: the tests do not pass: {last(output)}")
 
 
+def typed(r: Report, folder: Path, what: str) -> bool:
+    status, output = py(folder, "-m", "mypy", "--strict", "--no-incremental", *what.split())
+    return r.need(status == 0, f"{what}: the type checker is satisfied in strict mode",
+                  f"{what}: the type checker reports: {last(output)} (run: uv run mypy --strict {what})")
+
+
 def words(text: str) -> int:
     return len(re.findall(r"\w+", text))
 
@@ -181,6 +187,7 @@ LOAD = ("import csv\n"
 
 
 def check_2_1(folder: Path, r: Report) -> None:
+    typed(r, folder, "count.py")
     clean = data.readings_clean()
     per_meter: dict[str, int] = {}
     per_district: dict[str, int] = {}
@@ -211,6 +218,7 @@ def check_2_1(folder: Path, r: Report) -> None:
 
 
 def check_2_2(folder: Path, r: Report) -> None:
+    typed(r, folder, "coverage_report.py")
     known = {m["meter_id"] for m in data.meters()}
     month = data.readings_month()
     reading_ids = {row["meter_id"] for row in month}
@@ -238,6 +246,7 @@ def check_2_2(folder: Path, r: Report) -> None:
 
 
 def check_2_3(folder: Path, r: Report) -> None:
+    typed(r, folder, "stream.py")
     total = sum(float(row["consumption_m3"]) for row in data.readings_large())
     found, why = probe(folder, "import inspect, tracemalloc, stream\n"
                        "path = 'data/readings_large.csv'\n"
@@ -262,6 +271,7 @@ RANK = {"urgent": 0, "high": 1, "normal": 2, "low": 3}
 
 
 def check_2_4(folder: Path, r: Report) -> None:
+    typed(r, folder, "tickets.py")
     tickets = [t for t in data.tickets() if t["status"] == "open"]
     tickets.sort(key=lambda t: (RANK[t["priority"]], t["opened"], t["ticket_id"]))
     found, why = probe(folder, "import dataclasses, datetime, tickets as T\n"

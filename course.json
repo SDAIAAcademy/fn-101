@@ -247,68 +247,165 @@
         {
           "title": "Dictionaries for counting and grouping",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Count and group records with a dictionary in one pass",
+            "Build an index from a key to a record and use it in place of a search",
+            "Explain why a loop inside a loop is slow on 100,000 rows, and measure it"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "2.1",
-            "title": "Count readings per meter and district, then time a nested-loop version on 100,000 rows",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Count readings per meter and district",
+            "summary": "Count readings per meter and district, then time a nested-loop version on 100,000 rows.",
             "minutes": 25,
-            "href": "D2_1_count_readings_per.html"
-          }
+            "href": "D2_1_count_readings_per.html",
+            "steps": [
+              {
+                "text": "Count the readings of each meter in one pass",
+                "minutes": 7
+              },
+              {
+                "text": "Build an index of meters; count per district",
+                "minutes": 8
+              },
+              {
+                "text": "Time both versions on 100,000 rows",
+                "minutes": 6
+              },
+              {
+                "text": "Run the type checker and the lab check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Group the readings by district into lists of values and print each district's highest reading"
+          },
+          "summary": "A dictionary as an index: counting, grouping, and why one lookup replaces a loop"
         },
         {
           "title": "Sets and membership",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Answer a membership question with a set in place of a search through a list",
+            "Compare two collections with difference and intersection",
+            "Use a tuple as a key to find repeated records"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "2.2",
-            "title": "Find meters with no reading and readings with no known meter",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Find silent meters and unknown ids",
+            "summary": "Find meters with no reading and readings with no known meter.",
             "minutes": 25,
-            "href": "D2_2_find_meters_no.html"
-          }
+            "href": "D2_2_find_meters_no.html",
+            "steps": [
+              {
+                "text": "Build the two sets of meter ids",
+                "minutes": 5
+              },
+              {
+                "text": "Find the meters with no reading",
+                "minutes": 5
+              },
+              {
+                "text": "Find the readings with no known meter",
+                "minutes": 5
+              },
+              {
+                "text": "Find the repeated meter and date pairs",
+                "minutes": 6
+              },
+              {
+                "text": "Run the type checker and the lab check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "List the meters that have fewer than 30 different dates, with the number of dates each has"
+          },
+          "summary": "Sets answer membership and difference questions directly: what is missing, what is unknown, what repeats"
         },
         {
           "title": "Comprehensions and generators",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Write list, dictionary and set comprehensions with a filter",
+            "Write a generator function that yields records while a file is read",
+            "Compare the peak memory of a list and of a stream, and say when each fits"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "2.3",
-            "title": "Stream a large readings file with a generator and compare peak memory with a list",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Stream a large readings file",
+            "summary": "Stream a large readings file with a generator and compare peak memory with a list.",
             "minutes": 25,
-            "href": "D2_3_stream_large_readings.html"
-          }
+            "href": "D2_3_stream_large_readings.html",
+            "steps": [
+              {
+                "text": "Run the list version and read how it works",
+                "minutes": 4
+              },
+              {
+                "text": "Write the generator that yields one value per row",
+                "minutes": 8
+              },
+              {
+                "text": "Add up the stream; compare the two totals",
+                "minutes": 4
+              },
+              {
+                "text": "Measure both peaks of memory",
+                "minutes": 5
+              },
+              {
+                "text": "Run the type checker and the lab check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Use the generator twice in a row and explain what the second pass returns"
+          },
+          "summary": "Comprehensions build a collection in one expression; generators hand over one item at a time and keep memory flat"
         },
         {
           "title": "Records as data classes",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Model a record as a frozen data class with typed fields and a method",
+            "Sort records by several fields with a key function that returns a tuple",
+            "Leave out of a record the personal data the task does not need"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "2.4",
-            "title": "Model a ticket as a data class and sort tickets by priority and age",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Model and sort the ticket queue",
+            "summary": "Model a ticket as a data class and sort tickets by priority and age.",
             "minutes": 25,
-            "href": "D2_4_model_ticket_as.html"
-          }
+            "href": "D2_4_model_ticket_as.html",
+            "steps": [
+              {
+                "text": "Define the frozen data class and its age method",
+                "minutes": 8
+              },
+              {
+                "text": "Build tickets from the lines of the file",
+                "minutes": 6
+              },
+              {
+                "text": "Sort the open tickets by priority, then age",
+                "minutes": 7
+              },
+              {
+                "text": "Run the type checker and the lab check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Count the open tickets per district and priority with a dictionary whose keys are tuples"
+          },
+          "summary": "A data class gives a record named, typed fields; sorting with a key puts a queue in working order"
         }
-      ]
+      ],
+      "subtitle": "Dictionaries, sets, comprehensions, generators and data classes on a month of readings and a ticket queue"
     },
     {
       "id": "day3",

@@ -1,37 +1,64 @@
 <article class="lab" data-lab="2.2">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Compare the month's readings with the meter registry and answer three questions with sets: which meters sent nothing, which ids in the readings are unknown, and which meter and date pairs appear twice.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>2.2</code> of the workspace: <code>coverage_report.py</code>, and in <code>data/</code> the files <code>readings_2026_09.csv</code> (the month as it arrived, 17,690 rows) and <code>meters.csv</code></li>
+    <li>AI policy: tutor. Hints and explanations of messages, no code</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Build the two sets of meter ids <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../2.2
+uv run python coverage_report.py</code></pre>
+    <p>Two collections of ids matter: the meters in the registry and the meters that appear in the readings. Build each as a set with a comprehension. Try them at a Python prompt first and look at their sizes.</p>
+    <pre class="code" data-file="coverage_report.py"><code class="language-python">registered = {meter["meter_id"] for meter in meters}
+reporting = {reading["meter_id"] for reading in readings}</code></pre>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Find the meters with no reading <span class="min">5 min</span></h3>
+    <p>Write <code>silent_meters</code>: the ids that are in the registry and not in the readings. One operator between the two sets gives the answer; return it as a sorted list, because a set has no order and a report needs one.</p>
+  </div>
+
+  <div class="step">
+    <h3>Find the readings with no known meter <span class="min">5 min</span></h3>
+    <p>Write <code>unknown_meters</code>: the same two sets, the other way round. Run the script and read both lists. Which of the two findings is a problem with the data file, and which is a question for the field team?</p>
+  </div>
+
+  <div class="step">
+    <h3>Find the repeated meter and date pairs <span class="min">6 min</span></h3>
+    <p>A meter should have one reading per date. Write <code>repeated_keys</code>: walk the readings once, keep a set of the <code>(meter_id, date)</code> pairs seen so far, and collect a pair when you meet it a second time. A tuple can be a member of a set; a list cannot.</p>
+    <pre class="code" data-file="coverage_report.py"><code class="language-python">key = (reading["meter_id"], reading["date"])
+if key in seen:
+    ...</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Run the type checker and the lab check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python coverage_report.py
+uv run mypy --strict coverage_report.py
+uv run ../lab.py check 2.2</code></pre>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>List the meters that have fewer than 30 different dates in the file, with the number of dates each has. You need a dictionary from meter id to a set of dates.</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>Why does <code>silent_meters</code> return a sorted list and not the set itself?</li>
+    <li>What would <code>registered &amp; reporting</code> hold, and how many ids?</li>
+    <li>Why can <code>(meter_id, date)</code> go into a set while <code>[meter_id, date]</code> cannot?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Reference run: 12 meters sent nothing (M-0032, M-0040, M-0130, M-0187, M-0200, M-0307, M-0329, M-0355, M-0427, M-0495, M-0497, M-0559); 5 unknown ids (M-9001 to M-9005, 4 rows each); 30 pairs appear more than once. The registered set has 600 members, the reporting set 593, their intersection 588.</p>
+    <p>The check refuses a loop inside a loop. Common errors: <code>if meter_id not in list_of_ids</code> inside a loop (correct, slow, and the point of the session); returning the set unsorted, so that the order changes from run to run; collecting every occurrence of a repeated pair in a list, which counts triples twice. The unknown ids are a data problem (a registry that is behind, or a mistyped id); the silent meters are a field question (a dead meter, an empty house). Answers: a set has no order; the 588 meters that are registered and reporting; a tuple cannot change, so it can be hashed. Reference: <code>labs/solutions/2.2/coverage_report.py</code>.</p>
   </details>
 </article>
