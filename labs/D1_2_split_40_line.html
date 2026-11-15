@@ -1,37 +1,74 @@
 <article class="lab" data-lab="1.2">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Turn a forty-line script that works into four functions with stated inputs and outputs, without changing what it prints. Afterwards each job can be tested alone and imported by other code.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>1.2</code> of the workspace: <code>monthly_bill.py</code>, <code>test_bill.py</code> and <code>data/sample_meter.csv</code> (thirty days of meter M-0042)</li>
+    <li>AI policy: tutor. An assistant may explain an error message; it does not write the functions</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Run the script and mark its four jobs <span class="min">5 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../1.2
+uv run python monthly_bill.py
+uv run pytest</code></pre>
+    <p>The script prints a bill of four lines; keep that output, you will compare with it. The tests cannot even start: they import four functions that do not exist yet. Read the script and draw a line between its four jobs: read the file, keep the numbers, compute the amount, write the text.</p>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Move each job into a function with a docstring <span class="min">12 min</span></h3>
+    <p>The tests are the contract. Read <code>test_bill.py</code> first: it tells you each function's name, what goes in and what comes out.</p>
+    <table>
+      <tr><th>Function</th><th>Takes</th><th>Returns</th></tr>
+      <tr><td><code>load_rows(path)</code></td><td>the path of the file</td><td>a list of dictionaries, one per row</td></tr>
+      <tr><td><code>clean(rows)</code></td><td>those rows</td><td>the numbers, and how many rows were skipped</td></tr>
+      <tr><td><code>bill(total_m3)</code></td><td>a month's consumption</td><td>the amount due in SAR</td></tr>
+      <tr><td><code>format_bill(meter_id, values, skipped, amount)</code></td><td>the facts of a bill</td><td>four lines as one string</td></tr>
+    </table>
+    <p>A function gets everything it needs through its parameters and gives its result with <code>return</code>. Only <code>load_rows</code> touches a file; none of the four prints. Give each a one-line docstring that says what goes in and what comes out.</p>
+    <pre class="code" data-file="monthly_bill.py"><code class="language-python">def bill(total_m3):
+    """Take a month's consumption in cubic metres; return the amount due in SAR."""
+    ...</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Put the script part under a main guard <span class="min">4 min</span></h3>
+    <p>What is left is the script: call the four functions and print. Put it in <code>main()</code> and call that only when the file is run, so that importing the file runs nothing.</p>
+    <pre class="code" data-file="monthly_bill.py"><code class="language-python">def main():
+    rows = load_rows("data/sample_meter.csv")
+    ...
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Run the tests and the check <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run python monthly_bill.py
+uv run pytest
+uv run ../lab.py check 1.2</code></pre>
+    <p>The bill must be the same four lines as before. The check also imports your file and expects silence.</p>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>Add a doctest to <code>bill</code> for a month of exactly 15 cubic metres and run it with <code>uv run python -m doctest -v monthly_bill.py</code>.</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>Which of your four functions could you test without any file on disk?</li>
+    <li>What would <code>import monthly_bill</code> have done before your change?</li>
+    <li>The tariff changes next year. How many functions do you open?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>The script prints: Meter M-0042; Days billed: 27 skipped: 3; Consumption: 17.211 m3; Amount due: 44.95 SAR. The three skipped rows are two blanks and one "N/A". At the start <code>pytest</code> stops with an import error; with the reference, 5 tests pass.</p>
+    <p>Common errors: a function that still reads the global <code>rows</code> or <code>total</code> (the test of <code>clean</code> with its own rows catches it); <code>print</code> inside <code>format_bill</code> in place of <code>return</code> (the test gets <code>None</code>); rounding inside <code>bill</code>, which changes <code>bill(20.0)</code>; forgetting the guard, so that the check reports output on import. Answers: three of the four (all but <code>load_rows</code>); it would have read the file and printed the bill; one, <code>bill</code>. Reference: <code>labs/solutions/1.2/monthly_bill.py</code>.</p>
   </details>
 </article>

@@ -1,37 +1,62 @@
 <article class="lab" data-lab="1.4">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Rebuild two functions from their scrambled lines, leaving out the lines that do not belong. You write no new code: every decision is about order, indentation and which line is a trap.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>1.4</code> of the workspace: <code>warmup.py</code> and <code>validate.py</code> (scrambled), and a test file for each</li>
+    <li>Paper: number the lines there before you move anything in the editor</li>
+    <li>AI policy: off. This lab is practice for the supervised check</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Order the warm-up on paper, then in the editor <span class="min">6 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../1.4</code></pre>
+    <p>Open <code>warmup.py</code>. Seven lines; six of them make <code>total_valid(values)</code>, one is a distractor. On paper, write the order as numbers and mark the indentation of each line. Then move the lines in the editor, indent them, delete the distractor.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run pytest test_warmup.py</code></pre>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Order and indent the validation function <span class="min">11 min</span></h3>
+    <p>Open <code>validate.py</code>: sixteen lines, three of them distractors. The comment at the top is the specification: four reasons, checked in a fixed order. Work in this order:</p>
+    <ol>
+      <li>Find the <code>def</code> line and the last <code>return</code>.</li>
+      <li>Pair every <code>if</code> with the <code>return</code> it guards.</li>
+      <li>Find what must exist before each line can run: <code>value</code> needs <code>text</code>, the range check needs <code>value</code>.</li>
+      <li>Place <code>try</code> and <code>except</code> around the one line that can fail.</li>
+    </ol>
+    <p>Two pairs of lines look alike. Decide between them by asking what each would do with the row <code>{"consumption_m3": "250"}</code>.</p>
+  </div>
+
+  <div class="step">
+    <h3>Run the tests; fix order or indentation <span class="min">4 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run pytest test_validate.py</code></pre>
+    <p>Read the first failing test, not the last. An <code>IndentationError</code> or a <code>NameError</code> points at a line: the first means a line sits at the wrong depth, the second that a line runs before the one that binds its name.</p>
+  </div>
+
+  <div class="step">
+    <h3>Say why each distractor is wrong; check <span class="min">4 min</span></h3>
+    <p>For each of the four lines you deleted, tell a neighbour what the function would do if that line had been used. Then run the check: it accepts only supplied lines and no distractor.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../lab.py check 1.4</code></pre>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>Write one more distractor for <code>validate.py</code>, give your scrambled file to a neighbour, and say which test catches it.</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>Why can the check of the meter not come before the check of the value, although both are single <code>if</code> lines?</li>
+    <li>What does <code>except TypeError:</code> catch when the text is <code>"N/A"</code>?</li>
+    <li>Which lines of the function are at depth one, and which at depth two?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Distractors: in the warm-up, <code>total = value</code> (replaces the sum with the last value). In the validation function: <code>if value &lt; 0 and value &gt; 200:</code> (never true), <code>except TypeError:</code> (the conversion of text raises ValueError, so the function crashes on "N/A"), <code>value = float(row)</code> (converts the whole dictionary). With the reference, 2 and 6 tests pass.</p>
+    <p>The order of the two last checks is not forced by names, only by the specification and by the last test ("unknown meter is checked last"): use it to make the point that tests carry requirements that the code alone does not show. Common errors: the final <code>return ""</code> indented into the last <code>if</code>; <code>return "NOT_A_NUMBER"</code> under <code>try</code>. Answers: the specification fixes the order, and an empty value on an unknown meter must report the missing value; nothing, the error passes through; depth one: the assignment of <code>text</code>, the <code>if</code>, <code>try</code> and <code>except</code> lines and the final return; depth two: the four early returns and the conversion. Reference: <code>labs/solutions/1.4/</code>.</p>
   </details>
 </article>

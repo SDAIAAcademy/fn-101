@@ -3,24 +3,24 @@
   "version": 1,
   "questions": [
     {
-      "id": "q-example-1",
+      "id": "q-d1-alias-append",
       "type": "single",
-      "prompt": "REPLACE: a practice question on LO1, as a short scenario",
+      "prompt": "A script runs: week = [0.6, 0.7]; report = week; report.append(0.9); week = []. What does print(report) show?",
       "options": [
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: the right answer",
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: a wrong option that a common misconception makes tempting"
+        "[0.6, 0.7]",
+        "[]",
+        "[0.6, 0.7, 0.9]",
+        "An error, because week was emptied"
       ],
       "correct": [
-        1
+        2
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "report and week named one list when 0.9 was appended; the last line only ties week to a new empty list, and report still names the old one.",
       "misconceptions": [
-        "REPLACE: the misconception behind this option",
+        "Treats report = week as a copy made before the append",
+        "Treats week = [] as emptying the list that report also names",
         "",
-        "REPLACE: the misconception behind this option",
-        "REPLACE: the misconception behind this option"
+        "Expects a name that was rebound to break the other name"
       ],
       "lo": [
         "LO1"
@@ -32,135 +32,176 @@
       "weight": 1
     },
     {
-      "id": "q-example-2",
-      "type": "tf",
-      "prompt": "REPLACE: a statement on LO2 that is true",
+      "id": "q-d1-shallow-copy",
+      "type": "single",
+      "prompt": "A record is meter = {\"id\": \"M-0007\", \"days\": [1.1]}. A colleague writes safe = dict(meter) and then safe[\"days\"].append(2.2) and safe[\"id\"] = \"M-0008\". What does meter hold now?",
       "options": [
-        "True",
-        "False"
+        "id M-0007 and days [1.1, 2.2]",
+        "id M-0007 and days [1.1]",
+        "id M-0008 and days [1.1, 2.2]",
+        "id M-0008 and days [1.1]"
       ],
       "correct": [
         0
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "dict(meter) makes a new outer dictionary, so the id is separate, but both dictionaries point at the same inner list.",
       "misconceptions": [
         "",
-        "REPLACE: the misconception behind this option"
+        "Assumes a copy is copied all the way down",
+        "Assumes dict(meter) is a second name for the same dictionary",
+        "Applies the two rules the wrong way round"
       ],
       "lo": [
-        "LO2"
+        "LO1"
       ],
       "day": "day1",
       "session": 1,
-      "level": "understand",
+      "level": "apply",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-3",
+      "id": "q-d1-scope-local",
       "type": "single",
-      "prompt": "REPLACE: a practice question on LO3, as a short scenario",
+      "prompt": "A file has count = 0 at the top and a function def bump(): count = 5. The script calls bump() and then prints count. What is printed, and why?",
       "options": [
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: the right answer",
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: a wrong option that a common misconception makes tempting"
+        "5, because the function assigned a new value to count",
+        "0, because the assignment inside the function made a separate local name",
+        "An error, because a function cannot assign to an outer name",
+        "None, because bump returns nothing"
       ],
       "correct": [
         1
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "Assigning to a name inside a function binds a local name for that call; the outer count is never touched.",
       "misconceptions": [
-        "REPLACE: the misconception behind this option",
+        "Believes assignment inside a function reaches the outer name",
         "",
-        "REPLACE: the misconception behind this option",
-        "REPLACE: the misconception behind this option"
+        "Confuses 'does not reach' with 'is forbidden'",
+        "Confuses the value of the call with the value of the name"
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d1-print-vs-return",
+      "type": "single",
+      "prompt": "A function average(values) ends with print(total / len(values)). A caller writes mean = average([2.0, 4.0]) and then mean * 2. What happens?",
+      "options": [
+        "The result is 6.0",
+        "3.0 is printed, then the multiplication fails because mean is None",
+        "Nothing is printed and the multiplication fails",
+        "3.0 is printed twice"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The function prints and returns nothing, so the call's value is None; None cannot be multiplied.",
+      "misconceptions": [
+        "Treats printing a value as returning it",
+        "",
+        "Forgets that the print inside the function still runs",
+        "Thinks using the name runs the function again"
       ],
       "lo": [
         "LO3"
       ],
       "day": "day1",
-      "session": 1,
+      "session": 2,
       "level": "apply",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-4",
-      "type": "tf",
-      "prompt": "REPLACE: a statement on LO4 that is true",
-      "options": [
-        "True",
-        "False"
-      ],
-      "correct": [
-        0
-      ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
-      "misconceptions": [
-        "",
-        "REPLACE: the misconception behind this option"
-      ],
-      "lo": [
-        "LO4"
-      ],
-      "day": "day1",
-      "session": 1,
-      "level": "understand",
-      "pool": "practice",
-      "weight": 1
-    },
-    {
-      "id": "q-example-5",
+      "id": "q-d1-checker-clean",
       "type": "single",
-      "prompt": "REPLACE: a practice question on LO5, as a short scenario",
+      "prompt": "A colleague runs the type checker on a new file of five functions without any hints. It reports no issues, and she concludes the file has no type errors. What is the sound conclusion?",
       "options": [
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: the right answer",
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: a wrong option that a common misconception makes tempting"
+        "She is right: the checker reads the code, hints or not",
+        "Nothing can be concluded: without hints, the checker had no promises to check the code against",
+        "The file must be wrong, since a real file always has some errors",
+        "The checker is broken and should be reinstalled"
       ],
       "correct": [
         1
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "By default the checker examines annotated functions; on code without hints a clean report carries no information, which is why strict mode refuses unannotated functions.",
       "misconceptions": [
-        "REPLACE: the misconception behind this option",
+        "Believes the checker infers every promise by itself",
         "",
-        "REPLACE: the misconception behind this option",
-        "REPLACE: the misconception behind this option"
+        "Replaces evidence with a rule of thumb",
+        "Blames the tool for doing what its default says"
       ],
       "lo": [
-        "LO5"
+        "LO3"
       ],
       "day": "day1",
-      "session": 1,
+      "session": 3,
       "level": "apply",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-6",
-      "type": "tf",
-      "prompt": "REPLACE: a statement on LO6 that is true",
+      "id": "q-d1-none-zero",
+      "type": "single",
+      "prompt": "parse_value returns a float, or None for an empty cell. Which test should a caller use to skip only the empty cells of a file in which some meters really read 0.0?",
       "options": [
-        "True",
-        "False"
+        "if not value:",
+        "if value == \"\":",
+        "if value is None:",
+        "if value < 0:"
       ],
       "correct": [
-        0
+        2
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "Only 'is None' asks whether the value is missing; 'not value' is also true for 0.0, a real reading.",
       "misconceptions": [
+        "Treats zero and missing as the same thing",
+        "Tests the text, but the function has already turned it into None",
         "",
-        "REPLACE: the misconception behind this option"
+        "Tests the range, which says nothing about a missing value and fails on None"
       ],
       "lo": [
-        "LO6"
+        "LO3"
       ],
       "day": "day1",
-      "session": 1,
-      "level": "understand",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d1-parsons-nameerror",
+      "type": "single",
+      "prompt": "You rebuild a function from scrambled lines and the test stops with NameError: name 'value' is not defined, pointing at the line 'if value > 200:'. What does this tell you about your order?",
+      "options": [
+        "A line is at the wrong indentation depth",
+        "The line that binds value runs after the line that reads it, or not at all",
+        "One of the distractors is still in the function",
+        "The test file is wrong"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "A NameError means the name was read before any line bound it: an order mistake, and the message names the name to look for.",
+      "misconceptions": [
+        "Confuses a NameError with an IndentationError",
+        "",
+        "Guesses at the cause without using the message",
+        "Doubts the supplied contract before the code"
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 4,
+      "level": "apply",
       "pool": "practice",
       "weight": 1
     }

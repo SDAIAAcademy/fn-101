@@ -9,7 +9,7 @@
     "en": "Python for Data and AI Work",
     "ar": "بايثون لأعمال البيانات والذكاء الاصطناعي"
   },
-  "tagline": "REPLACE: one line under the title: what participants can do after the course",
+  "tagline": "Read, trace and debug Python by hand, then write small typed functions that grow into a command-line tool that reruns",
   "description": "Participants write Python the way data and AI work needs it: small typed functions over collections and files, errors that fail loudly, and code moved out of notebooks into scripts that rerun. The case is a fictional regional water utility with synthetic meter readings in comma-separated values (CSV) files and bilingual service tickets in JavaScript Object Notation (JSON) Lines. Each day opens with an AI-off drill in reading, tracing or debugging code by hand, and the labs grow into a command-line tool that validates readings, flags anomalies and writes a summary report. Arabic text normalisation and SQL are left to FN-104, version control to FN-102.",
   "track": "foundations",
   "level": 100,
@@ -63,8 +63,8 @@
     }
   ],
   "case_study": {
-    "name": "REPLACE: the name of the fictional organisation every lab works on",
-    "summary": "REPLACE: two sentences on the case study and its synthetic data"
+    "name": "Manahil Water Services",
+    "summary": "Manahil Water Services is a fictional regional water utility with 600 meters in six districts. Its metering team checks a month of daily readings (a CSV file with missing, repeated, out-of-range and unknown-meter rows) and its customer care team works a queue of service tickets in Arabic and English (JSON Lines). Every lab works on these files and the labs grow into Miqyas, a command-line tool that validates the readings, flags anomalies and writes a report; all data is synthetic and the same on every machine."
   },
   "format": "intensive",
   "format_note": "Intensive: 4 teaching days of four sessions and a capstone day, with guided pre-work and a tracked follow-up task",
@@ -86,68 +86,157 @@
         {
           "title": "Values, names and references",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Trace a short program line by line with a table of names and objects",
+            "Predict when two names share one mutable object and when they do not",
+            "Distinguish rebinding a name from mutating an object"
           ],
           "lo": [
             "LO1"
           ],
           "lab": {
             "id": "1.1",
-            "title": "Trace eight snippets on paper, then check each answer in a step visualiser",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Trace eight snippets",
+            "summary": "Trace eight snippets on paper, then check each answer in a step visualiser.",
             "minutes": 25,
-            "href": "D1_1_trace_eight_snippets.html"
-          }
+            "href": "D1_1_trace_eight_snippets.html",
+            "steps": [
+              {
+                "text": "Build the workspace and open the lab folder",
+                "minutes": 4
+              },
+              {
+                "text": "Predict the output of all eight on paper",
+                "minutes": 10
+              },
+              {
+                "text": "Step through each wrong one in a visualiser",
+                "minutes": 7
+              },
+              {
+                "text": "Note what you misread; run the check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Change one line of snippet 7 so that both grids print the same, and predict before you run"
+          },
+          "summary": "Names bind to objects, assignment never copies, and a shared list changes for every name that holds it"
         },
         {
           "title": "Functions with clear contracts",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Split a script into functions that each do one job",
+            "State a function's inputs and output in its signature and docstring",
+            "Explain what a function can see and change, using scope and the call stack"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "1.2",
-            "title": "Split a 40-line script into four functions with stated inputs and outputs",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Split a script into four functions",
+            "summary": "Split a 40-line script into four functions with stated inputs and outputs.",
             "minutes": 25,
-            "href": "D1_2_split_40_line.html"
-          }
+            "href": "D1_2_split_40_line.html",
+            "steps": [
+              {
+                "text": "Run the script and mark its four jobs",
+                "minutes": 5
+              },
+              {
+                "text": "Move each job into a function with a docstring",
+                "minutes": 12
+              },
+              {
+                "text": "Put the script part under a main guard",
+                "minutes": 4
+              },
+              {
+                "text": "Run the tests and the check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Add a doctest to bill for a month of exactly 15 cubic metres and run it"
+          },
+          "summary": "One job per function, inputs and outputs stated, effects kept at the edge, and scope explained by the call stack"
         },
         {
           "title": "Type hints and a checker",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Annotate parameters and return values with built-in types",
+            "Read a type checker's report and find the line it points at",
+            "Handle a value that may be None before using it"
           ],
           "lo": [
             "LO3"
           ],
           "lab": {
             "id": "1.3",
-            "title": "Annotate the supplied reading parser and fix every error the type checker reports",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Annotate the reading parser",
+            "summary": "Annotate the supplied reading parser and fix every error the type checker reports.",
             "minutes": 25,
-            "href": "D1_3_annotate_supplied_reading.html"
-          }
+            "href": "D1_3_annotate_supplied_reading.html",
+            "steps": [
+              {
+                "text": "Run the tests and the checker on the supplied parser",
+                "minutes": 4
+              },
+              {
+                "text": "Annotate every function",
+                "minutes": 7
+              },
+              {
+                "text": "Fix each error the checker reports",
+                "minutes": 10
+              },
+              {
+                "text": "Run the tests, the strict check and the lab check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Replace the tuple with a NamedTuple so that reading[2] becomes reading.m3"
+          },
+          "summary": "Type hints as promises a checker verifies: built-in generics, None as a value that must be handled, and reading the checker's report"
         },
         {
           "title": "Parsons problems",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Order the lines of a function so that each name is bound before it is used",
+            "Use indentation to say which lines belong to a branch, a loop or a try",
+            "Reject a distractor by saying what it would do"
           ],
           "lo": [
             "LO1"
           ],
           "lab": {
             "id": "1.4",
-            "title": "Reorder scrambled lines, with distractors, into a working validation function",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "title": "Rebuild a validation function",
+            "summary": "Reorder scrambled lines, with distractors, into a working validation function.",
             "minutes": 25,
-            "href": "D1_4_reorder_scrambled_lines.html"
-          }
+            "href": "D1_4_reorder_scrambled_lines.html",
+            "steps": [
+              {
+                "text": "Order the warm-up on paper, then in the editor",
+                "minutes": 6
+              },
+              {
+                "text": "Order and indent the validation function",
+                "minutes": 11
+              },
+              {
+                "text": "Run the tests; fix order or indentation",
+                "minutes": 4
+              },
+              {
+                "text": "Say why each distractor is wrong; check",
+                "minutes": 4
+              }
+            ],
+            "stretch": "Write one more distractor for a neighbour and say which test catches it"
+          },
+          "summary": "Rebuilding a function from its scrambled lines: order, indentation, and the lines that do not belong"
         }
-      ]
+      ],
+      "subtitle": "Tracing code by hand, functions with contracts, type hints, and rebuilding code from its lines"
     },
     {
       "id": "day2",
@@ -369,13 +458,12 @@
       "id": "capstone",
       "kind": "capstone",
       "title": "Capstone project presentations",
-      "deck": "slides/capstone.html",
-      "subtitle": "REPLACE: the catalog gives 10 minutes for each presentation and nothing about questions; decide whether the questions are inside those minutes, set capstone.talk_minutes and capstone.qa_minutes in course.json and the timers of the now-presenting slide, and remove this line"
+      "deck": "slides/capstone.html"
     }
   ],
   "capstone": {
     "summary": "A command-line tool that loads, validates and reports on a new synthetic dataset, the utility's maintenance work orders, submitted as a public repository whose README shows the command and its report, then a ten-minute walkthrough with a change the assessor requests",
-    "submission": "REPLACE: what participants submit and how: a public repository link, or a shared folder for a course without code",
+    "submission": "A link to a public repository that holds the tool, its tests and a README that shows the one command and the report it writes on the supplied work-order files, and that states what the tool does not check. The commit history is part of the evidence. Then a ten-minute live walkthrough: the participant runs the tool, makes a change the assessor requests and explains a traceback the assessor chooses; the questions are inside the ten minutes.",
     "talk_minutes": 10,
     "rubric": [
       {
@@ -447,6 +535,148 @@
       "examples": [
         "an open-weight model behind a tutor instruction",
         "an approved assistant with a tutor instruction"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "group": "National references",
+      "items": [
+        {
+          "title": "Personal Data Protection Law",
+          "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf"
+        },
+        {
+          "title": "Implementing Regulation of the Personal Data Protection Law",
+          "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulationPersonalDataProtectionLaw.pdf"
+        },
+        {
+          "title": "Generative AI Guideline for Government (SDAIA)",
+          "url": "https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf"
+        },
+        {
+          "title": "Generative AI Guideline for Public (SDAIA)",
+          "url": "https://sdaia.gov.sa/en/SDAIA/about/Files/GenerativeAIPublicEN.pdf"
+        },
+        {
+          "title": "Academic Programs Standards Framework (SDAIA)",
+          "url": "https://sdaia.gov.sa/en/MediaCenter/KnowledgeCenter/ResearchLibrary/Academic-Programs-Standards-Framework-Q3.pdf"
+        }
+      ]
+    },
+    {
+      "group": "Python: the language and its standard library",
+      "items": [
+        {
+          "title": "The Python Tutorial",
+          "url": "https://docs.python.org/3/tutorial/index.html"
+        },
+        {
+          "title": "Programming FAQ (names, objects, default values)",
+          "url": "https://docs.python.org/3/faq/programming.html"
+        },
+        {
+          "title": "Errors and Exceptions (the Python Tutorial)",
+          "url": "https://docs.python.org/3/tutorial/errors.html"
+        },
+        {
+          "title": "typing: support for type hints",
+          "url": "https://docs.python.org/3/library/typing.html"
+        },
+        {
+          "title": "dataclasses: data classes",
+          "url": "https://docs.python.org/3/library/dataclasses.html"
+        },
+        {
+          "title": "csv: CSV file reading and writing",
+          "url": "https://docs.python.org/3/library/csv.html"
+        },
+        {
+          "title": "JSON Lines",
+          "url": "https://jsonlines.org/"
+        },
+        {
+          "title": "Unicode HOWTO",
+          "url": "https://docs.python.org/3/howto/unicode.html"
+        },
+        {
+          "title": "PEP 686: Make UTF-8 mode default",
+          "url": "https://peps.python.org/pep-0686/"
+        },
+        {
+          "title": "argparse: parser for command-line options",
+          "url": "https://docs.python.org/3/library/argparse.html"
+        },
+        {
+          "title": "Logging HOWTO",
+          "url": "https://docs.python.org/3/howto/logging.html"
+        },
+        {
+          "title": "pdb: the Python debugger",
+          "url": "https://docs.python.org/3/library/pdb.html"
+        },
+        {
+          "title": "PEP 8: Style Guide for Python Code",
+          "url": "https://peps.python.org/pep-0008/"
+        }
+      ]
+    },
+    {
+      "group": "Tools (examples of each capability)",
+      "items": [
+        {
+          "title": "uv, a Python package and project manager",
+          "url": "https://docs.astral.sh/uv/"
+        },
+        {
+          "title": "mypy, a static type checker",
+          "url": "https://mypy.readthedocs.io/en/stable/"
+        },
+        {
+          "title": "Pyright, a static type checker",
+          "url": "https://microsoft.github.io/pyright/"
+        },
+        {
+          "title": "Ruff, a linter and formatter",
+          "url": "https://docs.astral.sh/ruff/"
+        },
+        {
+          "title": "pytest, a test runner",
+          "url": "https://docs.pytest.org/en/stable/"
+        },
+        {
+          "title": "Python Tutor, a step visualiser",
+          "url": "https://pythontutor.com/"
+        },
+        {
+          "title": "JupyterLab",
+          "url": "https://jupyterlab.readthedocs.io/en/stable/"
+        },
+        {
+          "title": "marimo, a reactive notebook",
+          "url": "https://marimo.io/"
+        },
+        {
+          "title": "VSCodium, an editor",
+          "url": "https://vscodium.com/"
+        },
+        {
+          "title": "OpenRouter quickstart (one way to reach a free hosted model)",
+          "url": "https://openrouter.ai/docs/quickstart"
+        }
+      ]
+    },
+    {
+      "group": "Evidence on learning to program with AI assistance",
+      "items": [
+        {
+          "title": "How AI assistance impacts the formation of coding skills (Anthropic, 2026)",
+          "url": "https://www.anthropic.com/research/AI-assistance-coding-skills"
+        },
+        {
+          "title": "Shen and Tamkin, How AI Impacts Skill Formation (arXiv 2601.20245)",
+          "url": "https://arxiv.org/abs/2601.20245"
+        }
       ]
     }
   ]

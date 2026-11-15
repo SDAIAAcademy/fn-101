@@ -1,5 +1,78 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">REPLACE: welcome; introduce yourself; one question to the room that calibrates the pace; the rhythm of the day</aside>
+  <aside class="notes"><p>Welcome. Ask who has written a loop in any language and who came through the pre-work: it sets the pace of the first session. Say the rhythm of every day: an AI-off drill of ten minutes, then four sessions, each about 25 minutes of concepts and a 25-minute lab. Breaks are yours to call: press B.</p></aside>
+</section>
+
+<section class="slide" id="four-days-one-tool" data-label="The week">
+  <div class="kicker">The week</div>
+  <h2>Four days from reading one line to shipping one tool</h2>
+  <div class="ladder" style="--n:5">
+    <div class="rung c-teal on"><b>Day 1</b>Read before you write<small>trace, functions, types</small></div>
+    <div class="rung c-cyan off"><b>Day 2</b>Collections<small>dictionaries, sets, generators, records</small></div>
+    <div class="rung c-purple off"><b>Day 3</b>Files, text and failure<small>CSV, encodings, exceptions, debugging</small></div>
+    <div class="rung c-coral off"><b>Day 4</b>From notebook to tool<small>entry point, tests, the tutor</small></div>
+    <div class="rung c-amber off"><b>Capstone</b>Your own tool<small>work orders, a public repository</small></div>
+  </div>
+  <div class="callout tip mt"><b>What you leave with.</b> A command-line tool that validates a month of readings, flags anomalies and writes the same report on every run, and the habit of reading code before trusting it.</div>
+  <aside class="notes"><p>The order is deliberate: reading comes before writing because every later skill, and every review of code an assistant wrote, depends on it. Each lab starts from its own supplied folder, so nobody is locked out of a lab by an earlier one.</p></aside>
+</section>
+
+<section class="slide" id="ai-off-tutor-full" data-label="How we work">
+  <div class="kicker">How we work</div>
+  <h2>Three ways of working with an assistant, and every lab says which</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>AI off</h4><p class="small mb0">The daily drills, the first attempt at each debugging lab, and the supervised check. Paper, an editor, the documentation.</p></div>
+    <div class="card c-teal"><h4>AI tutor</h4><p class="small mb0">The other labs. The assistant gives hints and explains messages. It does not give code.</p></div>
+    <div class="card c-purple"><h4>AI full</h4><p class="small mb0">The capstone. You may delegate, and you then walk through the code and change it live, on request.</p></div>
+  </div>
+  <div class="callout note mt"><b>Why not full from the start.</b> Day 4 shows the evidence: people who delegate while learning finish, and then cannot debug what they finished.</div>
+  <aside class="notes"><p>The course repository carries the tutor rule in its agent instructions, so an assistant opened in the workspace is told to hint and not to write. The supervised check on the last teaching day is AI-off and needs 60% by itself: say it now, not on Day 4.</p></aside>
+</section>
+
+<section class="slide" id="manahil-case" data-label="Case study">
+  <div class="kicker">The case study</div>
+  <h2>Manahil Water Services: 600 meters, one month, two messy files</h2>
+  <div class="cols cols-2">
+    <table class="t small">
+      <tr><th>File</th><th>Holds</th></tr>
+      <tr><td><code>meters.csv</code></td><td>600 meters in six districts</td></tr>
+      <tr><td><code>readings_2026_09.csv</code></td><td>17,690 daily readings, 129 of them bad</td></tr>
+      <tr><td><code>tickets.jsonl</code></td><td>400 service tickets, Arabic and English</td></tr>
+    </table>
+    <ul class="bullets">
+      <li><b>Salma</b>, metering analyst, has a notebook nobody else can rerun</li>
+      <li><b>Badr</b>, customer care lead, wants the ticket queue sorted</li>
+      <li><b>You</b> join as Shouq, the junior analyst</li>
+      <li>The fix is <b>Miqyas</b>, a command-line tool you build by Day 4</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>All of it is synthetic.</b> No real person, meter or phone number. You still treat the tickets as personal data, because the habits are the point.</div>
+  <aside class="notes"><p>Manahil is fictional. The numbers on this slide come from the data generator of the labs: 17,690 rows in the month file, of which 17,561 are accepted and 129 rejected for six reasons. Participants meet each reason in a lab. Abdulaziz, the data protection officer, appears on Day 3; Mazen, the maintenance planner, owns the capstone data.</p></aside>
+</section>
+
+<section class="slide" id="workspace-setup" data-label="Setup">
+  <div class="kicker">Setup</div>
+  <h2>One command builds the workspace; every lab has its own folder</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run labs/kit/setup.py
+cd ../manahil-labs
+uv run lab.py list
+cd 1.1</code></pre>
+    <ul class="bullets">
+      <li><code>uv run …</code> runs Python with the project's tools: a test runner, a type checker, a linter</li>
+      <li><code>lab.py start 2.1 --discard</code> gives a lab back its supplied state</li>
+      <li><code>lab.py check 2.1</code> runs your code and says what is still to do</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Nothing to install by hand.</b> The first <code>uv run</code> downloads the tools once. No model is downloaded at any point of the course.</div>
+  <aside class="notes"><p>Do this together before the drill. The first run needs the network. On Windows in a very deep folder, set UV_PROJECT_ENVIRONMENT to a short folder first; the labs' README says how. Anyone without uv: the pre-work covered the install; pair them for the first lab.</p></aside>
+</section>
+
+<section class="slide dark" id="drill-1" data-label="Drill 1" data-lo="LO1" data-minutes="10">
+  <div class="kicker">Drill 1 · AI off</div>
+  <h1>Predict the output · 10 minutes</h1>
+  <div class="timer" data-minutes="10"></div>
+  <p class="lead">Five snippets on paper: <code>labs/drills/day1.md</code>. No computer, no assistant. Write what each prints.</p>
+  <aside class="notes"><p>Press T to start the timer. Hand out or show the sheet. Do not give answers yet: collect a show of hands per snippet and return to snippet 3 and 5 in session 1, where the room will see why. The answers are in labs/solutions/drills.md. The drill is the same kind of task as the supervised check.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-auto="agenda"></section>
@@ -8,151 +81,637 @@
 
 <section class="slide section" id="s1" data-auto="section" data-session="1"></section>
 
-<section class="slide" id="s1-idea" data-lo="LO1">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="a-name-is-a-label" data-lo="LO1" data-label="Names">
+  <div class="kicker">Names and objects</div>
+  <h2>A name is a label tied to an object, not a box that holds a value</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="names.py"><code class="language-python">reading = 0.742
+latest = reading
+reading = 0.810
+print(latest)        # 0.742</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>Line 1 makes an object, <code>0.742</code>, and ties the name <code>reading</code> to it</li>
+      <li>Line 2 ties a <b>second name</b> to the same object</li>
+      <li>Line 3 ties <code>reading</code> to a new object; <code>latest</code> is not asked</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt"><b>Read <code>=</code> as "now names".</b> The right side is worked out first; then the name on the left is tied to the result.</div>
+  <aside class="notes"><p>Draw it: two labels, one object, then move one label. Everything else in this session is this drawing with a list in place of the number. Ask what line 4 prints before you reveal the comment.</p></aside>
 </section>
 
-<section class="slide" id="s1-steps" data-lo="LO1">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="assignment-never-copies" data-lo="LO1" data-label="No copy">
+  <div class="kicker">Aliasing</div>
+  <h2>Assignment never copies: <code>b = a</code> gives one list two names</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s1.py"><code class="language-python">a = [1, 2, 3]
+b = a
+b.append(4)
+print(a, len(b))</code></pre>
+    <div class="stack">
+      <div class="card c-coral"><h4>It prints</h4><p class="mb0"><code>[1, 2, 3, 4] 4</code></p></div>
+      <p class="small">There was only ever one list. <code>append</code> changed it, and both names show the change.</p>
+    </div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="callout warn mt"><b>What goes wrong.</b> You "save the original" with <code>backup = rows</code>, clean <code>rows</code>, and the backup is cleaned too.</div>
+  <aside class="notes"><p>This is snippet 1 of the lab, and its answer is given on the lab page as the model of the form. Ask the room what <code>a is b</code> would print. Two names for one object is called an alias.</p></aside>
+</section>
+
+<section class="slide" id="mutate-or-rebind" data-lo="LO1" data-label="Two verbs">
+  <div class="kicker">Two different things a line can do</div>
+  <h2>A line either changes an object or moves a name. Know which.</h2>
+  <table class="t">
+    <tr><th>The line</th><th>What it does</th><th>Who sees it</th></tr>
+    <tr><td><code>b.append(4)</code>, <code>b[0] = 9</code>, <code>d["k"] = 1</code></td><td>changes the object (<b>mutation</b>)</td><td>every name tied to that object</td></tr>
+    <tr><td><code>b = b + [4]</code>, <code>b = []</code>, <code>n = n + 1</code></td><td>ties the name to another object (<b>rebinding</b>)</td><td>only that name</td></tr>
+  </table>
+  <div class="callout tip mt"><b>The test.</b> Is there a bare name on the left of <code>=</code>? Then it is rebinding. A dot or a bracket on the left, or a method that changes in place, is mutation.</div>
+  <aside class="notes"><p>Spend time here: this table decides snippets 3, 4 and 6. Note for the curious: <code>b += [4]</code> on a list mutates in place, which is why the table avoids it; say so only if asked.</p></aside>
+</section>
+
+<section class="slide" id="immutable-values" data-lo="LO1" data-label="Immutable">
+  <div class="kicker">Mutable and immutable</div>
+  <h2>Numbers, strings and tuples cannot change, so sharing them is harmless</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Cannot be changed</h4><p class="small mb0"><code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>tuple</code>, <code>None</code>. Every "change" makes a new object: <code>y = y + 5</code>, <code>name.upper()</code>.</p></div>
+    <div class="card c-coral"><h4>Can be changed in place</h4><p class="small mb0"><code>list</code>, <code>dict</code>, <code>set</code>, and most objects you define. Sharing one of these is where surprises come from.</p></div>
+  </div>
+  <pre class="code mt" data-file="snippets/s2.py"><code class="language-python">x = 10
+y = x
+y = y + 5
+print(x, y)          # 10 15</code></pre>
+  <aside class="notes"><p>Snippet 2 has the same shape as snippet 1 and the opposite result. The difference is not the type of the name, names have no type; it is that line 3 rebinds. With an immutable value rebinding is the only thing a line can do.</p></aside>
+</section>
+
+<section class="slide" id="copies-are-shallow" data-lo="LO1" data-label="Copies">
+  <div class="kicker">Copies</div>
+  <h2>A copy is one level deep: the outside is new, the inside is shared</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s6.py"><code class="language-python">meter = {"id": "M-0042", "readings": [0.6]}
+backup = dict(meter)
+backup["id"] = "M-0043"
+backup["readings"].append(0.7)
+print(meter["id"], meter["readings"])</code></pre>
+    <ul class="bullets">
+      <li><code>a[:]</code>, <code>list(a)</code>, <code>dict(d)</code> and <code>.copy()</code> make a new outer object</li>
+      <li>What is inside is <b>not</b> copied: both dictionaries point at one list of readings</li>
+      <li><code>copy.deepcopy</code> copies all levels, when you need it</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>It prints</b> <code>M-0042 [0.6, 0.7]</code>: the id was safe, the readings were not.</div>
+  <aside class="notes"><p>Draw two dictionaries with their own "id" arrows and one shared list. Records that hold lists are everywhere in data work, so this is the aliasing bug participants will really meet. Do not reveal the callout before the room has voted.</p></aside>
+</section>
+
+<section class="slide" id="equal-or-same" data-lo="LO1" data-label="== and is">
+  <div class="kicker">Two questions</div>
+  <h2><code>==</code> asks "equal value?"; <code>is</code> asks "the same object?"</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="same.py"><code class="language-python">a = [0.7, 0.9]
+b = a
+c = a[:]
+print(a == c, a is c)    # True False
+print(a == b, a is b)    # True True</code></pre>
+    <ul class="bullets">
+      <li>Use <code>==</code> for values, almost always</li>
+      <li>Use <code>is</code> for <code>None</code>: <code>if value is None</code></li>
+      <li>When a trace surprises you, <code>a is b</code> tells you whether you have one object or two</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Keep it short. The one rule to leave: compare with None using <code>is</code>; the type checker session returns to it.</p></aside>
+</section>
+
+<section class="slide" id="functions-share-arguments" data-lo="LO1" data-label="Arguments">
+  <div class="kicker">Calling a function</div>
+  <h2>A call ties the parameter name to the caller's object: no copy there either</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s4.py"><code class="language-python">def add_reading(log, value):
+    log.append(value)
+    log = []
+    log.append(-1)
+
+day = [1.2]
+add_reading(day, 0.8)
+print(day)</code></pre>
+    <div class="trace s">
+      <div class="ev call"><b>call</b><code>log</code> and <code>day</code> name one list</div>
+      <div class="ev result"><b>line 2</b>that list becomes <code>[1.2, 0.8]</code></div>
+      <div class="ev guard"><b>line 3</b><code>log</code> is tied to a new empty list</div>
+      <div class="ev result"><b>line 4</b>the new list gets <code>-1</code>; nobody else sees it</div>
+      <div class="ev final"><b>prints</b><code>[1.2, 0.8]</code></div>
+    </div>
+  </div>
+  <aside class="notes"><p>Demonstration: in the workspace, <code>uv run trace.py 1.1/snippets/s4.py</code> prints exactly these steps, with "one object, 2 names" where it applies. Show it after the lab's prediction step, not before. The lesson for tomorrow: a function that mutates its argument changes the caller's data.</p></aside>
+</section>
+
+<section class="slide" id="trace-table" data-lo="LO1" data-label="Trace table">
+  <div class="kicker">The method</div>
+  <h2>Trace on paper: a column per name, a row per line that runs</h2>
+  <table class="t small">
+    <tr><th>Line</th><th><code>readings</code></th><th><code>copy</code></th><th>Note</th></tr>
+    <tr><td><code>readings = [0.7, 0.9]</code></td><td>list A: 0.7, 0.9</td><td></td><td>a new list, A</td></tr>
+    <tr><td><code>copy = readings[:]</code></td><td>A</td><td>list B: 0.7, 0.9</td><td>a slice makes a second list</td></tr>
+    <tr><td><code>copy[0] = 9.9</code></td><td>A</td><td>B: 9.9, 0.9</td><td>mutation of B only</td></tr>
+    <tr><td><code>readings.append(1.1)</code></td><td>A: 0.7, 0.9, 1.1</td><td>B</td><td>mutation of A only</td></tr>
+    <tr class="hl"><td><code>print(readings, copy)</code></td><td colspan="3"><code>[0.7, 0.9, 1.1] [9.9, 0.9]</code></td></tr>
+  </table>
+  <div class="callout tip mt"><b>Give objects letters.</b> Two names with the same letter share an object. That is the whole trick, and it is what a step visualiser draws for you.</div>
+  <aside class="notes"><p>This is snippet 3. Do it on the board with the room dictating each row. In the lab they do the same eight times, then check with Python Tutor or the supplied tracer. Insist on paper first: the check cannot know, but the supervised check will.</p></aside>
+</section>
+
+<section class="slide" id="check-shared-list" data-lo="LO1" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>What does the last line print?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1">
+    <p class="lead">Salma keeps yesterday's readings before cleaning today's: <code>before = rows</code>, then <code>rows.remove(-1.0)</code>, then <code>rows = rows + [0.5]</code>. The list started as <code>[0.7, -1.0]</code>. What is <code>before</code> now?</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats assignment as a copy: before and rows were one list when remove ran">[0.7, -1.0]</div>
+      <div class="opt" data-ok>[0.7]</div>
+      <div class="opt" data-why="Treats rows + [0.5] as a change in place: it builds a new list and rebinds rows only">[0.7, 0.5]</div>
+      <div class="opt" data-why="Applies neither rule: the removal reached before, the addition did not">[0.7, -1.0, 0.5]</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> <code>remove</code> mutates the one shared list, so <code>before</code> loses the value too. <code>rows + [0.5]</code> makes a new list and ties only <code>rows</code> to it.</div>
+  </div>
+  <aside class="notes"><p>Answer: [0.7]. Both rules in one question: mutation is seen through every name, rebinding through one. If the room splits between the first and the second option, redraw the labels of the "no copy" slide.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-1" data-auto="lab" data-lab="1.1">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI off. Watch for people running the snippets first: the lab is worth nothing that way, say so kindly. The check prints a score and asks for a note per miss; it passes with wrong predictions as long as each has its note. Typical misses: s4, s6, s7, s8. Use the last four minutes to have two people explain one miss each. Snippet 8 returns in session 2.</p></aside>
 </section>
 
 <!-- Session 2 -->
 
 <section class="slide section" id="s2" data-auto="section" data-session="2"></section>
 
-<section class="slide" id="s2-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="one-job-per-function" data-lo="LO3" data-label="One job">
+  <div class="kicker">Decomposition</div>
+  <h2>A forty-line script does four jobs, and you can test none of them</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>1 · Load</b>read the file into rows</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>2 · Clean</b>keep the numbers, count the rest</div>
+    <div class="arrow">→</div>
+    <div class="step c-purple"><b>3 · Compute</b>the amount due</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>4 · Present</b>four lines of text</div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <ul class="bullets mt">
+    <li>To check the tariff you must have a file, run everything, and read the last line</li>
+    <li>A function per job gives each job a <b>name</b>, a <b>way in</b> and a <b>way out</b></li>
+  </ul>
+  <aside class="notes"><p>The script is <code>monthly_bill.py</code> of lab 1.2: meter M-0042, 27 days billed and 3 skipped, 17.211 cubic metres, 44.95 SAR. The tariff is invented for the course. Ask: the tariff changes; how do you prove the new one is right for exactly 15 cubic metres?</p></aside>
 </section>
 
-<section class="slide" id="s2-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="contract-in-signature" data-lo="LO3" data-label="Contract">
+  <div class="kicker">Contracts</div>
+  <h2>Everything in comes through parameters; everything out through <code>return</code></h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="monthly_bill.py"><code class="language-python">def bill(total_m3):
+    """Take a month's consumption in
+    cubic metres; return the amount
+    due in SAR."""
+    if total_m3 &lt;= 15:
+        amount = total_m3 * 2.0
+    else:
+        amount = 30.0 + (total_m3 - 15) * 4.5
+    return amount + 5.0</code></pre>
+    <ul class="bullets">
+      <li>The first line and the docstring are the <b>contract</b>: what goes in, what comes out</li>
+      <li>No name from outside is read, nothing outside is changed</li>
+      <li>So one line checks it: <code>bill(15.0) == 35.0</code></li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="callout warn mt"><b>What goes wrong.</b> A function that <code>print</code>s its result returns <code>None</code>. The caller has nothing to work with.</div>
+  <aside class="notes"><p>The three values the lab's tests use: bill(0.0) is 5.0, bill(15.0) is 35.0, bill(20.0) is 57.5. Print against return is the most common beginner confusion: show <code>x = print(3)</code> then <code>print(x)</code> if the room hesitates.</p></aside>
+</section>
+
+<section class="slide" id="pure-core-effects-edge" data-lo="LO3" data-label="Edges">
+  <div class="kicker">Where the effects go</div>
+  <h2>Keep files and printing at the edge, and the middle becomes easy to test</h2>
+  <div class="cols cols-3">
+    <div class="card c-amber"><h4>Edge in</h4><p class="small mb0"><code>load_rows(path)</code> is the only function that opens a file.</p></div>
+    <div class="card c-teal"><h4>The middle</h4><p class="small mb0"><code>clean</code>, <code>bill</code>, <code>format_bill</code>: values in, values out. The same input always gives the same output.</p></div>
+    <div class="card c-amber"><h4>Edge out</h4><p class="small mb0"><code>main()</code> is the only place that prints.</p></div>
+  </div>
+  <div class="callout tip mt"><b>You will see this shape all week.</b> Miqyas loads at one end, writes a report at the other, and everything between is functions you can call with three rows typed by hand.</div>
+  <aside class="notes"><p>Do not use the word "pure" as jargon; "same input, same output, touches nothing else" is enough. Three of the four functions of the lab can be tested without any file on disk: that is the first question of the lab's "check yourself".</p></aside>
+</section>
+
+<section class="slide" id="scope-local-names" data-lo="LO1 LO3" data-label="Scope">
+  <div class="kicker">Scope</div>
+  <h2>A name bound inside a function lives inside that call, and nowhere else</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s5.py"><code class="language-python">total = 0
+
+def add(value):
+    total = value
+    return total
+
+add(5)
+print(total, add(7))     # 0 7</code></pre>
+    <ul class="bullets">
+      <li>Assigning to <code>total</code> inside <code>add</code> makes a <b>local</b> name</li>
+      <li>The <code>total</code> of line 1 is a different name in a different scope</li>
+      <li>A function may <b>read</b> an outer name; assigning never reaches it</li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>So do not rely on outer names at all.</b> Pass what the function needs; return what it produces.</div>
+  <aside class="notes"><p>Snippet 5. There is a <code>global</code> statement; mention it only to say the course never needs it. The useful consequence: a function cannot quietly change your variables by assignment. It can change your lists by mutation, as snippet 4 showed.</p></aside>
+</section>
+
+<section class="slide" id="call-stack" data-lo="LO1" data-label="Call stack">
+  <div class="kicker">The call stack</div>
+  <h2>Every call gets its own frame of names, stacked on the caller's</h2>
+  <div class="cols cols-2">
+    <div class="flow v">
+      <div class="step c-coral"><b>bill(17.211)</b>total_m3, amount</div>
+      <div class="arrow">↓</div>
+      <div class="step c-cyan"><b>main()</b>rows, values, skipped</div>
+      <div class="arrow">↓</div>
+      <div class="step c-navy"><b>the module</b>load_rows, clean, bill, main</div>
+    </div>
+    <ul class="bullets">
+      <li>The top frame is the function running now</li>
+      <li>When it returns, its frame and its local names are gone</li>
+      <li>A <b>traceback</b> is this stack printed at the moment of an error, the top frame last</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The stack is read from the bottom of the slide up: the module called main, main called bill. Tie it forward: on Day 3 they read tracebacks from the last line upward, which is this picture. A debugger's "step into" and "step out" move along it.</p></aside>
+</section>
+
+<section class="slide" id="docstrings-and-doctests" data-lo="LO3" data-label="Docstrings">
+  <div class="kicker">Saying the contract</div>
+  <h2>A docstring states the contract; a doctest is an example that runs</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="readings.py"><code class="language-python">def parse_value(text):
+    """Turn the consumption cell into
+    cubic metres.
+
+    &gt;&gt;&gt; parse_value(" 0.750 ")
+    0.75
+    &gt;&gt;&gt; parse_value("12")
+    12.0
+    """</code></pre>
+    <ul class="bullets">
+      <li>First line: what goes in, what comes out, in words</li>
+      <li>Lines that start with <code>&gt;&gt;&gt;</code> are a session someone can retype</li>
+      <li><code>python -m doctest file.py</code> runs them and reports any that no longer hold</li>
+    </ul>
+  </div>
+  <div class="callout note mt"><b>Examples age well.</b> A sentence can drift from the code without anyone noticing; an example that runs cannot.</div>
+  <aside class="notes"><p>This function is from Miqyas, the tool they meet on Day 3. Doctests are for a few telling examples; the full tests live in test files, which is Day 4. The stretch of lab 1.2 adds one doctest.</p></aside>
+</section>
+
+<section class="slide" id="main-guard" data-lo="LO3 LO6" data-label="Main guard">
+  <div class="kicker">Run or import</div>
+  <h2>The main guard lets a file be both a script and something to import</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="monthly_bill.py"><code class="language-python">def main():
+    rows = load_rows("data/sample_meter.csv")
+    values, skipped = clean(rows)
+    amount = bill(sum(values))
+    ...
+
+if __name__ == "__main__":
+    main()</code></pre>
+    <ul class="bullets">
+      <li>Run the file: Python sets <code>__name__</code> to <code>"__main__"</code>, so <code>main()</code> runs</li>
+      <li>Import the file: <code>__name__</code> is <code>"monthly_bill"</code>, nothing runs</li>
+      <li>The tests import it. Without the guard, every test run would print a bill</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The lab's check imports the file and expects no output. This two-line idiom is the seed of Day 4, session 2, where the script becomes a command with arguments.</p></aside>
+</section>
+
+<section class="slide" id="default-argument-trap" data-lo="LO1" data-label="Defaults">
+  <div class="kicker">A trap in the signature</div>
+  <h2>A default value is made once, when the function is defined</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="snippets/s8.py"><code class="language-python">def tag(reading, tags=[]):
+    tags.append(reading)
+    return tags
+
+first = tag("high")
+second = tag("low")
+print(first, second, first is second)</code></pre>
+    <div class="stack">
+      <div class="card c-coral"><h4>It prints</h4><p class="small mb0"><code>['high', 'low'] ['high', 'low'] True</code></p></div>
+      <pre class="code s" data-file="the fix"><code class="language-python">def tag(reading, tags=None):
+    if tags is None:
+        tags = []</code></pre>
+    </div>
+  </div>
+  <div class="callout warn mt"><b>One list for every call.</b> A mutable default remembers what earlier calls did. Remember this slide on Day 3.</div>
+  <aside class="notes"><p>Snippet 8. It is aliasing again: the default object is shared by all calls that do not pass their own. One of the seeded defects of the Day 3 debugging lab is exactly this, in a function that loads readings; do not say which.</p></aside>
+</section>
+
+<section class="slide" id="check-function-contract" data-lo="LO3" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which version of the function can be tested with one line?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead">Shouq needs a function that counts the rows of a month with an empty consumption cell. Four colleagues propose one each. Which can be checked by a single <code>assert</code>, with no file on disk?</p>
+    <div class="opts">
+      <div class="opt" data-why="Hides an input: the function opens a fixed file, so a test needs that file and cannot choose the rows">count_missing() opens the month's file and returns the count</div>
+      <div class="opt" data-why="Confuses showing with returning: the caller receives None and has nothing to compare">count_missing(rows) prints the count</div>
+      <div class="opt" data-ok>count_missing(rows) returns the count</div>
+      <div class="opt" data-why="Uses a hidden output: the result lands in a global that any other code can overwrite before it is read">count_missing(rows) stores the count in a global named missing</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Rows in through the parameter, a number out through <code>return</code>: <code>assert count_missing([{"consumption_m3": ""}]) == 1</code>.</div>
+  </div>
+  <aside class="notes"><p>Answer: the third. Each wrong option breaks one half of the contract: a hidden input, no output, a hidden output. Ask which of the three the forty-line script has (all of them).</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-2" data-auto="lab" data-lab="1.2">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. The tests are the contract: send people to <code>test_bill.py</code> before they write a line. At the start pytest stops with an import error, which is expected. The bill must stay Meter M-0042, 27 days and 3 skipped, 17.211 m3, 44.95 SAR. Typical problems: a function still reading the global rows; print in place of return; no main guard, which the check reports as output on import. Anyone stuck after ten minutes: write <code>bill</code> together, the smallest of the four.</p></aside>
 </section>
 
 <!-- Session 3 -->
 
 <section class="slide section" id="s3" data-auto="section" data-session="3"></section>
 
-<section class="slide" id="s3-idea" data-lo="LO3">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="hints-are-promises" data-lo="LO3" data-label="Hints">
+  <div class="kicker">Type hints</div>
+  <h2>A type hint is a promise about a value, written where a tool can check it</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="parser.py"><code class="language-python">def parse_value(text: str) -> float | None:
+    if text == "":
+        return None
+    return float(text)</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li><code>text: str</code>: callers promise to pass text</li>
+      <li><code>-> float | None</code>: the function promises a number, or <code>None</code></li>
+      <li>Python itself <b>ignores</b> hints when it runs the code</li>
+      <li>A <b>type checker</b> reads them and finds every line that breaks a promise</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>The contract of session 2, made precise enough for a machine. Stress the third bullet: <code>parse_value(3)</code> still runs and still crashes; hints are for the checker and for the reader.</p></aside>
 </section>
 
-<section class="slide" id="s3-steps" data-lo="LO3">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="built-in-generics" data-lo="LO3" data-label="Collections">
+  <div class="kicker">Hints for collections</div>
+  <h2>Say what is inside: a list of what, a dictionary from what to what</h2>
+  <table class="t">
+    <tr><th>Hint</th><th>Reads as</th><th>At Manahil</th></tr>
+    <tr><td><code>list[float]</code></td><td>a list of numbers</td><td>one meter's month</td></tr>
+    <tr><td><code>dict[str, int]</code></td><td>text keys, whole-number values</td><td>readings per district</td></tr>
+    <tr><td><code>set[str]</code></td><td>a set of text</td><td>the known meter ids</td></tr>
+    <tr><td><code>tuple[str, str, float]</code></td><td>exactly three values, in this order</td><td>meter, day, cubic metres</td></tr>
+    <tr><td><code>dict[str, str]</code></td><td>text to text</td><td>one row of a CSV file</td></tr>
+  </table>
+  <div class="callout tip mt"><b>The last row matters.</b> A CSV reader gives you text for every cell, numbers included. The hint says so, and the checker stops you adding text to a number.</div>
+  <aside class="notes"><p>These are the built-in names, lower case, no import needed on any Python the course supports. Tomorrow's collections session uses these same five shapes.</p></aside>
+</section>
+
+<section class="slide" id="none-is-a-value" data-lo="LO3" data-label="None">
+  <div class="kicker">The value that is not there</div>
+  <h2>"Or <code>None</code>" in a hint forces every caller to handle the missing case</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="before"><code class="language-python">value = parse_value(text)
+return meter_id, day, round(value, 3)</code></pre>
+    <pre class="code" data-file="after"><code class="language-python">value = parse_value(text)
+if value is None:
+    return None
+return meter_id, day, round(value, 3)</code></pre>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <ul class="bullets mt">
+    <li>Before: an empty cell crashes at <code>round(None, 3)</code>, some day, on some file</li>
+    <li>After the check, the checker knows <code>value</code> is a <code>float</code> on the last line: this is called <b>narrowing</b></li>
+  </ul>
+  <div class="callout warn mt"><b>Not <code>if not value</code>.</b> A reading of <code>0.0</code> is a real reading, and it is "not value" too.</div>
+  <aside class="notes"><p>The warning is a real bug in utility data: empty houses read zero. <code>is None</code> asks the question you mean. Most of the nine errors of the lab are this one pattern in different places.</p></aside>
+</section>
+
+<section class="slide" id="checker-reads-annotated-only" data-lo="LO3" data-label="No hints">
+  <div class="kicker">From the lab's run</div>
+  <h2>On code without hints, a clean report from the checker proves nothing</h2>
+  <div class="cols cols-3">
+    <div class="stat center"><div class="big">0</div><div class="lbl">issues reported on the supplied parser, while 4 of its 6 tests fail</div></div>
+    <div class="stat center"><div class="big">9</div><div class="lbl">errors in strict mode: every one says "missing a type annotation"</div></div>
+    <div class="stat center"><div class="big">9</div><div class="lbl">different errors once five signatures are annotated: each a real bug</div></div>
+  </div>
+  <div class="callout tip mt"><b>Strict mode</b> refuses unannotated functions, so "no issues" means what it says. The labs and the capstone use <code>mypy --strict</code>.</div>
+  <aside class="notes"><p>Numbers from the reference run of lab 1.3 with mypy: plain run "Success: no issues found in 1 source file"; strict run on the unannotated file 9 errors; after adding only the five signatures 9 errors again, none of them about annotations. By default mypy checks only functions that carry annotations. Sources: mypy documentation.</p></aside>
+</section>
+
+<section class="slide" id="read-a-checker-report" data-lo="LO3" data-label="The report">
+  <div class="kicker">Reading the report</div>
+  <h2>Every line of the report is a place, a complaint and a code</h2>
+  <pre class="code s" data-file="uv run mypy --strict parser.py"><code class="language-text">parser.py:26: error: "None" object is not iterable  [misc]
+parser.py:43: error: Unsupported operand types for > ("float" and "str")  [operator]
+parser.py:45: error: Incompatible return value type (got "str", expected "float | None")  [return-value]</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-teal"><h4>Line 26</h4><p class="small mb0">Three names are unpacked from something that may be <code>None</code>.</p></div>
+    <div class="card flat c-coral"><h4>Line 43</h4><p class="small mb0">A number is compared with text. Python would raise a TypeError here.</p></div>
+    <div class="card flat c-purple"><h4>Line 45</h4><p class="small mb0">The function returns text where its hint promised a number.</p></div>
+  </div>
+  <aside class="notes"><p>Three of the nine messages of the lab, copied from the run. Method: start at the top, open the line, ask "which promise does this line break?", fix, run again. One fix often removes several messages. The code in brackets is what you search the documentation for.</p></aside>
+</section>
+
+<section class="slide" id="hints-do-not-validate-data" data-lo="LO3 LO4" data-label="Limits">
+  <div class="kicker">What hints cannot do</div>
+  <h2>A checker verifies your code, not the file someone sends you</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>The checker catches</h4><p class="small mb0">Text added to a number, a forgotten <code>None</code>, a wrong return, a misspelt field of a record: mistakes in the <b>program</b>.</p></div>
+    <div class="card c-coral"><h4>The checker cannot see</h4><p class="small mb0">A cell that holds <code>N/A</code>, a reading of 9,000 cubic metres, a meter that is not in the registry: mistakes in the <b>data</b>.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Both are needed.</b> Hints keep the code honest. Validation at the door, with a reason for every rejected row, keeps the data honest. That is Day 3.</div>
+  <aside class="notes"><p>Prevent the false comfort: "it type-checks" says nothing about whether row 12,440 holds a number. The lab of session 4 builds the first validation function; Day 3 makes it report reasons.</p></aside>
+</section>
+
+<section class="slide" id="checker-and-linter" data-lo="LO3" data-label="Tools">
+  <div class="kicker">Two kinds of tool</div>
+  <h2>A type checker and a linter read your code without running it</h2>
+  <table class="t">
+    <tr><th>Tool</th><th>Asks</th><th>Examples</th><th>In the workspace</th></tr>
+    <tr><td>Type checker</td><td>do the values fit the hints?</td><td>mypy, Pyright</td><td><code>uv run mypy --strict file.py</code></td></tr>
+    <tr><td>Linter</td><td>is anything unused, shadowed or suspicious?</td><td>Ruff</td><td><code>uv run ruff check</code></td></tr>
+    <tr><td>Formatter</td><td>is the layout the usual one?</td><td>Ruff</td><td><code>uv run ruff format</code></td></tr>
+  </table>
+  <div class="callout note mt"><b>The names are examples.</b> An editor such as VS Code or VSCodium shows the same reports as you type. What matters is that a clean report is part of "done".</div>
+  <aside class="notes"><p>Tools are examples, not endorsements; any checker that implements the standard typing rules will do. The capstone rubric scores "structure and types" on a clean strict report.</p></aside>
+</section>
+
+<section class="slide" id="check-optional-return" data-lo="LO3" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>The checker rejects this line. What is the right repair?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3">
+    <p class="lead"><code>highest(lines)</code> is annotated <code>-> float | None</code>. A colleague writes <code>peak = highest(lines) * 1.1</code> and the checker reports that <code>None</code> does not support <code>*</code>.</p>
+    <div class="opts">
+      <div class="opt" data-ok>Test <code>peak is None</code> first and decide what an empty file means; multiply only after that</div>
+      <div class="opt" data-why="Silences the report and keeps the crash: an empty file still multiplies None at run time">Add <code># type: ignore</code> to the line, since the files are never empty in practice</div>
+      <div class="opt" data-why="Changes the promise to fit the caller: the function still returns None for an empty file, now without warning anyone">Change the hint of <code>highest</code> to <code>-> float</code></div>
+      <div class="opt" data-why="Treats zero as missing: a month whose highest reading is 0.0 would be handled as if there were no readings">Write <code>if not highest(lines)</code> and return early</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The hint says a missing value is possible. Only the caller knows what to do then, and the checker makes sure the question is answered.</div>
+  </div>
+  <aside class="notes"><p>Answer: the first. The second and third are the two ways people make a checker quiet without making the code right; the lab's check refuses both. The fourth is the zero trap from the None slide.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-3" data-auto="lab" data-lab="1.3">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI tutor. Let the room be surprised by step 1: four failing tests and "Success: no issues found". Give the five signatures on the lab page to anyone who is slow at step 2; the learning is in step 3. After the signatures the count is 9. Typical problems: annotating <code>highest</code> as returning text because the code does; starting the total at 0 and not 0.0; <code>if not value</code>. The check refuses "type: ignore" and Any.</p></aside>
 </section>
 
 <!-- Session 4 -->
 
 <section class="slide section" id="s4" data-auto="section" data-session="4"></section>
 
-<section class="slide" id="s4-idea" data-lo="LO1">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="what-is-a-parsons-problem" data-lo="LO1" data-label="Parsons">
+  <div class="kicker">Parsons problems</div>
+  <h2>All the lines are given, scrambled. You decide order and indentation.</h2>
   <div class="cols cols-2">
+    <pre class="code" data-file="scrambled"><code class="language-python">return total
+if value >= 0:
+total = value
+def total_valid(values):
+total += value
+for value in values:
+total = 0.0</code></pre>
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>No syntax to recall: every character you need is on the page</li>
+      <li>What is left is the <b>structure</b>: what runs first, what is inside what</li>
+      <li>One line is a <b>distractor</b>: it looks right and does not belong</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt"><b>Why practise this.</b> It is the skill between reading and writing, and it is one part of the supervised check.</div>
+  <aside class="notes"><p>This is the warm-up of lab 1.4. Let the room solve it aloud: someone names the first line, the next person the second. The distractor is <code>total = value</code>: ask what the function would return for [1.5, 2.5] with it (2.5, the last value).</p></aside>
 </section>
 
-<section class="slide" id="s4-steps" data-lo="LO1">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
+<section class="slide" id="bind-before-use" data-lo="LO1" data-label="Order">
+  <div class="kicker">Rule 1</div>
+  <h2>A line can run only after the lines that bind the names it reads</h2>
   <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+    <div class="step c-teal"><b>text = row[…].strip()</b>needs <code>row</code>, a parameter</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>value = float(text)</b>needs <code>text</code></div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>if value &lt; 0 or value &gt; 200:</b>needs <code>value</code></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <ul class="bullets mt">
+    <li>For each line, list the names it <b>reads</b>; find the line that <b>binds</b> each</li>
+    <li>That gives you chains like this one before you think about meaning at all</li>
+    <li>Run a line too early and Python says <code>NameError: name 'value' is not defined</code></li>
+  </ul>
+  <aside class="notes"><p>It is session 1 again: names are bound by assignment, by <code>def</code>, by parameters, by <code>for</code>. A NameError in the lab means an order mistake, and the message names the name.</p></aside>
+</section>
+
+<section class="slide" id="indentation-is-structure" data-lo="LO1" data-label="Indentation">
+  <div class="kicker">Rule 2</div>
+  <h2>Indentation says what belongs to what, and one level changes the answer</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="right"><code class="language-python">for value in values:
+    if value >= 0:
+        total += value
+return total</code></pre>
+    <pre class="code" data-file="one level off"><code class="language-python">for value in values:
+    if value >= 0:
+        total += value
+    return total</code></pre>
+  </div>
+  <ul class="bullets mt">
+    <li>Left: return after the loop, the sum of all valid values</li>
+    <li>Right: return <b>inside</b> the loop, so the function ends after the first value</li>
+    <li>Both are valid Python. Only a test, or a trace, tells them apart</li>
+  </ul>
+  <aside class="notes"><p>For [1.5, -2.0, 0.0, 2.5] the left version returns 4.0 and the right one 1.5. The lab's warm-up test uses exactly this list. Ask: what does the right version return for an empty list? (None: the loop body never runs and the function falls off the end.)</p></aside>
+</section>
+
+<section class="slide" id="guard-clauses-first" data-lo="LO1 LO4" data-label="Guards">
+  <div class="kicker">The shape of a validation function</div>
+  <h2>Reject each bad case early; what reaches the last line is good</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="validate.py"><code class="language-python">def validate_reading(row, known):
+    text = row["consumption_m3"].strip()
+    if text == "":
+        return "MISSING_VALUE"
+    ...
+    if row["meter_id"] not in known:
+        return "UNKNOWN_METER"
+    return ""</code></pre>
+    <ul class="bullets">
+      <li>Each <code>if</code> guards one <code>return</code> with one reason</li>
+      <li>The order of the guards is part of the specification</li>
+      <li>The final line is not indented under any <code>if</code></li>
+    </ul>
+  </div>
+  <div class="callout tip mt"><b>Pair them up.</b> In a scrambled validation function, match every <code>if</code> with its <code>return</code> first. Half the puzzle is done.</div>
+  <aside class="notes"><p>The four reasons of the lab, in order: MISSING_VALUE, NOT_A_NUMBER, OUT_OF_RANGE, UNKNOWN_METER. They are four of the six reason codes Miqyas reports; the month file holds 40, 15, 18 and 20 rows of them. On Day 3 the returns become exceptions with a reason.</p></aside>
+</section>
+
+<section class="slide" id="try-wraps-one-line" data-lo="LO1 LO4" data-label="try">
+  <div class="kicker">Where the try goes</div>
+  <h2><code>try</code> wraps the one line that can fail; <code>except</code> names that failure</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="validate.py"><code class="language-python">try:
+    value = float(text)
+except ValueError:
+    return "NOT_A_NUMBER"</code></pre>
+    <ul class="bullets">
+      <li><code>float("N/A")</code> raises <b>ValueError</b></li>
+      <li><code>except TypeError:</code> would catch nothing here: the error passes through and the function crashes</li>
+      <li><code>except:</code> alone would catch everything, including your own typing mistakes</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>Name the exception you expect.</b> You find its name by trying the failing call once and reading the last line of what Python prints.</div>
+  <aside class="notes"><p>Demonstration: at a Python prompt type <code>float("N/A")</code> and read "ValueError: could not convert string to float: 'N/A'". Then <code>float("0,742")</code>: also ValueError; the month file has 7 values written with a decimal comma. Exceptions get a whole session on Day 3.</p></aside>
+</section>
+
+<section class="slide" id="distractors-look-alike" data-lo="LO1" data-label="Distractors">
+  <div class="kicker">Distractors</div>
+  <h2>Decide between two lines that look alike by running one concrete row in your head</h2>
+  <table class="t">
+    <tr><th>The row has</th><th><code>if value &lt; 0 or value &gt; 200:</code></th><th><code>if value &lt; 0 and value &gt; 200:</code></th></tr>
+    <tr><td><code>"250"</code></td><td>False or True: <b>rejected</b></td><td>False and True: accepted</td></tr>
+    <tr><td><code>"-0.5"</code></td><td>True or False: <b>rejected</b></td><td>True and False: accepted</td></tr>
+    <tr><td><code>"0.742"</code></td><td>accepted</td><td>accepted</td></tr>
+  </table>
+  <div class="callout tip mt"><b>No number is below 0 and above 200 at once.</b> The second line never rejects anything. You see it in ten seconds with one value; you may not see it in ten minutes of staring.</div>
+  <aside class="notes"><p>The habit to build: do not judge a line by how it looks; give it an input. This is the same move as predicting output in session 1, on one line. It is also how to review a line an assistant suggests.</p></aside>
+</section>
+
+<section class="slide" id="from-lines-to-writing" data-lo="LO1 LO3" data-label="Next step">
+  <div class="kicker">From reading to writing</div>
+  <h2>The same three questions build a function when no lines are given</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>1 · What is the contract?</h4><p class="small mb0">Inputs, output, and the cases in words. Session 2.</p></div>
+    <div class="card c-cyan"><h4>2 · What must exist first?</h4><p class="small mb0">The chain of names: load, then convert, then compare. Today's rule 1.</p></div>
+    <div class="card c-coral"><h4>3 · What is inside what?</h4><p class="small mb0">Which lines belong to the loop, the branch, the try. Today's rule 2.</p></div>
+  </div>
+  <div class="callout note mt"><b>From tomorrow you write.</b> Every lab still starts from a supplied state and a set of tests that say what "right" means.</div>
+  <aside class="notes"><p>Close the day's arc: trace, state a contract, promise types, order lines. Tomorrow they write functions over collections; if someone freezes on a blank file, send them back to these three questions.</p></aside>
+</section>
+
+<section class="slide" id="check-parsons-order" data-lo="LO1" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Where does the last line of the function go?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1">
+    <p class="lead">A function counts the good rows. Placed so far: <code>count = 0</code>, the <code>for</code> line, the <code>if</code> line, <code>count += 1</code>. Left: <code>return count</code>. A test shows it returns 1 for 30 good rows.</p>
+    <div class="opts">
+      <div class="opt" data-why="Puts the result before the work: count is still 0 here and the loop below never runs">Directly under <code>count = 0</code>, before the loop</div>
+      <div class="opt" data-why="Returns from inside the branch: the function ends at the first good row, which is the reported 1">Under <code>count += 1</code>, at the same depth</div>
+      <div class="opt" data-why="Returns from inside the loop: the function ends after the first row, whatever it is">Under the <code>if</code> line, at the depth of the <code>if</code></div>
+      <div class="opt" data-ok>After the loop, at the depth of the <code>for</code> line</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A result that depends on every row is returned once, after the loop. A return of 1 for 30 good rows says the return sits inside the loop.</div>
+  </div>
+  <aside class="notes"><p>Answer: the last option. The scenario describes the bug of the second option: ask which wrong position produces exactly 1 for 30 good rows, and which produces 0 or 1 depending on the first row (the third).</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-4" data-auto="lab" data-lab="1.4">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI off: this is practice for the supervised check. Paper first, numbers and depths, then the editor. The files are not valid Python until the lines are in order, so the editor underlines everything at the start; say so. The check accepts only supplied lines and none of the four distractors. Typical problems: the final return indented under the last if; "return NOT_A_NUMBER" placed under try. The order of the last two guards is fixed by the specification and by the last test, not by names.</p></aside>
 </section>
 
 <section class="slide" id="wrap-up">
   <div class="kicker">Day 1 · wrap-up</div>
   <h2>Three things to keep</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-coral"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-purple"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
+    <div class="card c-teal"><h4>One object, many names</h4><p class="small mb0">Assignment and calls never copy. Mutation is seen through every name; rebinding through one.</p></div>
+    <div class="card c-coral"><h4>A function is a contract</h4><p class="small mb0">In through parameters, out through return, effects at the edge. Hints make the contract checkable.</p></div>
+    <div class="card c-purple"><h4>Give the line an input</h4><p class="small mb0">To judge a line, a distractor or a suggestion, run one concrete value through it by hand.</p></div>
   </div>
+  <aside class="notes"><p>Ask each table for the line of code that surprised them most today. Collect the answers of drill 1 now if you did not in session 1.</p></aside>
 </section>
 
 <section class="slide dark" id="next" data-label="Next">
   <div class="kicker">Next</div>
   <h2>Day 2: Collections for data work</h2>
-  <p class="lead">REPLACE: what participants prepare before then; unfinished labs can be finished at home</p>
-  <aside class="notes">REPLACE: accounts, installs or reading participants need before the next unit</aside>
+  <p class="lead">Finish any lab at home from its own folder; each one starts from a supplied state. Tomorrow opens with drill 2, on lists and dictionaries that share their contents.</p>
+  <aside class="notes"><p>Nothing to install for tomorrow. Lab 2.1 writes a 100,000-row file when the workspace is built; anyone who built the workspace today already has it.</p></aside>
 </section>

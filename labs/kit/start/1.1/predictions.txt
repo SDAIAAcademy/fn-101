@@ -1,0 +1,10 @@
+# One line per snippet: what does it print? Write it before you run anything.
+# A snippet that prints two lines: write both on one line, with " / " between them.
+s1:
+s2:
+s3:
+s4:
+s5:
+s6:
+s7:
+s8:

@@ -1,37 +1,67 @@
 <article class="lab" data-lab="1.1">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Say what eight short programs print before running any of them, then find, for every wrong answer, the exact line you misread. The skill is the prediction; the score is only where you start from.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The workspace (built in the first step) and its folder <code>1.1</code>: eight files in <code>snippets/</code>, <code>predictions.txt</code> and <code>misread.md</code></li>
+    <li>Paper and a pen</li>
+    <li>A step visualiser: Python Tutor in a browser, or the supplied <code>trace.py</code>, which works offline</li>
+    <li>AI policy: off. No assistant, and no running the code before your prediction is written down</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Build the workspace and open the lab folder <span class="min">4 min</span></h3>
+    <p>From the course folder, build the workspace once. It appears beside the course folder and holds one folder per lab.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run labs/kit/setup.py
+cd ../manahil-labs
+uv run lab.py list
+cd 1.1</code></pre>
+    <p>Open the folder <code>manahil-labs</code> in your editor. Read <code>snippets/s1.py</code> to <code>s8.py</code>; do not run them.</p>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Predict the output of all eight on paper <span class="min">10 min</span></h3>
+    <p>For each snippet draw a small table: one column per name, one row per line that runs. When two names hold the same list or dictionary, draw one box and two arrows, not two boxes. Then write what the snippet prints into <code>predictions.txt</code>, one line per snippet.</p>
+    <pre class="code" data-file="predictions.txt"><code class="language-text">s1: [1, 2, 3, 4] 4
+s2:
+s7: first printed line / second printed line</code></pre>
+    <p>The first line above is the answer to <code>s1</code>, as a model of the form. Snippet 7 prints two lines: write both on one line with <code> / </code> between them.</p>
+  </div>
+
+  <div class="step">
+    <h3>Step through each wrong one in a visualiser <span class="min">7 min</span></h3>
+    <p>Now run the check. It tells you which predictions do not match, not what the right answer is.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../lab.py check 1.1
+uv run ../trace.py snippets/s4.py</code></pre>
+    <p>For each snippet that does not match, step through it: paste it into Python Tutor and press Next, or run <code>trace.py</code> on it. Stop at the first line where the picture differs from your table. That line is what you misread.</p>
+  </div>
+
+  <div class="step">
+    <h3>Note what you misread; run the check <span class="min">4 min</span></h3>
+    <p>In <code>misread.md</code> write one line per wrong prediction: the snippet, the line, and what that line really does. Correct nothing in <code>predictions.txt</code>: the wrong answers are your record.</p>
+    <pre class="code" data-file="misread.md"><code class="language-text">s4: line 3 gives the name log a new empty list; the list that day names is not touched after line 2</code></pre>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../lab.py check 1.1</code></pre>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>Change one line of snippet 7 so that both grids print the same, and predict the new output before you run it. Then explain to a neighbour why <code>[[0] * 2] * 3</code> and the comprehension differ.</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>In snippet 4, the function assigns <code>log = []</code>. Why does the caller's list keep both values?</li>
+    <li>In snippet 6, which part of the copy is shared with the original, and which is not?</li>
+    <li>Snippet 8 calls <code>tag</code> twice with one argument each. How many lists exist?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Reference outputs: s1 <code>[1, 2, 3, 4] 4</code>; s2 <code>10 15</code>; s3 <code>[0.7, 0.9, 1.1] [9.9, 0.9]</code>; s4 <code>[1.2, 0.8]</code>; s5 <code>0 7</code>; s6 <code>M-0042 [0.6, 0.7]</code>; s7 <code>[[5, 0], [5, 0], [5, 0]]</code> then <code>[[5, 0], [0, 0], [0, 0]]</code>; s8 <code>['high', 'low'] ['high', 'low'] True</code>.</p>
+    <p>The check passes when all eight have an answer and every wrong one has a note of at least four words; it prints the score but does not require one. Expect most misses on s4 (rebinding a parameter), s6 (a shallow copy), s7 and s8 (one list, many references). A room that scores eight of eight did not predict first: ask two people to trace s7 aloud.</p>
+    <p>Answers to the questions: the function mutated the caller's list before it rebound its own name; the outer dictionary is new, the inner list is shared; one list, created when the function was defined. Reference files: <code>labs/solutions/1.1/</code>.</p>
   </details>
 </article>
