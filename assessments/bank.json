@@ -639,6 +639,296 @@
       "level": "apply",
       "pool": "practice",
       "weight": 1
+    },
+    {
+      "id": "q-d4-execution-counts",
+      "type": "single",
+      "prompt": "A colleague sends a saved notebook. Reading down the page, the numbers beside its five code cells are 1, 2, 6, 7 and 5. What does this tell you before you run anything?",
+      "options": [
+        "The last cell was run before the two cells above it were run for the last time, and some runs are no longer visible",
+        "The notebook has seven cells and two are hidden",
+        "The third cell took the longest to run",
+        "The notebook was run top to bottom, and the numbers show how often each cell was run"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "The numbers record the order of running in that kernel. 5 below 6 and 7 means the bottom cell ran earlier than the last runs of the two above it; the missing 3 and 4 are runs of cells that were run again or deleted.",
+      "misconceptions": [
+        "",
+        "Reads a gap in the counts as cells that exist and cannot be seen",
+        "Reads the count as a duration",
+        "Reads the count as a number of runs per cell, and misses that the order on the page was not the order of running"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day4",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-works-in-my-kernel",
+      "type": "single",
+      "prompt": "An analyst's notebook has produced the monthly figures for weeks. A colleague opens the same file, chooses 'restart and run all', and the third cell stops with NameError: name 'limits' is not defined. No cell on the page defines limits. What is the most likely history?",
+      "options": [
+        "The colleague's Python is an older version",
+        "The file was damaged when it was sent",
+        "A cell that defined limits was run once and later deleted; the analyst's kernel still remembered the name",
+        "The name limits is built into the analyst's installation"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "Deleting a cell removes it from the page and not from the kernel's memory. The notebook kept working in the kernel that had run the cell, and in no other.",
+      "misconceptions": [
+        "A version difference does not make a name that is defined nowhere appear",
+        "A damaged file fails to open; it does not lose one definition cleanly",
+        "",
+        "Takes a name that lived in one kernel's memory for a property of the installation"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day4",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-choose-home",
+      "type": "single",
+      "prompt": "Three programs at a utility need the same rule for deciding whether a meter reading is valid: the monthly report, a ticket tool, and a data-quality dashboard. Each currently has its own copy, and the copies have started to differ. Where should the rule live?",
+      "options": [
+        "In a notebook that all three teams open",
+        "In the script of the monthly report, since it was written there first",
+        "In each program, with a comment that says the copies must be kept the same",
+        "In a module that the three programs import, with its tests beside it"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "Code that more than one program needs belongs in an importable module: one definition, one set of tests, and every caller gets the same rule.",
+      "misconceptions": [
+        "A notebook is for looking at a question; other programs cannot rely on its cells",
+        "A script runs a job; importing a rule from it would run the job too, or tie two tools to one report",
+        "Leaves the cause in place: copies kept in step by a comment are the copies that already differ",
+        ""
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day4",
+      "session": 1,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-exit-code",
+      "type": "single",
+      "prompt": "A scheduled job runs a reporting tool every night and mails the report if the tool succeeded. One night the input file was missing; the tool printed 'no such file', wrote nothing, and the job mailed last night's report again as if it were new. What was missing in the tool?",
+      "options": [
+        "A longer error message",
+        "A try around the whole program",
+        "A non-zero exit code when the input is missing, so the job can tell that the run failed",
+        "A progress bar"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A schedule cannot read messages; it reads the exit code. Zero means 'use the output'. A tool that fails must say so with a non-zero code.",
+      "misconceptions": [
+        "The message was already clear; the job does not read messages",
+        "Catching everything would hide the failure even more thoroughly",
+        "",
+        "Shows activity to a person, and nobody is watching a scheduled run"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-same-bytes",
+      "type": "single",
+      "prompt": "A command-line tool builds a district report from a month of readings. Run twice on the same files, it writes two reports whose districts appear in a different order. The numbers are the same. Why does this still need repair, and how?",
+      "options": [
+        "It needs no repair, since the numbers are equal",
+        "The reports should be compared by eye each month",
+        "The tool should be run once only, so the question does not arise",
+        "Two runs cannot be compared to detect a real change; write the districts in a fixed, sorted order"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "If the same input can give different bytes, a difference between two reports says nothing. A fixed order makes 'same input, same output' a property that can be checked by a program.",
+      "misconceptions": [
+        "Gives up the cheapest check there is: comparing two files",
+        "Replaces a check a program can do in a moment by one a person will stop doing",
+        "Avoids the comparison instead of making it possible",
+        ""
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-log-not-print",
+      "type": "single",
+      "prompt": "A tool writes its report to a file and also prints progress lines such as 'loading', 'validating' and each rejected customer's ticket text. It will soon run unattended, and its output will be kept. Which change is the sound one?",
+      "options": [
+        "Replace the prints by log messages with levels, and log counts and file names, never the customers' text",
+        "Leave the prints, since nobody will read them",
+        "Remove every message so that the tool is silent in all cases",
+        "Print the messages into the report file, so that everything is in one place"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "A log with levels can be turned up or down and keeps the result separate from the commentary. What is logged is kept and copied, so it must not hold personal data.",
+      "misconceptions": [
+        "",
+        "Output that is kept is read some day, by someone, and this output holds customers' words",
+        "A tool that says nothing when an input is missing cannot be operated",
+        "Mixes commentary into the result, and makes two runs differ"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 2,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-boundary-test",
+      "type": "single",
+      "prompt": "A discount rule says: orders of more than 100 riyals get free delivery. The tests check an order of 30 (no free delivery) and one of 500 (free delivery), and pass. A change turns 'more than' into 'at least'. What happens, and which test was missing?",
+      "options": [
+        "The tests fail, since the rule changed",
+        "The tests still pass; a test for an order of exactly 100 was missing",
+        "The tests still pass; a test for an order of 0 was missing",
+        "The tests still pass; more tests in the middle, such as 50 and 60, were missing"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The two rules give different answers at one value only, exactly 100. Examples far from the boundary cannot tell them apart.",
+      "misconceptions": [
+        "Assumes any change to the code is noticed by the tests that exist",
+        "",
+        "Zero is an edge of the input, and both rules still agree there",
+        "More examples where the rules agree add nothing"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-passing-proves",
+      "type": "single",
+      "prompt": "A function has twelve tests, and all pass. A colleague concludes: 'The function is correct.' Which statement is the accurate one?",
+      "options": [
+        "The function gives the expected answers on those twelve examples; inputs nobody wrote an example for are not covered",
+        "Correct, as long as there are more than ten tests",
+        "Nothing can be concluded from tests",
+        "Correct, provided a type checker also reports no errors"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Tests are evidence about examples. They are valuable because they are cheap and repeatable, and they say nothing about cases outside them.",
+      "misconceptions": [
+        "",
+        "Counts tests instead of asking what they would catch",
+        "Throws away real evidence because it is not a proof",
+        "A type checker rules out one kind of mistake; a wrong formula with the right types passes both"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-hint-not-answer",
+      "type": "single",
+      "prompt": "A trainee is learning to debug. A function returns a wrong total; the trainee has reproduced it with three numbers and suspects the loop. An AI assistant is available. Which request best keeps the skill being learnt with the trainee?",
+      "options": [
+        "'Rewrite this function so that it is correct.'",
+        "'Which line is wrong?'",
+        "'I expected 6 and got 5 for 1, 2, 3. I think the loop skips an item. Without giving code, what could I print to check?'",
+        "'Write tests for this function.'"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "The request states what was expected, what was seen and a hypothesis, and asks for a way to test it. The reasoning stays with the trainee; the assistant supplies a next step.",
+      "misconceptions": [
+        "Hands over the fix, and with it the whole method",
+        "Hands over the hypothesis, the step in which the understanding is formed",
+        "",
+        "Useful work, and it moves the judgement of what the function should do to the assistant"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 4,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-d4-paste-data",
+      "type": "single",
+      "prompt": "An analyst at a utility is debugging a script that crashes on one customer's ticket. To get help, the analyst is about to paste the script and the ticket, with the customer's name, phone number and complaint, into a public AI assistant. What is the sound way to get the same help?",
+      "options": [
+        "Paste it, since it is only one customer",
+        "Paste it and ask the assistant to forget it afterwards",
+        "Paste it after removing the name only",
+        "Build a small invented input that crashes the script in the same way, and ask about that"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A ticket with a phone number and a complaint is personal data and must not go to a service the organisation has not approved. A shrunk, invented case shows the same defect and holds nobody's data.",
+      "misconceptions": [
+        "One person's data is still personal data",
+        "A request in a prompt is not a control the analyst can verify",
+        "The phone number and the complaint still identify the customer",
+        ""
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 4,
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
     }
   ]
 }

@@ -36,7 +36,7 @@ RUNS: dict[str, list[list[str]]] = {
     "3.2": [["python", "decode.py"]],
     "3.3": [["python", "intake.py"]],
     "4.2": [["python", "-m", "miqyas", "report", "--readings", "data/readings_2026_09.csv",
-             "--meters", "data/meters.csv", "--out", "out/report.md", "--rejections", "out/rejections.csv"]],
+             "--meters", "data/meters.csv", "--out", "out/report.md"]],
     "4.4": [["python", "../tutor.py", "--recorded"], ["python", "../tutor.py", "--recorded"]],
 }
 
@@ -60,7 +60,7 @@ def main() -> int:
         overlay = HERE / lab
         if overlay.is_dir():
             shutil.copytree(overlay, folder, dirs_exist_ok=True)
-        if lab in labtool.SEEDED:      # the fix of a seeded defect is the sound package
+        if lab in labtool.SEEDED or lab == "4.2":      # the reference answer is the sound package
             labtool.package(folder)
         print(f"--- lab {lab}")
         for command in RUNS.get(lab, []):

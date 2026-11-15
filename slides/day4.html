@@ -1,5 +1,29 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">REPLACE: welcome; introduce yourself; one question to the room that calibrates the pace; the rhythm of the day</aside>
+  <aside class="notes"><p>Day 4, the last teaching day. Three days built the pieces: reading code, collections, files and errors, a debugging method. Today they become a tool somebody else can run, with tests around its one rule, and the day ends with the question the room has had since Monday: why learn this when an assistant writes it?</p></aside>
+</section>
+
+<section class="slide dark" id="drill-4" data-label="Drill 4" data-lo="LO5" data-minutes="10">
+  <div class="kicker">Drill 4 · AI off</div>
+  <h1>Order the lines, find the bug · 10 minutes</h1>
+  <div class="timer" data-minutes="10"></div>
+  <p class="lead">A scrambled function with one line that does not belong, then a bug to find by hand: <code>labs/drills/day4.md</code>. On paper, no computer, no assistant.</p>
+  <aside class="notes"><p>Press T. The first task is the grouping loop of Day 2 in pieces; the distractor assigns a number where a list is needed. The second is an average that divides by the wrong count. Answers: labs/solutions/drills.md. This is the format of the supervised check.</p></aside>
+</section>
+
+<section class="slide" id="review-day3" data-lo="LO4" data-label="Review">
+  <div class="kicker">Review of Day 3</div>
+  <h2>Where does the <code>try</code> go?</h2>
+  <div class="quiz" data-type="single" data-lo="LO4">
+    <p class="lead">An intake reads 435 ticket lines. A broken line must be recorded with its reason, and the lines after it must still be read. Where does the <code>try</code> belong?</p>
+    <div class="opts">
+      <div class="opt" data-why="The first broken line ends the whole loop: one rejection, and the lines after it are never read">Around the whole loop over the lines</div>
+      <div class="opt" data-ok>Inside the loop, around the one call that parses one line</div>
+      <div class="opt" data-why="The loop is still stopped by the first error; the handler only decides what is printed at the end">Around the call of the intake function, in the script</div>
+      <div class="opt" data-why="A handler with nothing in it is passing silently: the line disappears without a reason">Inside the loop, with <code>except: pass</code> to keep going</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The handler sits where the decision is: one line failed, record it, go on. Accepted plus rejected then equals the lines of the input.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. It is yesterday's loop slide. The fourth option keeps the loop going and loses the reason, which is the failure this course treats as the worst one.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-auto="agenda"></section>
@@ -8,151 +32,582 @@
 
 <section class="slide section" id="s1" data-auto="section" data-session="1"></section>
 
-<section class="slide" id="s1-idea" data-lo="LO2">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="page-and-kernel" data-lo="LO2" data-label="Two things">
+  <div class="kicker">Notebooks</div>
+  <h2>A notebook is two things: a page that is saved and a memory that is not</h2>
   <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <div class="card c-teal"><h4>The page</h4><p class="small mb0">Cells of code and text, and under each code cell the output of the last time it ran. This is the file, <code>analysis.ipynb</code>. It is what you send to a colleague.</p></div>
+    <div class="card c-coral"><h4>The kernel</h4><p class="small mb0">A running Python that holds every name any cell has bound since it started. It lives on your laptop only, and ends when you close it.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout warn mt"><b>What goes wrong.</b> The page and the kernel can disagree, and nothing on the screen says so. Every problem of this session is one form of that sentence.</div>
+  <aside class="notes"><p>Day 1's model again: names bound to objects. In a script the names start empty on every run. In a notebook they persist between cells, in whatever order you ran them, and that is both the charm and the trap.</p></aside>
 </section>
 
-<section class="slide" id="s1-steps" data-lo="LO2">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="execution-counts" data-lo="LO2" data-label="Counts">
+  <div class="kicker">Reading a saved notebook</div>
+  <h2>The number in brackets is the order of running, not the order on the page</h2>
+  <div class="cols cols-2">
+    <table class="t small">
+      <tr><th>Cell, top to bottom</th><th class="num">Count</th></tr>
+      <tr><td>Load the two files</td><td class="num">[1]</td></tr>
+      <tr><td>Keep the valid readings</td><td class="num">[3]</td></tr>
+      <tr><td>Set the factor to 3.0</td><td class="num">[4]</td></tr>
+      <tr><td>Find the anomalies</td><td class="num">[8]</td></tr>
+      <tr><td>Count per district</td><td class="num">[9]</td></tr>
+      <tr><td>What if: set the factor to 2.0</td><td class="num">[7]</td></tr>
+    </table>
+    <ul class="bullets">
+      <li>A <b>gap</b> (no 2, no 5, no 6): a cell was run and deleted, or run again later</li>
+      <li>A <b>step backwards</b> (9, then 7): the cell below ran before the cells above it</li>
+      <li>Counts <b>1, 2, 3 and on</b>: the page was run once, top to bottom</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>These are the counts of Salma's notebook, which lab 4.1 opens. Ask the room to reconstruct the order of running before showing the next two slides: load, something deleted, clean, factor, find, table, what-if, find again, table again.</p></aside>
+</section>
+
+<section class="slide" id="deleted-cell" data-lo="LO2" data-label="Deleted">
+  <div class="kicker">Hidden state, first form</div>
+  <h2>A deleted cell leaves its names behind in the kernel</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="cell [2], run once, then deleted"><code class="language-python">known = set(district_of)</code></pre>
+    <pre class="code" data-file="cell [3], still on the page"><code class="language-python">if row["meter_id"] not in known:
+    continue</code></pre>
+  </div>
+  <ul class="bullets mt">
+    <li>For Salma the notebook works: her kernel still holds <code>known</code></li>
+    <li>For anyone else, and for her after a restart: <code>NameError: name 'known' is not defined</code></li>
+    <li>The file she sent does not contain the code that produced its own outputs</li>
+  </ul>
+  <aside class="notes"><p>The sentence "it works on my machine" has a precise meaning here: it works in my kernel. Deleting a cell removes text from the page; it does not undo what the cell did.</p></aside>
+</section>
+
+<section class="slide" id="stale-output" data-lo="LO2" data-label="Stale">
+  <div class="kicker">Hidden state, second form</div>
+  <h2>An output can be older, or newer, than the code printed above it</h2>
+  <div class="cols cols-2">
+    <div class="stack">
+      <pre class="code s" data-file="cell [4]"><code class="language-python">factor = 3.0</code></pre>
+      <pre class="code s" data-file="cell [8], with its saved output"><code class="language-python">anomalies = [...]   # above factor * median
+print(len(anomalies), "anomalies")
+# 27 anomalies</code></pre>
+    </div>
+    <div class="stack">
+      <div class="stat center"><div class="big">27</div><div class="lbl">on the page, under "factor = 3.0"</div></div>
+      <div class="stat center"><div class="big">18</div><div class="lbl">on a clean run from top to bottom</div></div>
+    </div>
+  </div>
+  <div class="callout warn mt"><b>What happened.</b> A cell further down set <code>factor = 2.0</code>, and the anomaly cell was run again afterwards. The 27 is true of a factor nobody can see beside it.</div>
+  <aside class="notes"><p>Both numbers are from the lab's notebook: 27 anomalies at factor 2.0, 18 at 3.0. Nine extra visits by a maintenance crew, from a number that looked reproducible. Nobody did anything unreasonable: trying a what-if and scrolling back up is how notebooks are used.</p></aside>
+</section>
+
+<section class="slide" id="restart-run-all" data-lo="LO2" data-label="Restart">
+  <div class="kicker">The one habit</div>
+  <h2>Restart and run all, then read the numbers</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li><b>Restart</b> empties the kernel: every name is gone</li>
+      <li><b>Run all</b> runs the page in the order a reader sees it</li>
+      <li>If it stops, the page depended on something it does not hold</li>
+      <li>If a number changes, the old one was stale</li>
+      <li>Then save: counts 1, 2, 3 and on tell the next reader it was done</li>
+    </ul>
+    <div class="card c-teal"><h4>And one rule of writing</h4><p class="small mb0">Set each name in one cell. A second question gets a second name: <code>strict_factor</code>, not <code>factor</code> again. Then no cell can change what an earlier cell means.</p></div>
+  </div>
+  <aside class="notes"><p>In JupyterLab: Kernel, Restart Kernel and Run All Cells. Before any number leaves a notebook for a report, a slide or a message, this is the check. It costs the running time of the notebook, which is also a useful thing to know.</p></aside>
+</section>
+
+<section class="slide" id="three-homes" data-lo="LO2" data-label="Three homes">
+  <div class="kicker">Where code lives</div>
+  <h2>Three homes for code, each good at one thing</h2>
+  <div class="cols cols-3">
+    <div class="card c-purple"><h4>Notebook</h4><p class="small mb0">For looking: a question asked once, steps you want to see, results and notes on one page. State persists between cells.</p></div>
+    <div class="card c-cyan"><h4>Script</h4><p class="small mb0">For repeating: the same steps on new files, by anyone, with one command. Starts empty every run.</p></div>
+    <div class="card c-teal"><h4>Module</h4><p class="small mb0">For sharing: functions that other code imports, written once and tested in one place. Runs nothing by itself.</p></div>
+  </div>
+  <div class="callout tip mt"><b>They work together.</b> A notebook that imports a tested module is a good notebook. Tomorrow's capstone is a script on top of modules.</div>
+  <aside class="notes"><p>This is the second course outcome: say which home fits a task, with a reason. None of the three is the grown-up one. The mistake is using one for another's job: a monthly report run by hand from a notebook, or a one-off question wrapped in a package.</p></aside>
+</section>
+
+<section class="slide" id="choose-a-home" data-lo="LO2" data-label="Choosing">
+  <div class="kicker">Choosing</div>
+  <h2>Four questions decide the home</h2>
+  <table class="t">
+    <tr><th>Ask</th><th>If yes</th></tr>
+    <tr><td>Is the way to the answer still unknown, and asked once?</td><td>Notebook</td></tr>
+    <tr><td>Will a person read the outputs and notes together, as a page?</td><td>Notebook</td></tr>
+    <tr><td>Will it run again, on new input, by someone else or by a schedule?</td><td>Script</td></tr>
+    <tr><td>Does more than one program, or a test, need the same piece?</td><td>Module</td></tr>
+  </table>
+  <div class="callout note mt"><b>The usual journey.</b> Explore in a notebook, move what survives into functions in a module, and give the routine run to a script. Session 2 makes that move.</div>
+  <aside class="notes"><p>The lab gives four tasks from Manahil's analysts and asks for one word and one reason each. Two honest answers can differ on a boundary case; the reason is what you discuss.</p></aside>
+</section>
+
+<section class="slide" id="check-notebook-home" data-lo="LO2" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which home for this task?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2">
+    <p class="lead">Every Sunday the branch offices send a ticket file. It must be decoded, checked and turned into a rejection log before the customer care team starts work. Nobody watches it run.</p>
+    <div class="opts">
+      <div class="opt" data-why="A notebook needs a person to open it and run its cells, and its result depends on what that person ran before">A notebook that the analyst on duty opens and runs each Sunday</div>
+      <div class="opt" data-why="A module runs nothing by itself: something still has to call its functions every Sunday">A module with the decoding and checking functions, and nothing else</div>
+      <div class="opt" data-ok>A script with one command, built on functions that live in a module</div>
+      <div class="opt" data-why="Keeping the outputs on a page is useful for a question asked once; here the output is a log file that other people open">A notebook, because the outputs stay visible under each cell</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> It repeats, on new input, without a person: a script. The functions it calls are needed by the tests too, so they live in a module.</div>
+  </div>
+  <aside class="notes"><p>Answer: the third. The second option is half right, and worth saying so: the module is needed and is not enough.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-4-1" data-auto="lab" data-lab="4.1">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>The notebook opens with "uv run --with jupyterlab jupyter lab analysis.ipynb" in the lab folder, or in an editor with the workspace's environment as kernel. Do not say what is hidden. The first restart stops with a NameError on known; after the repair the count is 18, not 27. The check runs the notebook in a fresh kernel and compares saved outputs with fresh ones, so people must restart, run all and save. The four homes: notebook, script, module, notebook; three of four is the outcome's evidence. Typical problems: saving without a restart; setting factor in two cells.</p></aside>
 </section>
 
 <!-- Session 2 -->
 
 <section class="slide section" id="s2" data-auto="section" data-session="2"></section>
 
-<section class="slide" id="s2-idea" data-lo="LO6">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
-  </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+<section class="slide" id="cells-to-functions" data-lo="LO6" data-label="The move">
+  <div class="kicker">From notebook to tool</div>
+  <h2>Each cell becomes a function. What is left is the order, and that is <code>main</code>.</h2>
+  <table class="t small">
+    <tr><th>In the notebook</th><th>In the package</th></tr>
+    <tr><td>The cell that reads the registry</td><td><code>load_meters(path)</code></td></tr>
+    <tr><td>The cell that keeps valid readings</td><td><code>load_readings(path, known)</code></td></tr>
+    <tr><td>The cell that finds anomalies</td><td><code>find_anomalies(readings, factor)</code></td></tr>
+    <tr><td>The cells that print tables</td><td><code>render(...)</code>, which returns text</td></tr>
+    <tr><td>File names typed into cells</td><td>arguments of the command line</td></tr>
+    <tr><td>You, pressing run in order</td><td><code>main()</code></td></tr>
+  </table>
+  <div class="callout tip mt"><b>What changed.</b> Names that lived in the kernel are now arguments and return values. Nothing is remembered between runs.</div>
+  <aside class="notes"><p>The functions on the right are the ones the participants wrote pieces of on Days 1 to 3, now in one package, miqyas. Hidden state is gone by construction: a function sees only what it is passed.</p></aside>
 </section>
 
-<section class="slide" id="s2-steps" data-lo="LO6">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="import-against-run" data-lo="LO6" data-label="Import or run">
+  <div class="kicker">One file, two uses</div>
+  <h2>Importing a file runs its top level. So the top level should only define things.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="report_tool.py"><code class="language-python">def build_report(path):
+    ...
+
+def main():
+    print(build_report("readings.csv"))
+
+if __name__ == "__main__":
+    main()</code></pre>
+    <ul class="bullets">
+      <li><code>python report_tool.py</code>: the file is the program, <code>__name__</code> is <code>"__main__"</code>, and <code>main()</code> runs</li>
+      <li><code>import report_tool</code>: the same lines run, <code>__name__</code> is <code>"report_tool"</code>, and nothing is called</li>
+      <li>So a test can import <code>build_report</code> without starting the tool</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>Lab 1.2 used this line without much comment; this is its explanation. Without the guard, importing the file for a test would read the month file and print a report.</p></aside>
+</section>
+
+<section class="slide" id="entry-point" data-lo="LO6" data-label="Entry point">
+  <div class="kicker">A package as a program</div>
+  <h2>An entry point is the one door through which the tool is started</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="the package"><code class="language-text">miqyas/
+  __init__.py
+  __main__.py     the door
+  cli.py          arguments and main()
+  readings.py     load and validate
+  anomalies.py    the rule
+  report.py       aggregate and render</code></pre>
+    <div class="stack">
+      <pre class="code s" data-file="miqyas/__main__.py"><code class="language-python">from miqyas.cli import main
+
+raise SystemExit(main())</code></pre>
+      <ul class="bullets">
+        <li><code>python -m miqyas</code> runs <code>__main__.py</code></li>
+        <li><code>main()</code> returns a number, and <code>SystemExit</code> hands it to the system as the exit code</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>Two short files that look like ceremony. They are what makes "one command" true: the person on duty needs to know the name of the package and nothing about its inside.</p></aside>
+</section>
+
+<section class="slide" id="arguments" data-lo="LO6" data-label="Arguments">
+  <div class="kicker">argparse</div>
+  <h2>Arguments replace the file names typed into cells</h2>
+  <pre class="code" data-file="miqyas/cli.py"><code class="language-python">report.add_argument("--readings", type=Path, required=True,
+                    help="the readings file (CSV)")
+report.add_argument("--factor", type=float, default=3.0,
+                    help="anomaly threshold, times the median")</code></pre>
+  <div class="cols cols-3 mt">
+    <div class="card flat c-teal"><h4>Converted</h4><p class="small mb0"><code>type=</code> turns the text of the command line into a path or a float, or refuses it with a message.</p></div>
+    <div class="card flat c-cyan"><h4>Required or default</h4><p class="small mb0">An input is required. A setting has a default that is written down once.</p></div>
+    <div class="card flat c-purple"><h4>Documented</h4><p class="small mb0"><code>--help</code> is built from these calls: the usage text cannot drift from the code.</p></div>
+  </div>
+  <aside class="notes"><p>Show "python -m miqyas report --help" from the reference package if there is a terminal on screen. Type hints did for functions what type= does here for the command line: the conversion and the refusal happen at the edge.</p></aside>
+</section>
+
+<section class="slide" id="exit-codes" data-lo="LO6" data-label="Exit codes">
+  <div class="kicker">Speaking to other programs</div>
+  <h2>The exit code is how a tool tells a schedule whether it worked</h2>
+  <div class="cols cols-2">
+    <table class="t">
+      <tr><th class="num">Code</th><th>Meaning in Miqyas</th></tr>
+      <tr><td class="num">0</td><td>The report was written</td></tr>
+      <tr><td class="num">2</td><td>An input file is missing, or the arguments are wrong</td></tr>
+      <tr><td class="num">1</td><td>Something unexpected: Python ended with a traceback</td></tr>
+    </table>
+    <ul class="bullets">
+      <li>Zero means success; anything else means "do not use the output"</li>
+      <li>A missing file is expected trouble: one clear line and code 2, not a traceback</li>
+      <li>Rejected rows are not a failure: the report counts them, and the code is still 0</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The third bullet is Day 3 carried over: bad records are reported, not fatal. Argparse itself exits with 2 for wrong arguments, which is why the tool uses 2 for a missing input.</p></aside>
+</section>
+
+<section class="slide" id="log-not-print" data-lo="LO6" data-label="Logging">
+  <div class="kicker">Messages</div>
+  <h2>The result goes to the file. What happened on the way goes to the log.</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="miqyas/cli.py"><code class="language-python">log = logging.getLogger("miqyas")
+
+log.info("%d rows accepted, %d rejected",
+         len(readings), len(rejections))
+log.error("no such file: %s", path)</code></pre>
+    <ul class="bullets">
+      <li>A level on every message: with <code>-v</code> you see the steps, without it only problems</li>
+      <li>Log messages go to the error stream, so the output of the tool stays clean</li>
+      <li>Counts and file names belong in a log. A customer's phone number or ticket text does not</li>
+    </ul>
+  </div>
+  <div class="callout warn mt"><b>Personal data.</b> A log is copied, mailed and kept for years. Yesterday's rule holds here: mask before anything is written, printed or logged.</div>
+  <aside class="notes"><p>Print was the right tool for three days of learning. In a tool that runs unattended, print mixes the result with the commentary and cannot be turned down. The check of lab 4.2 looks for print calls in the package.</p></aside>
+</section>
+
+<section class="slide" id="same-bytes-twice" data-lo="LO6" data-label="Reproducible">
+  <div class="kicker">Reproducibility</div>
+  <h2>Same files in, same bytes out: a property you can test</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>No time of the run in the report: the time goes in the log</li>
+      <li>A fixed order everywhere: sorted districts, anomalies by meter and day</li>
+      <li>The encoding and the line ends are named when writing</li>
+      <li>Nothing remembered between runs: no kernel, no default that grows</li>
+    </ul>
+    <pre class="code" data-file="terminal"><code class="language-bash">python -m miqyas report ... --out a.md
+python -m miqyas report ... --out b.md
+# then compare the bytes of a.md and b.md</code></pre>
+  </div>
+  <div class="callout tip mt"><b>Why it matters.</b> When the report changes next month, you know the input changed, or the code did. Without this property you know nothing.</div>
+  <aside class="notes"><p>This is the evidence of the sixth course outcome: one command, two runs, the same report. Defect A of yesterday broke exactly this, through a default argument that remembered the first run.</p></aside>
+</section>
+
+<section class="slide" id="check-entry-point" data-lo="LO6" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>The test run prints a report. Why?</h2>
+  <div class="quiz" data-type="single" data-lo="LO6">
+    <p class="lead">A colleague's file <code>monthly.py</code> defines three functions and ends with the line <code>main()</code>. A test file starts with <code>from monthly import clean</code>. Running the tests reads the month file and prints the whole report before any test starts.</p>
+    <div class="opts">
+      <div class="opt" data-why="pytest runs functions whose names start with test_; main is not one of them">pytest calls every function it finds in an imported file</div>
+      <div class="opt" data-ok>Importing runs the file's top level, and the call of <code>main()</code> is at the top level</div>
+      <div class="opt" data-why="Importing one name still runs the whole file first; the name is picked out afterwards">Importing <code>clean</code> also imports <code>main</code>, and imported functions run once</div>
+      <div class="opt" data-why="The file needs no entry point to be imported; the trouble is the unguarded call at its end">The file has no <code>__main__.py</code> beside it</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> An import runs every top-level line. Put the call under <code>if __name__ == "__main__":</code> and the file can be both imported and run.</div>
+  </div>
+  <aside class="notes"><p>Answer: the second. The third option is the common half-belief: that "from x import y" loads only y.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-4-2" data-auto="lab" data-lab="4.2">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>The modules are supplied and sound; the participants write three arguments, the two-line __main__.py and the body of main. The first run of "python -m miqyas" fails with "No module named miqyas.__main__": let them read it. The check compares the report byte for byte with the reference, so the file must be written with newline set, and it wants exit code 2 without a traceback for a missing file, 27 anomalies at factor 2, no print and a clean strict type check. Typical problems: write_text without newline on Windows; args.factor not passed on; main without a return value.</p></aside>
 </section>
 
 <!-- Session 3 -->
 
 <section class="slide section" id="s3" data-auto="section" data-session="3"></section>
 
-<section class="slide" id="s3-idea" data-lo="LO5">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="example-with-a-verdict" data-lo="LO5" data-label="A test">
+  <div class="kicker">Tests</div>
+  <h2>A test is an example with a verdict</h2>
   <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <pre class="code" data-file="at a prompt: you are the verdict"><code class="language-python">>>> is_anomaly(5.0, [1.0, 1.0, 1.0])
+True</code></pre>
+    <pre class="code" data-file="in a test: the verdict is written down"><code class="language-python">def test_far_above_is_an_anomaly():
+    assert is_anomaly(5.0, [1.0, 1.0, 1.0]) is True</code></pre>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <ul class="bullets mt">
+    <li>You have run examples at the prompt all week and judged the answers by eye</li>
+    <li>A test keeps the example and the expected answer, so a machine can judge it again</li>
+    <li><code>uv run pytest</code> finds the functions named <code>test_</code>, runs each, and reports the ones whose <code>assert</code> was false</li>
+  </ul>
+  <aside class="notes"><p>The supplied tests of every lab since Day 1 were this. Today the participants write them. Nothing new in the language: a function and an assert.</p></aside>
 </section>
 
-<section class="slide" id="s3-steps" data-lo="LO5">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="arrange-act-assert" data-lo="LO5" data-label="Three parts">
+  <div class="kicker">The shape of a test</div>
+  <h2>Arrange, act, assert: three parts, one reason to fail</h2>
+  <div class="cols cols-2">
+    <pre class="code" data-file="test_anomalies.py"><code class="language-python">def test_exactly_three_times_is_not_an_anomaly():
+    history = [1.0, 1.0, 1.0]             # arrange
+    result = is_anomaly(3.0, history)     # act
+    assert result is False                # assert</code></pre>
+    <ul class="bullets">
+      <li><b>Arrange</b> an input small enough to check in your head</li>
+      <li><b>Act</b> with one call of the thing under test</li>
+      <li><b>Assert</b> one fact about the result</li>
+      <li>The <b>name</b> is the sentence the test proves: it is what a colleague reads when it fails</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>The history of three ones is deliberate: its median is visible. Yesterday's shrink step and this arrange step are the same skill, which is why a shrunk failing case becomes a regression test almost unchanged.</p></aside>
+</section>
+
+<section class="slide" id="choose-examples" data-lo="LO5" data-label="Which examples">
+  <div class="kicker">Choosing examples</div>
+  <h2>Mistakes live at the edges, so that is where the examples go</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>The boundary</h4><p class="small mb0">Exactly three times the median, and just above it. <code>&gt;</code> and <code>&gt;=</code> differ at one point only.</p></div>
+    <div class="card c-coral"><h4>Nothing</h4><p class="small mb0">An empty history. What should happen is a decision; the docstring states it and a test holds it.</p></div>
+    <div class="card c-coral"><h4>Each argument</h4><p class="small mb0">If changing <code>factor</code> changes no test's answer, no test would notice that it is ignored.</p></div>
+  </div>
+  <div class="callout tip mt"><b>A way to find them.</b> Read the docstring and the signature. Every promise and every argument deserves an example that would fail if it were broken.</div>
+  <aside class="notes"><p>Ask the room where the validation of Day 1 had its edges: 0 and 200 cubic metres, the empty cell, the duplicate. The same three kinds. An ordinary case in the middle is worth one test, not five.</p></aside>
+</section>
+
+<section class="slide" id="median-not-mean" data-lo="LO5" data-label="Telling apart">
+  <div class="kicker">An example that discriminates</div>
+  <h2>A good example gives different answers for the right rule and a wrong one</h2>
+  <div class="cols cols-2">
+    <table class="t">
+      <tr><th>History</th><th class="num">Median</th><th class="num">Mean</th></tr>
+      <tr><td>1, 1, 1</td><td class="num">1.0</td><td class="num">1.0</td></tr>
+      <tr><td>1, 1, 1, 1, 10</td><td class="num">1.0</td><td class="num">2.8</td></tr>
+    </table>
+    <ul class="bullets">
+      <li>With the first history, a rule built on the mean passes every test you write</li>
+      <li>With the second, the value 3.5 is an anomaly by the median (above 3.0) and not by the mean (below 8.4)</li>
+      <li>One example, chosen so that the two rules disagree</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>This is the idea the lab's check measures. It swaps the rule for four wrong versions and asks whether any test fails. A test file is judged by the mistakes it would catch, not by how many tests it has.</p></aside>
+</section>
+
+<section class="slide" id="what-passing-proves" data-lo="LO5" data-label="Limits">
+  <div class="kicker">What a green run means</div>
+  <h2>Passing tests prove the examples, not the program</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>What you know</h4><p class="small mb0">On these inputs the code gives these answers, today and after every change, checked in a second.</p></div>
+    <div class="card c-coral"><h4>What you do not know</h4><p class="small mb0">Anything about inputs nobody thought of. Defect B of yesterday passed every test that used a sorted list.</p></div>
+  </div>
+  <ul class="bullets mt">
+    <li>Tests and types catch different mistakes: a type checker never runs the code, a test never sees the lines it does not reach</li>
+    <li>A test that cannot fail is worse than none: it reports safety that is not there</li>
+  </ul>
+  <aside class="notes"><p>Keep this sober. Tests are the cheapest evidence there is, and they are evidence about examples. The honest sentence in a README is "the tests cover these cases", which the capstone asks for under "what the tool does not check".</p></aside>
+</section>
+
+<section class="slide" id="read-a-failing-test" data-lo="LO5" data-label="A failure">
+  <div class="kicker">Reading the output</div>
+  <h2>A failing test is a traceback with the values filled in</h2>
+  <pre class="code" data-file="terminal"><code class="language-text">    def test_exactly_three_times_is_not_an_anomaly():
+        history = [1.0, 1.0, 1.0]
+        result = is_anomaly(3.0, history)
+>       assert result is False
+E       assert True is False
+
+test_anomalies.py:14: AssertionError
+1 failed, 6 passed in 0.03s</code></pre>
+  <ul class="bullets mt">
+    <li>Read from the bottom, as yesterday: how many failed, which file and line, then the line marked <code>&gt;</code></li>
+    <li>The <code>E</code> line shows what the assert compared: it expected False and got True</li>
+    <li>Reproduce and shrink are already done: the test is the small failing case</li>
+  </ul>
+  <aside class="notes"><p>This output is what a participant sees if the boundary is treated as an anomaly. Connect it to the six steps: a failing test starts you at step three, the hypothesis.</p></aside>
+</section>
+
+<section class="slide" id="tests-make-change-safe" data-lo="LO5" data-label="Safety net">
+  <div class="kicker">Why keep them</div>
+  <h2>Tests are what lets you, or an assistant, change code without fear</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>Tests pass</b>the rule is pinned down</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Change the code</b>by hand or with an assistant</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Run the tests</b>a second, every time</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>Still pass?</b>keep the change, or undo it</div>
+  </div>
+  <ul class="bullets mt">
+    <li>The sixth step of debugging adds one test per defect, so the net grows where the code has failed before</li>
+    <li>Code an assistant wrote for you is code you have not read line by line. Your tests are how you hold it to the rule</li>
+  </ul>
+  <aside class="notes"><p>This is the bridge to the last session and to the capstone, where AI tools are fully allowed and hidden tests decide thirty per cent of the mark. Whoever writes the code, the tests state what it must do.</p></aside>
+</section>
+
+<section class="slide" id="check-which-test" data-lo="LO5" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which test would catch it?</h2>
+  <div class="quiz" data-type="single" data-lo="LO5">
+    <p class="lead">Someone "tidies" the rule and writes <code>value &gt;= factor * median(history)</code> where it said <code>&gt;</code>. Which test fails?</p>
+    <div class="opts">
+      <div class="opt" data-why="5.0 is far above 3.0: both rules answer True, so the test passes on the wrong one as well">The value 5.0 with the history 1, 1, 1 is an anomaly</div>
+      <div class="opt" data-why="1.1 is far below 3.0: both rules answer False">The value 1.1 with the history 1, 1, 1 is not an anomaly</div>
+      <div class="opt" data-why="An empty history returns before the comparison is reached, in both versions">The value 100.0 with an empty history is not an anomaly</div>
+      <div class="opt" data-ok>The value 3.0 with the history 1, 1, 1 is not an anomaly</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The two rules differ at one point, where the value equals factor times the median. Only an example on that point can tell them apart.</div>
+  </div>
+  <aside class="notes"><p>Answer: the fourth. Each wrong option is a perfectly good test, of something else. That is the lesson: three green tests and the change went through.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-4-3" data-auto="lab" data-lab="4.3">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>One test is supplied; five more are asked for. The check runs the tests on the real rule, then on four wrong versions: the boundary counted, no history counted, the mean for the median, the factor ignored. Do not list the four before the first check. Typical problems: a history whose median is not a round number, so that floating point decides the boundary; a symmetric history for the median test; only tests that expect True. Ask those who catch all four at once what a fifth wrong version could be.</p></aside>
 </section>
 
 <!-- Session 4 -->
 
-<section class="slide section" id="s4" data-auto="section" data-session="4"></section>
+<section class="slide section" id="s4" data-auto="section" data-session="4" data-label="Session 4"></section>
 
-<section class="slide" id="s4-idea" data-lo="LO5">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="the-honest-question" data-lo="LO5" data-label="The question">
+  <div class="kicker">The question of the week</div>
+  <h2>An assistant can write this week's code in seconds. So what did you learn it for?</h2>
   <div class="cols cols-2">
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>Someone has to say whether the code is right. This week that was you, sixteen times</li>
+      <li>Reading, tracing and debugging are the skills that judging needs</li>
+      <li>The defects of labs 3.4 and 4.4 run without an error and print plausible numbers</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <div class="card c-purple"><h4>The claim of this session</h4><p class="small mb0">An assistant changes how you produce code. Whether it also changes what you learn depends on how you use it, and there is evidence on that.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>Take the question seriously and let the room answer first. Nobody here is asked to give up assistants: the capstone allows them fully. The session is about the weeks in which a skill is being formed.</p></aside>
 </section>
 
-<section class="slide" id="s4-steps" data-lo="LO5">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="the-evidence" data-lo="LO5" data-label="Evidence">
+  <div class="kicker">A randomised experiment, 2026</div>
+  <h2>Learning a new library with an assistant: the task got done, less of it stayed</h2>
+  <div class="cols cols-2">
+    <div class="stack">
+      <div class="stat center"><div class="big">67%</div><div class="lbl">average quiz score, coding by hand</div></div>
+      <div class="stat center"><div class="big">50%</div><div class="lbl">average quiz score, coding with an AI assistant</div></div>
+    </div>
+    <ul class="bullets">
+      <li>Developers learnt a Python library they had not used, half with an assistant and half without</li>
+      <li>Afterwards everyone took the same quiz on the library, without help</li>
+      <li>The study comes from a company that builds assistants, and reports a cost of using them</li>
+    </ul>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <p class="small">Source: Anthropic, "How AI assistance impacts the formation of coding skills" (2026), arXiv 2601.20245.</p>
+  <aside class="notes"><p>The figures are the study's own summary: 50 per cent against 67 per cent on the quiz. One experiment, with developers and one library, so say "a study found", not "it is proven". Its design is what makes it worth showing: random assignment and the same test for both groups.</p></aside>
+</section>
+
+<section class="slide" id="where-the-gap-is" data-lo="LO5" data-label="The gap">
+  <div class="kicker">The same study</div>
+  <h2>The largest gap was on debugging questions</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The quiz asked about concepts, reading code and debugging</li>
+      <li>The group that used the assistant fell behind most where it had to find what was wrong in code</li>
+      <li>That is the skill needed to check what an assistant hands you</li>
+    </ul>
+    <div class="card c-coral"><h4>Why this course does what it does</h4><p class="small mb0">Daily drills on paper. The first attempt at each debugging lab alone. A supervised check without an assistant. A capstone you walk through and change live.</p></div>
+  </div>
+  <aside class="notes"><p>This is the reason for the AI-off parts of the week, shown at the end and not as a rule at the start. The policy follows the catalog entry of the course; the study is why it is a reasonable one.</p></aside>
+</section>
+
+<section class="slide" id="how-you-use-it" data-lo="LO5" data-label="How">
+  <div class="kicker">The same study</div>
+  <h2>How people used the assistant mattered, not only whether</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>Handing the work over</h4><p class="small mb0">Ask for the code, paste it, ask again when it fails. The task is finished and the reasoning was never yours.</p></div>
+    <div class="card c-teal"><h4>Keeping the thinking</h4><p class="small mb0">Ask why, ask for an explanation with the code, ask about the idea and write the code yourself. Participants who worked this way kept more.</p></div>
+  </div>
+  <div class="callout tip mt"><b>So the choice is yours each time.</b> The same tool can be an answer machine or a tutor. Which one it is depends on what you ask it for.</div>
+  <aside class="notes"><p>The study describes patterns of interaction and reports that some of them preserved learning; it is the hopeful half of the result. Keep the two cards as descriptions of behaviour, not of people: everyone does both, depending on the deadline.</p></aside>
+</section>
+
+<section class="slide" id="attempt-hint-explain" data-lo="LO5" data-label="A way of working">
+  <div class="kicker">A way of working while you learn</div>
+  <h2>Attempt first, ask for a hint, explain it back</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>1 · Attempt</b>reproduce, shrink, a first hypothesis, in writing</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>2 · Hint</b>one at a time; do what it says before the next</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>3 · Explain</b>assistant closed, in your words, no code</div>
+  </div>
+  <ul class="bullets mt">
+    <li>The attempt gives the hint something to attach to. Without it, a hint is an answer in slow motion</li>
+    <li>The explanation is the test of whether you learnt it. If you cannot write it, you have a fix and not yet an understanding</li>
+  </ul>
+  <aside class="notes"><p>This is the structure of lab 4.4, step for step. The third step is the one people skip, and the one that the capstone's walkthrough will ask of them in front of an assessor.</p></aside>
+</section>
+
+<section class="slide" id="ask-for-a-hint" data-lo="LO5" data-label="Asking">
+  <div class="kicker">Asking well</div>
+  <h2>A question that gets a hint says what you expected, what you saw and what you tried</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>Gets an answer to paste</h4><p class="small mb0">"Here is report.py. The district counts are wrong. Fix it."</p></div>
+    <div class="card c-teal"><h4>Gets a hint to use</h4><p class="small mb0">"Every district shows 18 and I expected different counts. With two meters and one anomaly both districts show it. I think the lists are shared. Do not give me code: what should I check to prove it?"</p></div>
+  </div>
+  <div class="callout note mt"><b>The course tutor, Dalil.</b> It is instructed to give one hint at a time and no code, and the workspace's agent instructions ask the same of any assistant opened there.</div>
+  <aside class="notes"><p>The second question is longer because it contains the first three steps of the method. Writing it often answers it. The tutor's instruction is in tutor.py and in AGENTS.md of the workspace; the stretch of the lab reads both.</p></aside>
+</section>
+
+<section class="slide" id="what-leaves-the-laptop" data-lo="LO5" data-label="Data">
+  <div class="kicker">Before you paste</div>
+  <h2>What you send to a hosted assistant has left the organisation</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Code you wrote for a lab: fine. A traceback: read it first, it may quote a record</li>
+      <li>A customer's ticket, phone number or meter history: personal data, not to be sent to a service your organisation has not approved</li>
+      <li>Shrink first. A case built by hand with two invented meters shows the defect and holds nobody's data</li>
+    </ul>
+    <div class="card c-purple"><h4>In this lab</h4><p class="small mb0">The tutor sends your question and the source files you name. It refuses anything under <code>data/</code>. The data here is synthetic; the habit is for the day it is not.</p></div>
+  </div>
+  <aside class="notes"><p>The national references are on the course page: the Personal Data Protection Law and SDAIA's guidelines on generative AI. For a utility's analyst the practical rule is short: approved tools only, and no customer records in a prompt. Shrinking, a debugging step, is also the privacy step.</p></aside>
+</section>
+
+<section class="slide" id="three-modes" data-lo="LO5" data-label="Three modes">
+  <div class="kicker">How this course uses assistants</div>
+  <h2>Three modes, each with a reason</h2>
+  <div class="cols cols-3">
+    <div class="card c-coral"><h4>Off</h4><p class="small mb0">The daily drills, the first attempt at labs 3.4 and 4.4, and the supervised check: tracing on paper and one debugging task in a locked editor.</p></div>
+    <div class="card c-cyan"><h4>Tutor</h4><p class="small mb0">The other labs: an assistant may give hints and explain, and is told not to give code.</p></div>
+    <div class="card c-teal"><h4>Full</h4><p class="small mb0">The capstone: any tool you like. Then you run it, change it on request and read a traceback from it, live.</p></div>
+  </div>
+  <div class="callout tip mt"><b>What all three protect.</b> That the person who signs the work can explain it.</div>
+  <aside class="notes"><p>Thirty per cent of the assessment is the supervised check without an assistant, fifty the capstone, twenty the walkthrough. Say now what the walkthrough is, so that nobody plans a capstone they cannot explain.</p></aside>
+</section>
+
+<section class="slide" id="check-hint-or-answer" data-lo="LO5" data-label="Checkpoint">
+  <div class="kicker">Checkpoint</div>
+  <h2>What do you do next?</h2>
+  <div class="quiz" data-type="single" data-lo="LO5">
+    <p class="lead">You are learning. A report shows the same count for every district. You have reproduced it and have no idea yet where it comes from. An assistant is open in the next window.</p>
+    <div class="opts">
+      <div class="opt" data-why="The defect is repaired and the method was skipped: next time, without the assistant, you start from the same place">Paste the package and ask for the corrected file</div>
+      <div class="opt" data-why="Better than pasting the fix, and still the assistant's hypothesis, not yours: you skip the step the study found weakest">Paste the package and ask which line is wrong, then fix it yourself</div>
+      <div class="opt" data-ok>Shrink it to a case built by hand, write a first guess, then ask for one hint on what to check</div>
+      <div class="opt" data-why="Refusing help forever is not the lesson: a hint after an honest attempt costs little and teaches a lot">Close the assistant and never use it for debugging</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Attempt, hint, explain. The attempt makes the hint yours to use, and the shrunk case holds no data you should not send.</div>
+  </div>
+  <aside class="notes"><p>Answer: the third. The second option deserves a discussion: it feels like learning because you type the fix. Ask who formed the hypothesis.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-4-4" data-auto="lab" data-lab="4.4">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>First step alone, no tutor: reproduce, shrink, a first hypothesis in the log. Then the tutor: "uv run ../tutor.py --recorded" works without a key or a network; a question in quotes asks a free hosted model when a key is set. Defect C: dict.fromkeys with one shared list in anomalies_by_district, so every district shows 18; sound counts 4, 3, 3, 1, 5, 2. The last step is with the tutor and the code closed: forty words, no code, read to a neighbour. The check cannot tell whose words they are; you can, by walking round. Typical problems: repairing district_totals instead of the shared list; an explanation that repeats the last hint.</p></aside>
 </section>
 
-<section class="slide" id="wrap-up">
+<section class="slide" id="wrap-up" data-label="Wrap-up">
   <div class="kicker">Day 4 · wrap-up</div>
   <h2>Three things to keep</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-coral"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-purple"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
+    <div class="card c-teal"><h4>Restart and run all</h4><p class="small mb0">A notebook's page and its kernel can disagree. Read numbers only after a clean run, and move what repeats into a script on modules.</p></div>
+    <div class="card c-coral"><h4>One command, same bytes</h4><p class="small mb0">Arguments, an exit code, a log, and tests at the edges of the rule. That is a tool someone else can trust.</p></div>
+    <div class="card c-purple"><h4>Attempt, hint, explain</h4><p class="small mb0">Use an assistant so that the reasoning stays with you. What you can explain without it is what you have learnt.</p></div>
   </div>
+  <aside class="notes"><p>Ask each person for the one habit they will take to their desk on the first day back. Collect them on the board.</p></aside>
 </section>
 
 <section class="slide dark" id="next" data-label="Next">
   <div class="kicker">Next</div>
-  <h2>Capstone: Capstone project presentations</h2>
-  <p class="lead">REPLACE: what participants prepare before then; unfinished labs can be finished at home</p>
-  <aside class="notes">REPLACE: accounts, installs or reading participants need before the next unit</aside>
+  <h2>The capstone: a tool of your own</h2>
+  <p class="lead">A new dataset, Manahil's maintenance work orders, and one brief: load, validate, report, with one command. Any tool is allowed. Then ten minutes in which you run it, change it and read a traceback from it. The brief is in <code>labs/capstone/</code>.</p>
+  <aside class="notes"><p>Hand out the brief now so that questions come before the capstone day, not during it. Remind them of the supervised check and its format: the paper drills of the four mornings, and one debugging task.</p></aside>
 </section>

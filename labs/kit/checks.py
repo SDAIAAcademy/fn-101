@@ -323,3 +323,4 @@ def run(lab: str, folder: Path) -> int:
 
 
 import checks3  # noqa: E402,F401  (registers the checks of Day 3)
+import checks4  # noqa: E402,F401  (registers the checks of Day 4)

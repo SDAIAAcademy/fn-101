@@ -1,37 +1,59 @@
 <article class="lab" data-lab="4.4">
   <div class="box goal">
     <h3>Goal</h3>
-    <p>REPLACE: by the end, participants can …</p>
+    <p>Mazen, the maintenance planner, reports a third defect in Miqyas. Use the six steps again, and this time ask the course tutor, Dalil, for hints when you are stuck. The lab ends with the tutor closed: you explain the fix in your own words, without code.</p>
   </div>
 
   <h2>What you need</h2>
   <ul>
-    <li>REPLACE: the files, the tool and the account the lab uses</li>
+    <li>The folder <code>4.4</code> of the workspace: the package <code>miqyas/</code>, <code>symptom.md</code>, <code>debug_log.md</code>, <code>test_regression.py</code>, <code>explanation.md</code> and the data</li>
+    <li>The tutor, <code>tutor.py</code>, one level up. With <code>--recorded</code> it needs no key and no network. With a question in quotes it asks a free hosted model, and needs a key in <code>TUTOR_API_KEY</code> or <code>OPENROUTER_API_KEY</code></li>
+    <li>AI policy: off for the first step, tutor for the next two, off again for the last</li>
   </ul>
 
   <div class="step">
-    <h3>REPLACE: the first step <span class="min">15 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
-    <div class="prompt" data-tool="Python runtime and project manager">REPLACE: the prompt participants copy, with the parts they change in <span class="ph">colour</span></div>
+    <h3>Reproduce and shrink on your own, in the log <span class="min">6 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">cd ../4.4
+uv run python -m miqyas report --readings data/readings_2026_09.csv --meters data/meters.csv --out out/report.md</code></pre>
+    <p>Read <code>symptom.md</code> and the Districts table of <code>out/report.md</code>. Write <b>Reproduce</b> in <code>debug_log.md</code>. Then shrink: which function hands the report its anomalies per district, and what is the smallest input you could give it by hand? Write <b>Shrink</b> and a first <b>Hypothesis</b>, even a vague one, before you ask anyone.</p>
   </div>
 
   <div class="step">
-    <h3>REPLACE: the second step <span class="min">10 min</span></h3>
-    <p>REPLACE: what to do and why, in two sentences</p>
+    <h3>Ask the tutor for one hint at a time <span class="min">6 min</span></h3>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../tutor.py --recorded
+uv run ../tutor.py "two districts show the same list: where would you look first?"</code></pre>
+    <p>Take one hint, then do what it suggests before you take the next: run the experiment, answer its question in the log under <b>Test</b>. Every exchange is added to <code>tutor_log.md</code>. On the hosted path, only your question and the source files you name with <code>--file</code> leave the laptop; the tutor refuses data files.</p>
+    <p>Stop asking as soon as your hypothesis names a line. If you have a key, compare one recorded hint with one hosted answer: which left more of the thinking to you?</p>
+  </div>
+
+  <div class="step">
+    <h3>Fix the line and write the regression test <span class="min">6 min</span></h3>
+    <p>Write the test first, from your shrunk case, in <code>test_regression.py</code>: two meters in two districts, one anomaly, and an assertion about what each district holds. Run it and watch it fail. Then change the one line in <code>miqyas/report.py</code> and watch it pass. Fill <b>Fix</b> and <b>Regression</b> in the log.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run pytest test_regression.py
+uv run python -m miqyas report --readings data/readings_2026_09.csv --meters data/meters.csv --out out/report.md</code></pre>
+  </div>
+
+  <div class="step">
+    <h3>Close the tutor; explain the fix in words <span class="min">7 min</span></h3>
+    <p>Close the terminal with the tutor and the editor with the code. In <code>explanation.md</code>, write for a colleague who was not here: what was wrong, why it produced exactly this symptom, and why your change repairs it. At least forty words, no code. Then read it to your neighbour, who asks one question. If you cannot write it without looking, go back to <b>Test</b>: you have a fix and not yet an understanding.</p>
+    <pre class="code" data-file="terminal"><code class="language-bash">uv run ../lab.py check 4.4</code></pre>
   </div>
 
   <div class="step stretch">
     <h3>✱ Stretch</h3>
-    <p>REPLACE: an extension for those who finish early</p>
+    <p>With a key set, ask the hosted tutor outright for the corrected code, and note in the log what it does. Then read the instruction it was given, <code>RULE</code> in <code>tutor.py</code>, and the function below it that withholds code blocks. Which of the two would you trust less on its own?</p>
   </div>
 
   <h2>Check yourself</h2>
   <ol class="checks">
-    <li>REPLACE: a question that shows the lab worked</li>
+    <li>Which hint moved you on, and what did you do with it before asking again?</li>
+    <li>This defect and defect A of yesterday are the same idea of Day 1. Which one?</li>
+    <li>What is the difference between a hint you can use and an answer you can paste, a week from now?</li>
   </ol>
 
   <details class="instructor">
     <summary>For the trainer</summary>
-    <p>REPLACE: the answer key, the traps and the common errors</p>
+    <p>Defect C: <code>anomalies_by_district</code> in <code>miqyas/report.py</code> builds its dictionary with <code>dict.fromkeys(districts, [])</code>, so all six keys hold one list and every district shows 18. Sound numbers: Al-Faisaliyah 4, Al-Khuzama 3, Al-Murooj 3, Al-Naseem 1, Al-Rabwa 5, Al-Yasmin 2. Fix: a comprehension, <code>{district: [] for district in districts}</code>. The recorded ladder has four hints (<code>labs/kit/hints/4.4.json</code>): the symptom as aliasing, shrink and <code>is</code>, where the brackets run, a new list per key. None gives the line.</p>
+    <p>The check wants the six steps for Defect C, at least one exchange in <code>tutor_log.md</code>, forty words of the participant's own in <code>explanation.md</code> without backticks or code, a regression test that passes on the fix and fails when the defect is put back, each district with its own count, and a clean strict type check. It cannot check that the first step was done alone or that the explanation is the participant's: that is the reading to the neighbour, and your walk round the room. Common errors: fixing <code>district_totals</code> instead (dividing, or counting again), which leaves the shared list in place and fails the regression check; a test that compares only the lengths for one district; an explanation that paraphrases the last hint. The hosted path needs a key of a free account; the default model name is in <code>tutor.py</code> and can be changed with <code>TUTOR_MODEL</code>. A hosted model may ignore the instruction: the tutor withholds any code block it sends, which the stretch examines. To rehearse the hosted path without a key, see <code>labs/_tools/stand_in_model.py</code>. Answers to 2: one object with several names, there a default argument, here a value shared by every key. Reference: <code>labs/solutions/4.4/</code>.</p>
   </details>
 </article>

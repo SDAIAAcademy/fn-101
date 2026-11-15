@@ -577,7 +577,9 @@
         {
           "title": "What notebooks hide",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Read the execution counts of a saved notebook and say in which order it was run",
+            "Find a name that only the kernel remembers and an output that the code on screen does not produce",
+            "Choose a notebook, a script or a module for a task, with a one-line reason"
           ],
           "lo": [
             "LO2"
@@ -585,15 +587,37 @@
           "lab": {
             "id": "4.1",
             "title": "Run a notebook out of order, find the hidden-state bug, then restart and run all",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "summary": "Restart Salma's notebook, find the name only the kernel remembered and the stale count, repair both, and choose a home for four tasks.",
             "minutes": 25,
-            "href": "D4_1_run_notebook_out.html"
-          }
+            "href": "D4_1_run_notebook_out.html",
+            "steps": [
+              {
+                "text": "Read the saved notebook and its execution counts",
+                "minutes": 4
+              },
+              {
+                "text": "Restart and run all; find the missing name",
+                "minutes": 7
+              },
+              {
+                "text": "Find the stale number and give factor one home",
+                "minutes": 7
+              },
+              {
+                "text": "Choose a home for four tasks; run the check",
+                "minutes": 7
+              }
+            ],
+            "stretch": "Run the notebook from the terminal with one command and compare the count with the saved one"
+          },
+          "summary": "What the kernel remembers and the page does not show; restart and run all"
         },
         {
           "title": "Scripts, modules and an entry point",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Explain what runs when a file is imported and when it is run, and what an entry point is for",
+            "Write a command line with required arguments, a default and a useful exit code",
+            "Produce a report that is byte for byte the same on two runs over the same files"
           ],
           "lo": [
             "LO6"
@@ -601,15 +625,37 @@
           "lab": {
             "id": "4.2",
             "title": "Move the supplied notebook logic into a module with a command-line entry point",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "summary": "Finish the command line of Miqyas so that one command rebuilds the monthly report from the raw files, the same on every run.",
             "minutes": 25,
-            "href": "D4_2_move_supplied_notebook.html"
-          }
+            "href": "D4_2_move_supplied_notebook.html",
+            "steps": [
+              {
+                "text": "Match the notebook's cells to the package's functions",
+                "minutes": 4
+              },
+              {
+                "text": "Add the three arguments and the entry point",
+                "minutes": 6
+              },
+              {
+                "text": "Write main: the cells' order as calls, with logging",
+                "minutes": 9
+              },
+              {
+                "text": "Run twice, compare the bytes, run the check",
+                "minutes": 6
+              }
+            ],
+            "stretch": "Add an argument that also writes every rejected row, with its reason, to a CSV file"
+          },
+          "summary": "From cells to a tool: an entry point, arguments, exit codes, logging, the same report on every run"
         },
         {
           "title": "Tests as a safety net",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "Write a test as an arranged input, one call and an asserted result",
+            "Choose examples at the boundary, for empty input and for each argument of a rule",
+            "Judge a set of tests by the wrong versions of the code it would catch"
           ],
           "lo": [
             "LO5"
@@ -617,15 +663,37 @@
           "lab": {
             "id": "4.3",
             "title": "Write five tests for the anomaly rule, including empty and boundary inputs",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "summary": "Write five tests that pin the anomaly rule down, and see whether they catch four wrong versions of it.",
             "minutes": 25,
-            "href": "D4_3_write_five_tests.html"
-          }
+            "href": "D4_3_write_five_tests.html",
+            "steps": [
+              {
+                "text": "Read the rule's docstring and the one supplied test",
+                "minutes": 3
+              },
+              {
+                "text": "Write a test for the boundary and one for no history",
+                "minutes": 8
+              },
+              {
+                "text": "Write three more: the median and the factor",
+                "minutes": 8
+              },
+              {
+                "text": "Run the check against four wrong versions",
+                "minutes": 6
+              }
+            ],
+            "stretch": "Rewrite your examples as one table with pytest's parametrize, one row per case"
+          },
+          "summary": "A test is an example with a verdict: boundaries, empty input, and what passing proves"
         },
         {
           "title": "Learning with an assistant without losing the skill",
           "outcomes": [
-            "REPLACE: what a participant can do after this session"
+            "State what the evidence shows about delegating to an assistant while learning",
+            "Ask an assistant for a hint that leaves the reasoning with you",
+            "Explain a fix in your own words, without the code and without the assistant"
           ],
           "lo": [
             "LO5"
@@ -633,12 +701,33 @@
           "lab": {
             "id": "4.4",
             "title": "Get hints from the course tutor on a new defect, then explain the fix in your own words",
-            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "summary": "Debug a third defect with hints from the tutor, write its regression test, and explain the fix with the tutor closed.",
             "minutes": 25,
-            "href": "D4_4_get_hints_from.html"
-          }
+            "href": "D4_4_get_hints_from.html",
+            "steps": [
+              {
+                "text": "Reproduce and shrink on your own, in the log",
+                "minutes": 6
+              },
+              {
+                "text": "Ask the tutor for one hint at a time",
+                "minutes": 6
+              },
+              {
+                "text": "Fix the line and write the regression test",
+                "minutes": 6
+              },
+              {
+                "text": "Close the tutor; explain the fix in words",
+                "minutes": 7
+              }
+            ],
+            "stretch": "Ask the hosted tutor for the corrected code outright and note in the log what it does"
+          },
+          "summary": "What a controlled study found about learning with an assistant, and a way of working that keeps the skill"
         }
-      ]
+      ],
+      "subtitle": "What a notebook hides, a module with a command line, tests that pin a rule down, and an assistant that gives hints instead of answers"
     },
     {
       "id": "capstone",

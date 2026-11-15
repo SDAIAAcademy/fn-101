@@ -114,7 +114,7 @@ def build(lab: str, dest: Path) -> None:
     if lab in SEEDED:
         package(dest, SEEDED[lab])
     elif lab == "4.2":
-        package(dest, only=["__init__.py", "readings.py", "anomalies.py"])
+        package(dest, only=["__init__.py", "readings.py", "anomalies.py", "report.py"])
         for extra in sorted((source / "miqyas").glob("*.py")):
             shutil.copy(extra, dest / "miqyas" / extra.name)
     elif lab == "4.3":
